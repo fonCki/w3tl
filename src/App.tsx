@@ -3,14 +3,14 @@ import { Images } from "./components/images";
 import { ProductInfo } from "./components/product-info";
 import { useCart } from "./hooks";
 import type { Product, User } from "./types";
+import DropdownExampleSelection from './components/dropdown';
 
 function App({ product, user }: { product: Product; user: User }) {
   const [cart, addToCart] = useCart();
 
   return (
     <div>
-      <Header cart={cart} user={user} />
-
+      <Header />
       <main className="grid grid-cols-1 md:grid-cols-2 grid-rows-auto gap-2">
         <Images images={product.images} />
         <ProductInfo product={product} addToCart={addToCart} />

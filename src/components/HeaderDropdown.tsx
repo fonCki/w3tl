@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dropdown, Image, Icon } from 'semantic-ui-react';
+import { Dropdown, Image } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 
@@ -10,7 +10,8 @@ const HeaderDropdown = () => (
     <Dropdown
         trigger={
             <span className="inline-block">
-                <Image src={userAvatar} avatar style={{'font-size':24}} />
+                {/*keep image square using tailwinds*/}
+                <Image src={userAvatar} avatar style={{'font-size':24 }} className="min-w-14 mr-4" />
                 {/*<Icon name="dropdown" className="text-gray-700" />*/}
             </span>
         }

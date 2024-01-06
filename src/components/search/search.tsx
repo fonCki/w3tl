@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { DataItem } from '@models/dataItem';
-import { SearchBar } from '../search/search-bar';
-import { SearchResults } from './SearchResults';
-
-// Assuming this is the data you want to search through
-import tweetAndUserData from '../../../src/mocks/mockTweetAndUserData.json';
+import { SearchBar } from '@components/search/search-bar';
+import { SearchResults } from '@components/search/SearchResults';
+import tweetAndUserData from '@data/mockTweetAndUserData.json';
 
 const Search: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState<string>('');

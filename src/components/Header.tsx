@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
-import HeaderDropdown from './HeaderDropdown'
-import NotificationsDropdown from './notifications/Notifications-dropdown';
+import HeaderDropdown from '@components/HeaderDropdown';
+import NotificationsDropdown from '@components/notifications/Notifications-dropdown';
 import { NavigationMenuItem } from '@radix-ui/react-navigation-menu';
-import { MySidebar } from './sideBar/MySidebar';
-import { HeaderButton } from './buttons/HeaderButton';
-
-import Search from './search/search';
+import { HeaderButton } from '@components/buttons/HeaderButton';
+import Search from '@components/search/search';
+import { Logo } from '@components/logo-header';
 
 
 interface HeaderProps {
@@ -15,16 +13,12 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
     return (
         <header className="bg-blue p-5 w-full flex justify-between items-center">
-            {/* Sidebar Button  and logo*/}
+            <div className="flex items-center gap-5">
             <HeaderButton iconName="sidebar" onClick={toggleSidebar} />
-                <div>
-                    <h1 className="text-yellow text-4xl font-bold leading-[28px]">
-                        W<span className="text-white">3</span>TL
-                    </h1>
-                </div>
-            {/* Search Component */}
+            <Logo />
+            </div>
+            {/* Search Bar */}
             <Search />
-
             {/* Navigation Menu */}
             <NavigationMenu.Root>
                 <NavigationMenu.List className="flex gap-[30px] items-center justify-between text-xl">

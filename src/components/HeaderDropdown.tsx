@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 // URL to a random user avatar image
 const userAvatar = 'https://i.pravatar.cc/150?img=3';
 
-const DropdownExampleDropdown = () => (
+const HeaderDropdown = () => (
     <Dropdown
         trigger={
             <span className="inline-block">
@@ -90,11 +90,11 @@ const DropdownExampleDropdown = () => (
     </Dropdown>
 );
 
-DropdownExampleDropdown.propTypes = {
+HeaderDropdown.propTypes = {
     user: PropTypes.shape({
         name: PropTypes.string,
         email: PropTypes.string,
     }),
 };
 
-export default DropdownExampleDropdown;
+export default HeaderDropdown;

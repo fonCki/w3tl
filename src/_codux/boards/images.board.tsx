@@ -1,5 +1,5 @@
 import { createBoard } from '@wixc3/react-board';
-import { Images } from '../../components/images';
+import { Images } from '@components/Images';
 import { RUBBER_DUCKY } from '../../data';
 
 export default createBoard({

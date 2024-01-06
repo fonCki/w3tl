@@ -1,6 +1,6 @@
 import { useState } from "react";
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
-import { RatingAverage } from "./reviews";
+import { RatingAverage } from "./Reviews";
 import type { CartItem, Product } from "../types";
 
 export const ProductInfo = ({

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import * as AspectRatio from "@radix-ui/react-aspect-ratio";
-import { LeftIcon, RightIcon } from "./icons";
+import { LeftIcon, RightIcon } from "./Icons";
 import type { Image } from "../types";
 
 export const Images = ({ images }: { images: Image[] }) => {

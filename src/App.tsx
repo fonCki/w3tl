@@ -1,31 +1,33 @@
-import { Header } from "./components/header";
-import { Images } from "./components/images";
-import { ProductInfo } from "./components/product-info";
+import { Header } from "./components/Header";
+import { Images } from "./components/Images";
+import { ProductInfo } from "./components/Product-info";
 import { useCart } from "./hooks";
 import type { Product, User } from "./types";
-import DropdownExampleSelection from './components/dropdown';
+import { MySidebar } from './components/sideBar/MySidebar';
+import { useState } from 'react';
+
 
 function App({ product, user }: { product: Product; user: User }) {
-  const [cart, addToCart] = useCart();
+    const [cart, addToCart] = useCart();
+    const [sidebarVisible, setSidebarVisible] = useState(false);
 
-  return (
-    <div>
-      <Header />
-      <main className="grid grid-cols-1 md:grid-cols-2 grid-rows-auto gap-2">
-        <Images images={product.images} />
-        <ProductInfo product={product} addToCart={addToCart} />
-      </main>
+    const toggleSidebar = () => setSidebarVisible(!sidebarVisible);
 
-      <footer className="text-center text-sm p-5">
-        Made with ♥ in&nbsp;
-        <a href="https://codux.com">Codux</a>
-        &nbsp;with&nbsp;
-        <a href="https://radix-ui.com">RadixUI</a>
-        &nbsp;and&nbsp;
-        <a href="https://tailwindcss.com">TailwindCSS</a>
-      </footer>
-    </div>
-  );
+    return (
+        <div className="flex h-screen overflow-hidden">
+            <MySidebar visible={sidebarVisible} onClose={() => setSidebarVisible(false)} />
+
+            <div className={`flex flex-col flex-1 transition-all duration-300 ${sidebarVisible ? 'ml-40' : 'ml-0'}`}>
+                <Header toggleSidebar={toggleSidebar} />
+                <main className="flex-1 overflow-auto">
+                    <Images images={product.images} />
+                    <ProductInfo product={product} addToCart={addToCart} />
+                    {/* Your main content */}
+                </main>
+                {/* Footer */}
+            </div>
+        </div>
+    );
 }
 
 export default App;

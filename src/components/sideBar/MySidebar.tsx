@@ -8,18 +8,19 @@ interface MySidebarProps {
 }
 
 
-export const MySidebar = ({ visible, onClose }: MySidebarProps) => {
+export const MySidebar: React.FC<MySidebarProps> = ({ visible, onClose }) => {
     return (
         <Sidebar
             as={Menu}
-            animation='overlay'
-            icon='labeled'
-            inverted
+            animation='push'
             onHide={onClose}
             vertical
             visible={visible}
             width='thin'
+            labeled
+            className="h-full z-20"
         >
+
             <Menu.Item as='a'>
                 <Icon name='home' />
                 Home

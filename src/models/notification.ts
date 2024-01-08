@@ -1,8 +1,10 @@
+import { User } from '@models/user';
+
 export interface Notification {
     id: number;
     title: string;
     description: string;
     read: boolean;
-    avatar: string;
+    avatar: String;
     date: Date;
 }

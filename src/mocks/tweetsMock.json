@@ -1,0 +1,201 @@
+[
+  {
+    "id": 1,
+    "user": 1,
+    "content": "Just had an amazing hike today! #nature",
+    "image": "https://source.unsplash.com/random/800x600?nature",
+    "likes": 120,
+    "retweets": 40,
+    "comments": 15,
+    "createdAt": "2023-08-01T10:00:00Z"
+  },
+  {
+    "id": 2,
+    "user": 2,
+    "content": "Excited about the new VR technology! let's see what the future holds fdk, fascinating times ahead. #technology",
+    "video": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "likes": 200,
+    "retweets": 100,
+    "comments": 50,
+    "createdAt": "2023-08-02T14:30:00Z"
+  },
+  {
+    "id": 3,
+    "user": 3,
+    "content": "Exploring downtown, so much to see! #citylife Excited about the new VR technology! let's see what the future holds fdk, fascinating times ahead. #technology",
+    "likes": 95,
+    "retweets": 60,
+    "comments": 22,
+    "createdAt": "2023-08-03T09:20:00Z"
+  },
+  {
+    "id": 4,
+    "user": 4,
+    "content": "Visited the historical museum today, incredible experience! #history",
+    "image": "https://source.unsplash.com/random/800x600?museum",
+    "likes": 150,
+    "retweets": 90,
+    "comments": 35,
+    "createdAt": "2023-08-04T16:45:00Z"
+  },
+  {
+    "id": 5,
+    "user": 5,
+    "content": "Latest artwork progress, feeling inspired. #art",
+    "image": "https://source.unsplash.com/random/800x600?art",
+    "likes": 180,
+    "retweets": 120,
+    "comments": 42,
+    "createdAt": "2023-08-05T13:30:00Z"
+  },
+  {
+    "id": 6,
+    "user": 6,
+    "content": "Best run ever today, broke my own record! #fitness",
+    "image": "https://source.unsplash.com/random/800x600?running",
+    "likes": 110,
+    "retweets": 50,
+    "comments": 20,
+    "createdAt": "2023-08-06T08:10:00Z"
+  },
+  {
+    "id": 7,
+    "user": 7,
+    "content": "Discovered an amazing new band this weekend! #music",
+    "video": "https://www.youtube.com/watch?v=nfs8NYg7yQM",
+    "likes": 140,
+    "retweets": 80,
+    "comments": 30,
+    "createdAt": "2023-08-07T19:00:00Z"
+  },
+  {
+    "id": 8,
+    "user": 8,
+    "content": "Finished another great book, any recommendations? #reading",
+    "image": "https://source.unsplash.com/random/800x600?books",
+    "likes": 75,
+    "retweets": 40,
+    "comments": 18,
+    "createdAt": "2023-08-08T21:15:00Z"
+  },
+  {
+    "id": 9,
+    "user": 9,
+    "content": "Spectacular view from the mountain top!  with @alfonsoridao #hiking",
+    "image": "https://source.unsplash.com/random/800x600?mountain",
+    "likes": 160,
+    "retweets": 70,
+    "comments": 25,
+    "createdAt": "2023-08-09T07:30:00Z"
+  },
+  {
+    "id": 10,
+    "user": 10,
+    "content": "Delicious homemade meal! #cooking",
+    "image": "https://source.unsplash.com/random/800x600?food",
+    "likes": 130,
+    "retweets": 65,
+    "comments": 28,
+    "createdAt": "2023-08-10T12:00:00Z"
+  },
+  {
+    "id": 11,
+    "user": 2,
+    "content": "Exciting developments in space exploration. #space",
+    "video": "https://www.youtube.com/watch?v=udAL48P5NJU",
+    "likes": 220,
+    "retweets": 115,
+    "comments": 54,
+    "createdAt": "2023-08-11T14:30:00Z"
+  },
+  {
+    "id": 12,
+    "user": 4,
+    "content": "Reflecting on the lessons from history. #thoughts",
+    "image": "https://source.unsplash.com/random/800x600?history",
+    "likes": 105,
+    "retweets": 55,
+    "comments": 21,
+    "createdAt": "2023-08-12T17:45:00Z"
+  },
+  {
+    "id": 13,
+    "user": 5,
+    "content": "Art is a way of survival. #artlovers",
+    "image": "https://source.unsplash.com/random/800x600?painting",
+    "likes": 190,
+    "retweets": 130,
+    "comments": 46,
+    "createdAt": "2023-08-13T15:20:00Z"
+  },
+  {
+    "id": 14,
+    "user": 7,
+    "content": "Exploring the world of indie music. #indiemusic",
+    "video": "https://www.youtube.com/watch?v=5NV6Rdv1a3I",
+    "likes": 165,
+    "retweets": 85,
+    "comments": 32,
+    "createdAt": "2023-08-14T18:10:00Z"
+  },
+  {
+    "id": 15,
+    "user": 8,
+    "content": "There's nothing like a good book and a cup of coffee. #relaxing",
+    "image": "https://source.unsplash.com/random/800x600?reading",
+    "likes": 88,
+    "retweets": 45,
+    "comments": 19,
+    "createdAt": "2023-08-15T20:00:00Z"
+  },
+  {
+    "id": 16,
+    "user": 1,
+    "content": "Early morning walks in the park are the best! #morning",
+    "image": "https://source.unsplash.com/random/800x600?park",
+    "likes": 135,
+    "retweets": 68,
+    "comments": 29,
+    "createdAt": "2023-08-16T06:45:00Z"
+  },
+  {
+    "id": 17,
+    "user": 3,
+    "content": "City lights and late-night bites. #citynights",
+    "image": "https://source.unsplash.com/random/800x600?citynight",
+    "likes": 152,
+    "retweets": 77,
+    "comments": 33,
+    "createdAt": "2023-08-17T22:30:00Z"
+  },
+  {
+    "id": 18,
+    "user": 6,
+    "content": "Pushing limits at the gym today. #workout",
+    "image": "https://source.unsplash.com/random/800x600?gym",
+    "likes": 118,
+    "retweets": 59,
+    "comments": 24,
+    "createdAt": "2023-08-18T09:15:00Z"
+  },
+  {
+    "id": 19,
+    "user": 9,
+    "content": "Adventure is out there! #explore",
+    "video": "https://www.youtube.com/watch?v=lJ87yD_8u3U",
+    "likes": 177,
+    "retweets": 89,
+    "comments": 37,
+    "createdAt": "2023-08-19T11:00:00Z"
+  },
+  {
+    "id": 20,
+    "user": 10,
+    "content": "Trying out new recipes this weekend. #homecooking",
+    "image": "https://source.unsplash.com/random/800x600?cooking",
+    "likes": 142,
+    "retweets": 73,
+    "comments": 31,
+    "createdAt": "2023-08-20T13:30:00Z"
+  }
+]

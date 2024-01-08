@@ -1,0 +1,12 @@
+[
+  { "id": 1, "username": "naturelover", "verified": true, "avatar": "https://i.pravatar.cc/150?img=1", "email": "user1@example.com", "name": "John", "lastname": "Doe" },
+  { "id": 2, "username": "techwizard","verified": false, "avatar": "https://i.pravatar.cc/150?img=2", "email": "user2@example.com", "name": "Alice", "lastname": "Smith" },
+  { "id": 3, "username": "cityexplorer", "verified": true, "avatar": "https://i.pravatar.cc/150?img=3", "email": "user3@example.com", "name": "David", "lastname": "Brown" },
+  { "id": 4, "username": "historybuff","verified": true,  "avatar": "https://i.pravatar.cc/150?img=4", "email": "user4@example.com", "name": "Sarah", "lastname": "Johnson" },
+  { "id": 5, "username": "artenthusiast","verified": true, "avatar": "https://i.pravatar.cc/150?img=5", "email": "user5@example.com", "name": "Emma", "lastname": "Williams" },
+  { "id": 6, "username": "fitnessfreak","verified": false, "avatar": "https://i.pravatar.cc/150?img=6", "email": "user6@example.com", "name": "Michael", "lastname": "Jones" },
+  { "id": 7, "username": "musiclover","verified": true, "avatar": "https://i.pravatar.cc/150?img=7", "email": "user7@example.com", "name": "Sophia", "lastname": "Garcia" },
+  { "id": 8, "username": "bookworm", "verified": false,"avatar": "https://i.pravatar.cc/150?img=8", "email": "user8@example.com", "name": "Oliver", "lastname": "Martinez" },
+  { "id": 9, "username": "adventureseeker","verified": false, "avatar": "https://i.pravatar.cc/150?img=9", "email": "user9@example.com", "name": "Isabella", "lastname": "Robinson" },
+  { "id": 10, "username": "alfonsoridao", "verified": false, "avatar": "https://i.pravatar.cc/150?img=10", "email": "user10@example.com", "name": "Ethan", "lastname": "Clark" }
+]

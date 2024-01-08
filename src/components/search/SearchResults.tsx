@@ -15,7 +15,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results, onItemCli
             <List divided relaxed>
                 {results.map((result) => (
                     <List.Item key={result.id} className="px-6 py-3 hover:bg-gray-100 cursor-default flex items-center justify-center" onClick={() => onItemClick(result)}>
-                        <Icon name="search" className="mr-3 text-gray-500"/>
+                        <Icon name="search" className="mr-3 text-gray-500 middle aligned"/>
                         <List.Content>
                             <List.Header className="font-medium">{result.title}</List.Header>
                             <List.Description className="text-sm text-gray-600">{result.category}</List.Description>

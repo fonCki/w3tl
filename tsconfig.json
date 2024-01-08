@@ -24,6 +24,7 @@
       "@models/*": ["src/models/*"],
       "@components/*": ["src/components/*"],
       "@data/*": ["src/mocks/*"],
+      "@services/*": ["src/services/*"],
     }
   },
   "include": [

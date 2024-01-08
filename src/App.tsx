@@ -1,32 +1,38 @@
 import { useState } from 'react';
-import { Product, User } from './types';
-import { useCart } from './hooks';
 import { MySidebar } from '@components/sideBar/MySidebar';
 import Header from '@components/Header';
-import { Images } from '@components/Images';
-import { ProductInfo } from '@components/Product-info';
+import FeedComponent from '@components/feed/FeedComponent';
+import Sidebar from '@components/Board/SideBoard';
+import SideBoard from '@components/Board/SideBoard';
+import ScrollSharedBoard from '@components/ScrollSharedBoard';
 
 
-function App({ product }: { product: Product; user: User }) {
-    const [cart, addToCart] = useCart();
+function App() {
     const [sidebarVisible, setSidebarVisible] = useState(false);
 
     const toggleSidebar = () => setSidebarVisible(!sidebarVisible);
 
     return (
         <div className="flex h-screen overflow-hidden">
+            <Header toggleSidebar={toggleSidebar} />
             <MySidebar visible={sidebarVisible} onClose={() => setSidebarVisible(false)} />
 
-            <div className={`flex flex-col flex-1 transition-all duration-500 ${sidebarVisible ? 'ml-40' : 'ml-0'}`}>
-                <Header toggleSidebar={toggleSidebar} />
-                <main className="flex-1 overflow-auto">
-                    <Images images={product.images} />
-                    <ProductInfo product={product} addToCart={addToCart} />
-                    {/* Your main content */}
-                </main>
-                {/* Footer */}
-            </div>
+            <main className="flex-1 overflow-auto bg-custom-gray pt-16">
+                <div className="grid grid-cols-12">
+                    <div className="col-span-3">
+                        {/* Empty column for spacing */}
+                    </div>
+                    <div className="col-span-6 max-w-4xl mx-auto">
+                        <FeedComponent />
+                    </div>
+                    <div className="col-span-3">
+                        <SideBoard />
+                    </div>
+                </div>
+            </main>
         </div>
+
+
     );
 }
 

@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "ESNext",
+    "typeRoots": ["./node_modules/@types", "./src/types"],
     "useDefineForClassFields": true,
     "lib": [
       "DOM",

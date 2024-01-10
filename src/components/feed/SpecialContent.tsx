@@ -30,7 +30,7 @@ const SpecialContent: React.FC<SpecialContentProps> = ({ content }) => {
     };
 
     return (
-        <div className="mb-3">
+        <div>
             {parseContent(content)}
         </div>
     );

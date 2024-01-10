@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { Feed, Image } from 'semantic-ui-react';
 import { Tweet } from '@models/tweet';
 import Media from '@components/feed/Media';
@@ -14,27 +13,39 @@ interface TweetLineProps {
 const TweetLine: React.FC<TweetLineProps> = ({ tweet }) => {
     // ... state and functions ...
     return (
-        <Feed.Event className="max-w-xl mx-auto hover:bg-gray-200 rounded-lg">
-            <Feed.Label className="mr-2">
-                <Image src={tweet.user.avatar} avatar className="min-w-14 text-9xl" />
-            </Feed.Label>
-            <Feed.Content>
-                <div className="flex justify-between">
-                    <TweetSummary tweet={tweet} />
+
+
+        <Feed.Event>
+            <div className="bg-white flex justify-between align-middle w-full p-4 rounded-lg shadow hover:bg-gray-100">
+                <Feed.Label>
+                    <div className="w-16 h-16" >
+                        <Image src={tweet.user.avatar} avatar size="large" />
+                    </div>
+                </Feed.Label>
+                <Feed.Content className=" pr-4 pl-4 w-full">
+                    <div className="flex justify-between">
+                        <TweetSummary tweet={tweet} />
+                    </div>
+                    <div>
+
+
+                    <Feed.Extra className="text-lg w-full mb-4 mt-2 text-justify">
+                        <SpecialContent content={tweet.content} /> {/* Pass the actual users data */}
+                    </Feed.Extra>
+                    {tweet.image && <Media imageUrl={tweet.image} />}
+                    {tweet.video && <Media videoUrl={tweet.video} />}
+                    </div>
+                    <TweetMeta
+                        tweet={tweet}
+                        onLike={handleLikeClick}
+                        onRetweet={handleLikeClick}
+                        onComment={handleLikeClick}
+                    />
+                </Feed.Content>
+                <div>
                     <TweetDropdown />
                 </div>
-                <Feed.Extra className="text-lg w-full">
-                    <SpecialContent content={tweet.content} /> {/* Pass the actual users data */}
-                </Feed.Extra>
-                {tweet.image && <Media imageUrl={tweet.image} />}
-                {tweet.video && <Media videoUrl={tweet.video} />}
-                <TweetMeta
-                    tweet={tweet}
-                    onLike={handleLikeClick}
-                    onRetweet={handleLikeClick}
-                    onComment={handleLikeClick}
-                />
-            </Feed.Content>
+            </div>
         </Feed.Event>
     );
 };

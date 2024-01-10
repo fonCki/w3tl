@@ -1,0 +1,63 @@
+[
+  {
+    "id": 1,
+    "hashtag": "CES2024",
+    "category": "Tech",
+    "tweetsCount": 5000
+  },
+  {
+    "id": 2,
+    "hashtag": "WorldCup",
+    "category": "Sports",
+    "tweetsCount": 8000
+  },
+  {
+    "id": 3,
+    "hashtag": "Oscars",
+    "category": "Entertainment",
+    "tweetsCount": 3000
+  },
+  {
+    "id": 4,
+    "hashtag": "ClimateChange",
+    "category": "Politics",
+    "tweetsCount": 4500
+  },
+  {
+    "id": 5,
+    "hashtag": "TechInnovation",
+    "category": "Tech",
+    "tweetsCount": 6000
+  },
+  {
+    "id": 6,
+    "hashtag": "SpaceXLaunch",
+    "category": "Tech",
+    "tweetsCount": 7000
+  },
+  {
+    "id": 7,
+    "hashtag": "ElectricCars",
+    "category": "Tech",
+    "tweetsCount": 2500
+  },
+  {
+    "id": 8,
+    "hashtag": "AIntel",
+    "category": "Tech",
+    "tweetsCount": 5500
+  },
+  {
+    "id": 9,
+    "hashtag": "Blockchain",
+    "category": "Tech",
+    "tweetsCount": 4000
+  },
+  {
+    "id": 10,
+    "hashtag": "MusicFestival",
+    "category": "Entertainment",
+    "tweetsCount": 3500
+  }
+]
+

@@ -1,44 +1,50 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { userService } from '@services/userService';
+import { UserDetails } from '@models/UserDetails';
+import ReusableCard from '@components/Board/ReusableCard'; // Import the reusable card component
+import UserCardComponent from '@components/card/UserCard';
 
-interface UserSuggestion {
-    name: string;
-    username: string;
-}
+const WhoToFollow: React.FC = () => {
+    const [activeUserIndex, setActiveUserIndex] = useState(0);
+    const [users, setUsers] = useState<UserDetails[]>([]);
 
-interface WhoToFollowBoardProps {
-    suggestions: UserSuggestion[];
-    onUserClick: (username: string) => void;
-}
+    useEffect(() => {
+        const fetchUsers = async () => {
+            const fetchedUsers = await userService.getAllUsers();
+            setUsers(fetchedUsers.map(user => ({
+                ...user,
+                ...userService.getUserProfile(user.id),
+                followersCount: userService.getFollowers(user.id)?.length || 0,
+                followingCount: userService.getFollowing(user.id)?.length || 0,
+            })));
+        };
+        fetchUsers();
+    }, []);
 
-// Sample data for user suggestions
-const sampleSuggestions: UserSuggestion[] = [
-    { name: 'Joe Biden', username: '@JoeBiden' },
-    { name: 'ESPN', username: '@espn' },
-    { name: 'SportsCenter', username: '@SportsCenter' },
-    // ... other suggestions
-];
+    const handleNextUser = () => {
+        setActiveUserIndex((currentIndex) => (currentIndex + 1) % users.length);
+    };
 
-const WhoToFollowBoard: React.FC<WhoToFollowBoardProps> = ({ onUserClick }) => {
+    useEffect(() => {
+        const interval = setInterval(() => {
+            handleNextUser();
+        }, 15000);
+        return () => clearInterval(interval);
+    }, [handleNextUser]);
+
+    const userCardContent = users.length > 0 ? (
+        <UserCardComponent user={users[activeUserIndex]} />
+    ) : null;
+
     return (
-        <div className="bg-white rounded-lg shadow-md space-y-4 p-4">
-            <h2 className="text-2xl font-extrabold text-gray-900">Who to follow</h2>
-            {sampleSuggestions.map((suggestion, index) => (
-                <div key={index} className="pt-2 hover:bg-gray-50 transition duration-150 ease-in-out rounded-lg">
-                    <div className="flex justify-between items-center">
-                        <div>
-                            <h3 className="text-lg font-bold text-gray-900 cursor-pointer" onClick={() => onUserClick(suggestion.username)}>
-                                {suggestion.name}
-                            </h3>
-                            <span className="text-sm text-gray-500">{suggestion.username}</span>
-                        </div>
-                        <button className="text-blue-600 hover:underline text-sm">Follow</button>
-                    </div>
-                    {index !== sampleSuggestions.length - 1 && <hr className="my-3"/>}
-                </div>
-            ))}
-            <button className="text-blue-600 hover:underline text-sm font-semibold">Show more</button>
-        </div>
+        <ReusableCard
+            title="Who to Follow"
+            onActionClick={handleNextUser}
+            onShowMoreClick={handleNextUser}
+        >
+            {userCardContent}
+        </ReusableCard>
     );
 };
 
-export default WhoToFollowBoard;
+export default WhoToFollow;

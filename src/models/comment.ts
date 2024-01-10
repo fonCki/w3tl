@@ -1,10 +1,9 @@
 import { User } from '@models/user';
 
-export interface Message {
+export interface Comment {
     id: number;
-    sender: User;
-    receiver: User;
+    user: User;
+    tweetId: number;
     content: string;
-    read: boolean;
     date: Date;
 }

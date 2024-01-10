@@ -1,0 +1,62 @@
+[
+  {
+    "userId": 1,
+    "bio": "Nature lover and hiker",
+    "location": "San Francisco, CA",
+    "website": "https://naturelover.com"
+  },
+  {
+    "userId": 2,
+    "bio": "Tech enthusiast and VR innovator",
+    "location": "Silicon Valley, CA",
+    "website": "https://techwizard.com"
+  },
+  {
+    "userId": 3,
+    "bio": "Urban explorer and street photographer",
+    "location": "New York, NY",
+    "website": "https://cityexplorer.com"
+  },
+  {
+    "userId": 4,
+    "bio": "History buff and museum geek",
+    "location": "London, UK",
+    "website": "https://historybuff.com"
+  },
+  {
+    "userId": 5,
+    "bio": "Art enthusiast and gallery curator",
+    "location": "Paris, France",
+    "website": "https://artenthusiast.com"
+  },
+  {
+    "userId": 6,
+    "bio": "Fitness coach and marathon runner",
+    "location": "Berlin, Germany",
+    "website": "https://fitnessfreak.com"
+  },
+  {
+    "userId": 7,
+    "bio": "Music lover, guitarist, and songwriter",
+    "location": "Nashville, TN",
+    "website": "https://musiclover.com"
+  },
+  {
+    "userId": 8,
+    "bio": "Avid reader and aspiring author",
+    "location": "Boston, MA",
+    "website": "https://bookworm.com"
+  },
+  {
+    "userId": 9,
+    "bio": "Adventurer and travel blogger",
+    "location": "Sydney, Australia",
+    "website": "https://adventureseeker.com"
+  },
+  {
+    "userId": 10,
+    "bio": "Culinary enthusiast and food blogger, Tech enthusiast and VR innovator",
+    "location": "Tandil, Argentina",
+    "website": "https://alfonso.ridao.ar"
+  }
+]

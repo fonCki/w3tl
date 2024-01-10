@@ -1,44 +1,41 @@
-import React from 'react';
-import { Feed, Divider } from 'semantic-ui-react';
+import React, { useEffect, useState } from 'react';
+import { Feed } from 'semantic-ui-react';
 import TweetLine from './TweetLine';
-import tweetsMock from '@data/tweetsMock.json';
-import usersMock from '@data/usersMock.json';
-import { User } from '@models/user';
+import { tweetService } from '@services/tweetService';
+import { userService } from '@services/userService';
 import { Tweet } from '@models/tweet';
+import FeedContainer from './FeedContainer';
 
 const FeedComponent = () => {
-    // Function to find user details based on user ID
-    const getUserDetails = (userId: number): User | undefined => {
-        return usersMock.find(user => user.id === userId);
-    };
+    const [tweets, setTweets] = useState<Tweet[]>([]);
+
+    useEffect(() => {
+        const fetchTweets = () => {
+            const fetchedTweets = tweetService.getAllTweets();
+            const tweetsWithUserDetails = fetchedTweets.map(tweet => {
+                const userDetails = userService.getUserDetails(tweet.user);
+                return {
+                    ...tweet,
+                    user: userDetails || { id: tweet.user, username: '', avatar: '', verified: false },
+                    createdAt: new Date(tweet.createdAt), // Convert createdAt string to Date object
+                };
+            });
+            setTweets(tweetsWithUserDetails);
+        };
+
+        fetchTweets();
+    }, []);
 
     return (
-        <div className="flex justify-center pt-2.5 pb-2.5">
-            <Feed style={{ width: '100%', maxWidth: '600px' }}>
-                {tweetsMock.map((tweetData, index) => {
-                    // Find user details for each tweet
-                    const userDetails = getUserDetails(tweetData.user);
-                    // Convert createdAt string to Date object
-                    const createdAtDate = new Date(tweetData.createdAt);
-
-                    // Create a new Tweet object with the user details and correct date format
-                    const tweetWithUser: Tweet = {
-                        ...tweetData,
-                        user: userDetails || { id: tweetData.user, username: '', avatar: '', verified: false},
-                        createdAt: createdAtDate,
-                        image: tweetData.image || undefined,
-                        video: tweetData.video || undefined
-                    };
-
-                    return (
-                        <React.Fragment key={tweetWithUser.id}>
-                            <TweetLine tweet={tweetWithUser} />
-                            {index < tweetsMock.length - 1 && <Divider />}
-                        </React.Fragment>
-                    );
-                })}
-            </Feed>
-        </div>
+        <Feed>
+            {tweets.map((tweet) => (
+                <React.Fragment key={tweet.id}>
+                    <FeedContainer>
+                        <TweetLine tweet={tweet} />
+                    </FeedContainer>
+                </React.Fragment>
+            ))}
+        </Feed>
     );
 };
 

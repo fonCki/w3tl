@@ -1,5 +1,5 @@
 import { createBoard } from '@wixc3/react-board';
-import { Header } from '@components/Header';
+import { Header } from '@components/header/Header';
 import { RUBBER_DUCKY, SCROOGE } from '../../data';
 
 export default createBoard({

@@ -7,6 +7,10 @@ export const userService = {
         return usersMock.find(user => user.id === userId);
     },
 
+    getUserByUsername(username: string) {
+        return usersMock.find(user => user.username === username);
+    },
+
     getAllUsers() {
         return usersMock;
     },
@@ -33,11 +37,13 @@ export const userService = {
 
         if (!user) return null;
 
+
         return {
             ...user,
             bio: userProfile?.bio,
             location: userProfile?.location,
             website: userProfile?.website,
+            background: userProfile?.background,
             followersCount: userRelations?.followers.length || 0,
             followingCount: userRelations?.following.length || 0,
         };

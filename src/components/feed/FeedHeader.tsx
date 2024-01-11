@@ -45,15 +45,15 @@ const FeedHeader: React.FC = () => {
             <Divider />
             {hasReachedMaxCharacters && (
                 <div className="flex justify-center">
-                <Label color="red">
-                    You've reached the maximum character limit - less is more!
-                </Label>
-                    </div>
+                    <Label color="red">
+                        You've reached the maximum character limit - less is more!
+                    </Label>
+                </div>
             )}
             <div className="flex justify-between items-center mt-4">
                 <div className="flex space-x-2">
                     <label htmlFor="image-upload" className="cursor-pointer">
-                        <Icon name="file image" size="large" />
+                        <span className="material-icons text-gray-700 text-xl">image</span>
                         <input
                             id="image-upload"
                             type="file"
@@ -63,7 +63,7 @@ const FeedHeader: React.FC = () => {
                         />
                     </label>
                     <label htmlFor="video-upload" className="cursor-pointer">
-                        <Icon name="file video" size="large" />
+                        <span className="material-icons text-gray-700 text-xl">videocam</span>
                         <input
                             id="video-upload"
                             type="file"
@@ -72,19 +72,20 @@ const FeedHeader: React.FC = () => {
                             onChange={handleFileChange}
                         />
                     </label>
-                    <Icon name="smile" size="large" className="cursor-pointer" />
-                    <Icon name="map marker alternate" size="large" className="cursor-pointer" />
+                    <span className="material-icons text-gray-700 text-xl">insert_emoticon</span>
+                    <span className="material-icons text-gray-700 text-xl">place</span>
                 </div>
-                <button
-                    className="bg-custom-blue hover:bg-blue text-white font-bold py-2 px-4 rounded-full disabled:opacity-50"
-                    onClick={handlePostSubmit}
-                    disabled={!postContent || postContent.length >= maxCharacters}
-                >
-                    Post
-                </button>
-            </div>
+            <button
+                className="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded-full disabled:opacity-50"
+                onClick={handlePostSubmit}
+                disabled={!postContent || postContent.length >= maxCharacters}
+            >
+                Post
+            </button>
         </div>
-    );
+</div>
+)
+    ;
 };
 
 export default FeedHeader;

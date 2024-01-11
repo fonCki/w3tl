@@ -36,6 +36,9 @@ export default defineConfig({
         }, {
             find: "@data",
             replacement: resolve(__dirname, './src/mocks'),
+        }, {
+            find: "@constants",
+            replacement: resolve(__dirname, './src/constants'),
         }]
     }
 });

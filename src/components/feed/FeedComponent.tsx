@@ -13,11 +13,33 @@ const FeedComponent = () => {
         const fetchTweets = () => {
             const fetchedTweets = tweetService.getAllTweets();
             const tweetsWithUserDetails = fetchedTweets.map(tweet => {
-                const userDetails = userService.getUserDetails(tweet.user);
+                const user = userService.getUserById(tweet.user);
+                if (!user) {
+                    // Return a default user object if user is not found
+                    return {
+                        ...tweet,
+                        user: {
+                            id: tweet.user,
+                            username: '',
+                            verified: false,
+                            avatar: '',
+                            email: '',
+                            name: '',
+                            lastname: '',
+                            createdAt: new Date() // Default Date for createdAt
+                        },
+                        createdAt: new Date(tweet.createdAt) // Convert createdAt string to Date object
+                    };
+                }
+
+                // Ensure the user object matches the User interface
                 return {
                     ...tweet,
-                    user: userDetails || { id: tweet.user, username: '', avatar: '', verified: false },
-                    createdAt: new Date(tweet.createdAt), // Convert createdAt string to Date object
+                    user: {
+                        ...user,
+                        createdAt: new Date(user.createdAt) // Convert createdAt string to Date object
+                    },
+                    createdAt: new Date(tweet.createdAt)
                 };
             });
             setTweets(tweetsWithUserDetails);
@@ -25,6 +47,8 @@ const FeedComponent = () => {
 
         fetchTweets();
     }, []);
+
+
 
     return (
         <Feed>

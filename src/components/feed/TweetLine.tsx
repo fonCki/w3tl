@@ -5,25 +5,36 @@ import TweetMeta from './TweetMeta';
 import TweetDropdown from './TweetDropdown';
 import TweetSummary from './TweetSummary';
 import SpecialContent from '@components/feed/SpecialContent';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+
 
 interface TweetLineProps {
     tweet: Tweet;
 }
 
+
+
 const TweetLine: React.FC<TweetLineProps> = ({ tweet }) => {
+    const navigate = useNavigate();
+
+    const navigateToUserProfile = () => {
+        navigate(`/user/${tweet.user.username}`);
+    };
+
     // ... state and functions ...
     return (
 
 
         <Feed.Event>
             <div className="bg-white flex justify-between align-middle w-full p-4 rounded-lg shadow hover:bg-gray-100">
-                <Feed.Label>
+                <Feed.Label onClick={navigateToUserProfile} className="cursor-pointer">
                     <div className="w-16 h-16" >
                         <Image src={tweet.user.avatar} avatar size="large" />
                     </div>
                 </Feed.Label>
                 <Feed.Content className=" pr-4 pl-4 w-full">
-                    <div className="flex justify-between">
+                    <div className="flex justify-between cursor-pointer" onClick={navigateToUserProfile}>
                         <TweetSummary tweet={tweet} />
                     </div>
                     <div>

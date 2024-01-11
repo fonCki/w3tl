@@ -3,5 +3,6 @@ export interface UserProfile {
     bio?: string;
     location?: string;
     website?: string;
+    background?: string;
     // Additional profile-specific fields
 }

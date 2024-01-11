@@ -26,6 +26,8 @@
       "@components/*": ["src/components/*"],
       "@data/*": ["src/mocks/*"],
       "@services/*": ["src/services/*"],
+      "@utils/*": ["src/utils/*"],
+      "@constants/*": ["src/constants/*"],
     }
   },
   "include": [

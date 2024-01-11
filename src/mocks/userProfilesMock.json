@@ -58,5 +58,12 @@
     "bio": "Culinary enthusiast and food blogger, Tech enthusiast and VR innovator",
     "location": "Tandil, Argentina",
     "website": "https://alfonso.ridao.ar"
-  }
+  },
+    {
+        "userId": 11,
+        "bio": "Culinary enthusiast and food blogger, Tech enthusiast and VR innovator",
+        "location": "Tandil, Argentina",
+        "website": "https://alfonso.ridao.ar",
+        "background": "https://i0.wp.com/9to5mac.com/wp-content/uploads/sites/6/2021/09/Apple-TV.png?w=1500&quality=82&strip=all&ssl=1"
+    }
 ]

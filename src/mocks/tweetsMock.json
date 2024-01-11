@@ -21,7 +21,7 @@
   },
   {
     "id": 3,
-    "user": 3,
+    "user": 11,
     "content": "Exploring downtown, so much to see! #citylife Excited about the new VR technology! let's see what the future holds fdk, fascinating times ahead. #technology",
     "likes": 95,
     "retweets": 60,
@@ -70,7 +70,7 @@
   },
   {
     "id": 8,
-    "user": 8,
+    "user": 11,
     "content": "Finished another great book, any recommendations? #reading",
     "image": "https://source.unsplash.com/random/800x600?books",
     "likes": 75,
@@ -90,7 +90,7 @@
   },
   {
     "id": 10,
-    "user": 10,
+    "user": 11,
     "content": "Delicious homemade meal! #cooking",
     "image": "https://source.unsplash.com/random/800x600?food",
     "likes": 130,
@@ -190,7 +190,7 @@
   },
   {
     "id": 20,
-    "user": 10,
+    "user": 11,
     "content": "Trying out new recipes this weekend. #homecooking",
     "image": "https://source.unsplash.com/random/800x600?cooking",
     "likes": 142,

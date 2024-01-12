@@ -1,13 +1,13 @@
 import  React from 'react';
 import FeedContainer from './FeedContainer';
-import FeedHeader from './FeedHeader';
+import TweetInputFeedHeader from './TweetInputFeedHeader';
 import FeedComponent from './FeedComponent';
 
 const Feed = () => {
     return (
         <div>
             <FeedContainer>
-                <FeedHeader />
+                <TweetInputFeedHeader />
             </FeedContainer>
 
             {/* Feed Component */}

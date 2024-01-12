@@ -8,7 +8,7 @@ export interface UserDetails {
     id: number;
     username: string;
     verified: boolean;
-    avatar: string;
+    avatar?: string;
     email?: string;
     name?: string;
     lastname?: string;

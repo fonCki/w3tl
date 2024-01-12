@@ -1,5 +1,5 @@
 import React from 'react';
-import  usersMock  from '@data/usersMock.json';
+import  usersMock  from '@data/Json/usersMocktest.json';
 
 interface SpecialContentProps {
     content: string;

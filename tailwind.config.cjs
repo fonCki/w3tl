@@ -11,6 +11,7 @@ module.exports = {
         "gray-light": "#F3F3F3",
         'custom-gray': '#f2f1f1',
         'custom-blue': '#007bff', // Example blue color
+        'custom-light-blue': '#e7f5ff', // Example blue color
         'custom-red': '#ff4757', // Example red color
         primary: '#007bff', // Replace with your preferred primary color
         secondary: '#6c757d', // Replace with your preferred secondary color
@@ -18,6 +19,10 @@ module.exports = {
         'primary-dark': '#0056b3', // Darker shade of your primary color
         'secondary-dark': '#545b62',
         'black-border': '#000000',
+        'button-blue': '#007bff',
+        'button-red': '#ff4757',
+        'button-green': '#28a745',
+        'button-yellow': '#ffc328',
       },
     },
   },

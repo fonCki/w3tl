@@ -18,7 +18,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <Header toggleSidebar={toggleSidebar} />
             <MySidebar visible={sidebarVisible} onClose={() => setSidebarVisible(false)} />
             <main className="flex justify-center align-middle overflow-auto bg-custom-gray pt-20">
-                <div className="grid grid-cols-12 gap-4 max-w-screen-xl mx-auto">
+                <div className="grid grid-cols-12 gap-4 max-w-screen-xl mx-auto w-full">
                     <div className="col-span-3 lg:col-span-3 flex-shrink-0 hidden lg:block ml-2">
                         <Left />
                     </div>

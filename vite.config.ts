@@ -39,6 +39,12 @@ export default defineConfig({
         }, {
             find: "@constants",
             replacement: resolve(__dirname, './src/constants'),
+        }, {
+            find: "@models",
+            replacement: resolve(__dirname, './src/models'),
+        }, {
+            find: "@hooks",
+            replacement: resolve(__dirname, './src/hooks'),
         }]
     }
 });

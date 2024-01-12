@@ -1,72 +1,48 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import UserCard from '@components/user/User';
-import TweetLine from '@components/feed/TweetLine';
+import UserCard from '@components/user/profile/User';
 import FeedContainer from '@components/feed/FeedContainer';
 import { userService } from '@services/userService';
-import { tweetService } from '@services/tweetService';
 import { UserDetails } from '@models/userDetails';
-import { Tweet } from '@models/tweet';
+import UserProfileSelection from '@components/user/feed/UserProfileSelection';
+import { useNavigate } from 'react-router-dom';
 
 const UserProfile = () => {
-    const { username } = useParams<{ username: string }>();
+    const { username } = useParams<{ username?: string }>();
     const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
-    const [tweets, setTweets] = useState<Tweet[]>([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         window.scrollTo(0, 0);
-        //go up to the top of the page
-    }, []);
-
-    useEffect(() => {
-        const fetchUserDetailsAndTweets = async () => {
-            if (username) {
-                const user = await userService.getUserByUsername(username);
-                if (user) {
-                    const details = userService.getUserDetails(user.id);
-                    if (details) {
-                        setUserDetails({
-                            ...details,
-                            createdAt: new Date(details.createdAt) // Convert to Date if necessary
-                        });
-                    }
-                    const userTweets = tweetService.getTweetsByUserId(user.id);
-
-                    const tweetsWithUserDetails = userTweets.map(tweet => {
-                        const userDetails = userService.getUserById(tweet.user);
+        async function fetchUserDetails() {
+            try {
+                if (username) {
+                    const user = await userService.getUserByUsername(username);
+                    if (user) {
+                        const userDetails = await userService.getUserDetails(user.id);
                         if (userDetails) {
-                            return {
-                                ...tweet,
-                                user: {
-                                    ...userDetails,
-                                    createdAt: new Date(userDetails.createdAt) // Ensure createdAt is a Date object
-                                },
-                                createdAt: new Date(tweet.createdAt) // Convert tweet's createdAt to Date
-                            };
+                            setUserDetails(userDetails);
                         } else {
-                            // Provide default values for User type
-                            return {
-                                ...tweet,
-                                user: {
-                                    id: tweet.user,
-                                    username: 'Unknown',
-                                    avatar: 'default-avatar.png',
-                                    verified: false,
-                                    createdAt: new Date() // Default date if userDetails not found
-                                },
-                                createdAt: new Date(tweet.createdAt)
-                            };
+                            // Handle the case where userDetails is undefined
+                            navigate('/home');
                         }
-                    });
-                    setTweets(tweetsWithUserDetails);
+                    } else {
+                        // Handle the case where the user with the given username is not found
+                        navigate('/home');
+                    }
+                } else {
+                    // Handle the case where `username` is undefined
+                    navigate('/home');
                 }
+            } catch (error) {
+                // Handle any errors that occur during the fetch
+                console.error(error);
+                navigate('/home');
             }
-        };
+        }
 
-        fetchUserDetailsAndTweets();
-    }, [username]);
-
-
+        fetchUserDetails();
+    }, [username, navigate]);
 
     if (!userDetails) {
         return <div>Loading...</div>;
@@ -77,12 +53,7 @@ const UserProfile = () => {
             <FeedContainer>
                 <UserCard userDetails={userDetails} />
             </FeedContainer>
-                {tweets.map(tweet => (
-                    <FeedContainer key={tweet.id}>
-                    <TweetLine key={tweet.id} tweet={tweet} />
-                    </FeedContainer>
-                ))}
-
+            <UserProfileSelection userId={userDetails.id} />
         </div>
     );
 };

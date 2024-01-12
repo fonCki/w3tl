@@ -9,5 +9,7 @@
   { "id": 8, "username": "bookworm", "verified": false,"avatar": "https://i.pravatar.cc/150?img=8", "email": "user8@example.com", "name": "Oliver", "lastname": "Martinez", "createdAt": "2022-02-02"},
   { "id": 9, "username": "adventureseeker","verified": false, "avatar": "https://i.pravatar.cc/150?img=9", "email": "user9@example.com", "name": "Isabella", "lastname": "Robinson", "createdAt": "2022-02-02"},
   { "id": 10, "username": "thisisus", "verified": false, "avatar": "https://i.pravatar.cc/150?img=10", "email": "user10@example.com", "name": "Ethan", "lastname": "Clark", "createdAt": "2022-02-02"},
-  {"id": 11, "username": "alfonsoridao", "verified": true, "avatar": "https://lh3.googleusercontent.com/a/ACg8ocKhjPCUUYR4SLVcVW5V4yZpSYVYba9MxKEsGP3U5AubmHA=s96-c", "email": "alfonso@ridao.ar", "name": "Alfonso", "lastname": "Ridao", "createdAt": "2024-01-01"}
+  {"id": 11, "username": "alfonsoridao", "verified": true, "avatar": "https://lh3.googleusercontent.com/a/ACg8ocKhjPCUUYR4SLVcVW5V4yZpSYVYba9MxKEsGP3U5AubmHA=s96-c", "email": "alfonso@ridao.ar", "name": "Alfonso", "lastname": "Ridao", "createdAt": "2024-01-01"},
+  {"id": 12, "username": "almita", "verified": true,  "email": "almita@gmail.com", "name": "Alma Isabel", "lastname": "Serrano Ridao", "createdAt": "2024-11-01"}
+
 ]

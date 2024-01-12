@@ -1,10 +1,10 @@
 export interface User {
     id: number;
-    verified: boolean;
+    verified?: boolean;
     username: string;
-    avatar: string;
-    email?: string;
-    name?: string;
+    avatar?: string;
+    email: string;
+    name: string;
     lastname?: string;
     createdAt: Date;
 }

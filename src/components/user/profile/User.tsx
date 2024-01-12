@@ -1,10 +1,10 @@
 import { UserDetails } from '@models/userDetails';
-import UserBanner from '@components/user/UserBanner';
-import UserProfileImage from '@components/user/UserProfileImage';
-import UserActions from '@components/user/UserActions';
-import UserInfoDetails from '@components/user/UserInfoDetails';
-import UserSocialInfo from '@components/user/UserSocialInfo';
-import UserNameAndUserName from '@components/user/UserNameAndUserName';
+import UserBanner from '@components/user/profile/UserBanner';
+import UserProfileImage from '@components/user/profile/UserProfileImage';
+import UserActions from '@components/user/profile/UserActions';
+import UserInfoDetails from '@components/user/profile/UserInfoDetails';
+import UserSocialInfo from '@components/user/profile/UserSocialInfo';
+import UserNameAndUserName from '@components/user/profile/UserNameAndUserName';
 
 interface UserCardProps {
     userDetails: UserDetails;
@@ -15,6 +15,7 @@ const UserCard: React.FC<UserCardProps> = ({ userDetails, isEditable = false }) 
     return (
         <div className="relative p-2">
             <UserBanner userDetails={userDetails} />
+            <div className="border border-t-0 border-2 border-gray-200 rounded-sm ">
             <div className="absolute top-52 left-6 sm:top-40">
                 <UserProfileImage userDetails={userDetails} isEditable={isEditable} />
             </div>
@@ -25,6 +26,7 @@ const UserCard: React.FC<UserCardProps> = ({ userDetails, isEditable = false }) 
                 <UserNameAndUserName userDetails={userDetails} isEditable={isEditable} />
                 <UserInfoDetails userDetails={userDetails} isEditable={isEditable} />
                 <UserSocialInfo userDetails={userDetails} />
+            </div>
             </div>
         </div>
     );

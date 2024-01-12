@@ -6,7 +6,6 @@ const Home = () => {
     return (
         <div>
             <Feed />
-    {/* Any additional content for the Home page goes here */}
     </div>
 );
 };

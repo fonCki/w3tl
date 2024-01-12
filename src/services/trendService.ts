@@ -1,5 +1,5 @@
 import trendsMock from '@data/trendsMock.json';
-import tweetsMock from '@data/tweetsMock.json';
+import tweetsMock from '@data/Json/tweetsMock.json';
 
 export const trendService = {
     getAllTrends() {

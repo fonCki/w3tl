@@ -1,7 +1,7 @@
 import React from 'react';
 import { List, Image } from 'semantic-ui-react';
 import { Message } from '@models/message';
-import usersMock from '@data/usersMock.json'; // Import the mock user data
+import usersMock from '@data/Json/usersMocktest.json'; // Import the mock user data
 import { formatDistanceToNow } from 'date-fns';
 
 interface MessageLineProps {

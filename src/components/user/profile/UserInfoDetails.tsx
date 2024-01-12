@@ -14,7 +14,7 @@ const UserInfoDetails: React.FC<UserDetailsProps> = ({ userDetails, isEditable }
             <p className="text-gray-700 italic mt-4 mb-4">{userDetails.bio}</p>
 
             {/* Conditional rendering for location and website */}
-            <div className="flex items-center flex-wrap gap-2 m-3 sm:gap-7">
+            <div className="flex items-center flex-wrap gap-2 my-3 sm:gap-7">
                 {userDetails.location && (
                     <div className="flex items-center space-x-2">
                         <span className="material-icons text-gray-400 text-base">location_on</span>
@@ -33,7 +33,7 @@ const UserInfoDetails: React.FC<UserDetailsProps> = ({ userDetails, isEditable }
             </div>
 
             {/* Conditional rendering for email and join date */}
-            <div className="flex items-center flex-wrap gap-2 m-3 sm:gap-7">
+            <div className="flex items-center flex-wrap gap-2 my-3 sm:gap-7">
                 {userDetails.email && (
                     <div className="flex items-center space-x-2">
                         <span className="material-icons text-gray-400 text-base">email</span>

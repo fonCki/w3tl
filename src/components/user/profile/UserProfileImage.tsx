@@ -2,6 +2,7 @@ import React from 'react';
 import { Image } from 'semantic-ui-react';
 import { UserDetails } from '@models/userDetails';
 import { getDefaultAvatarImage } from '@constants/constants';
+import Img from '@components/Tools/Image/Img';
 
 interface UserProfileImageProps {
     userDetails: UserDetails;
@@ -9,16 +10,12 @@ interface UserProfileImageProps {
 }
 
 const UserProfileImage: React.FC<UserProfileImageProps> = ({ userDetails, isEditable }) => {
+    if (userDetails.avatar === undefined || userDetails.avatar === null || userDetails.avatar === '' || userDetails.avatar === 'unknown-avatar') {
+        userDetails.avatar = getDefaultAvatarImage(userDetails.username);
+    }
     return (
         <div className={`relative ${isEditable ? 'cursor-pointer' : ''} border-4 border-white rounded-full overflow-hidden h-32 w-32 sm:h-48 sm:w-48`}>
-            <Image
-                className="w-full h-full object-cover object-center"
-                src={userDetails.avatar || getDefaultAvatarImage(userDetails.username)}
-                alt={`${userDetails.username}'s avatar`}
-                avatar
-                size="large"
-            />
-            {/* Add edit icon or functionality here if isEditable */}
+        <Img userDetails={userDetails} size="large" />
         </div>
     );
 };

@@ -10,43 +10,13 @@ const FeedComponent = () => {
     const [tweets, setTweets] = useState<Tweet[]>([]);
 
     useEffect(() => {
-        const fetchTweets = () => {
-            const fetchedTweets = tweetService.getAllTweets();
-            const tweetsWithUserDetails = fetchedTweets.map(tweet => {
-                const user = userService.getUserById(tweet.user);
-                if (!user) {
-                    // Return a default user object if user is not found
-                    return {
-                        ...tweet,
-                        user: {
-                            id: tweet.user,
-                            username: '',
-                            verified: false,
-                            avatar: '',
-                            email: '',
-                            name: '',
-                            lastname: '',
-                            createdAt: new Date() // Default Date for createdAt
-                        },
-                        createdAt: new Date(tweet.createdAt) // Convert createdAt string to Date object
-                    };
-                }
-
-                // Ensure the user object matches the User interface
-                return {
-                    ...tweet,
-                    user: {
-                        ...user,
-                        createdAt: new Date(user.createdAt) // Convert createdAt string to Date object
-                    },
-                    createdAt: new Date(tweet.createdAt)
-                };
-            });
-            setTweets(tweetsWithUserDetails);
-        };
-
+        const fetchTweets = async () => {
+            const tweets = await tweetService.getAllTweets();
+            setTweets(tweets);
+        }
         fetchTweets();
-    }, []);
+    }
+    , []);
 
 
 

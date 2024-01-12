@@ -1,51 +1,72 @@
-import usersMock from '@data/usersMock.json';
-import userProfilesMock from '@data/userProfilesMock.json';
-import userRelationsMock from '@data/userRelations.json';
+import usersMock from '@data/usersMock';
+import userProfilesMock from '@data/userProfilesMock';
+import userRelationsMock from '@data/userRelationsMock';
+import { UserDetails } from '@models/userDetails';
+import { defaultUser, defaultUserDetails } from '@models/defaults';
+
+const myId = 11;
 
 export const userService = {
-    getUserById(userId: number) {
+    async getCurrentUser() {
+        return usersMock.find(user => user.id === myId);
+    },
+    async getFullCurrentUser() : Promise<UserDetails | undefined> {
+        return this.getUserDetails(myId);
+    },
+
+    async getUserById(userId: number) {
         return usersMock.find(user => user.id === userId);
     },
 
-    getUserByUsername(username: string) {
+    async getUserByUsername(username: string) {
         return usersMock.find(user => user.username === username);
     },
 
-    getAllUsers() {
+    async getAllUsers() {
         return usersMock;
     },
 
-    getFollowers(userId: number) {
+    async getFollowers(userId: number) {
         const relations = userRelationsMock.find(relation => relation.userId === userId);
         return relations?.followers.map(followerId => this.getUserById(followerId));
     },
 
-    getFollowing(userId: number) {
+    async getFollowing(userId: number) {
         const relations = userRelationsMock.find(relation => relation.userId === userId);
         return relations?.following.map(followingId => this.getUserById(followingId));
     },
 
-    getUserProfile(userId: number) {
+    async getUserProfile(userId: number) {
         return userProfilesMock.find(profile => profile.userId === userId);
     },
 
     // New function to get comprehensive user details
-    getUserDetails(userId: number) {
-        const user = this.getUserById(userId);
-        const userProfile = this.getUserProfile(userId);
-        const userRelations = userRelationsMock.find(relation => relation.userId === userId);
+    async getUserDetails(userId: number): Promise<UserDetails | undefined> {
+        const user = usersMock.find((user) => user.id === userId);
+        const userProfile = userProfilesMock.find((profile) => profile.userId === userId);
+        const userRelations = userRelationsMock.find((relation) => relation.userId === userId);
 
-        if (!user) return null;
+        if (user && userProfile) {
+            const userDetails: UserDetails = {
+                bio: userProfile.bio,
+                location: userProfile.location,
+                website: userProfile.website,
+                background: userProfile.background,
+                followersCount: userRelations?.followers.length || 0,
+                followingCount: userRelations?.following.length || 0,
+                id: user.id,
+                username: user.username,
+                verified: user.verified || false,
+                avatar: user.avatar || defaultUser.avatar, // Use default avatar if user avatar is missing
+                email: user.email,
+                name: user.name,
+                lastname: user.lastname || '',
+                createdAt: user.createdAt,
+            };
 
+            return userDetails;
+        }
 
-        return {
-            ...user,
-            bio: userProfile?.bio,
-            location: userProfile?.location,
-            website: userProfile?.website,
-            background: userProfile?.background,
-            followersCount: userRelations?.followers.length || 0,
-            followingCount: userRelations?.following.length || 0,
-        };
-    }
+        return defaultUserDetails; // Use the default user details if any data is missing
+    },
 };

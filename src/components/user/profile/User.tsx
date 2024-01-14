@@ -1,4 +1,4 @@
-import { UserDetails } from '@models/userDetails';
+import { UserFull } from '@models/user/userFull';
 import UserBanner from '@components/user/profile/UserBanner';
 import UserProfileImage from '@components/user/profile/UserProfileImage';
 import UserActions from '@components/user/profile/UserActions';
@@ -7,7 +7,7 @@ import UserSocialInfo from '@components/user/profile/UserSocialInfo';
 import UserNameAndUserName from '@components/user/profile/UserNameAndUserName';
 
 interface UserCardProps {
-    userDetails: UserDetails;
+    userDetails: UserFull;
     isEditable?: boolean;
 };
 

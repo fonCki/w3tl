@@ -5,6 +5,8 @@ import FeedContainer from '@components/feed/FeedContainer';
 import PostsTab from '@components/user/feed/tabs/PostTab';
 import HighlightsTab from '@components/user/feed/tabs/HighlightsTab';
 import LikedTab from '@components/user/feed/tabs/LikedTab';
+import RepliesTab from '@components/user/feed/tabs/RepliesTab';
+import MediaTab from '@components/user/feed/tabs/MediaTab';
 
 
 interface UserProfileSelectionProps {
@@ -22,12 +24,12 @@ const tabList = ['Posts', 'Replies', 'Media', 'Likes'];
         switch (activeTab) {
             case 'Posts':
                 return <PostsTab userId={userId} />;
-            // case 'Replies':
-            //     return <RepliesTab userId={userId} />;
+            case 'Replies':
+                return <RepliesTab userId={userId} />;
             case 'Highlights':
                  return <HighlightsTab userId={userId} />;
-            // case 'Media':
-            //     return <MediaTab
+            case 'Media':
+                return <MediaTab userId={userId} />;
             case 'Likes':
                 return <LikedTab userId={userId} />;
             default:

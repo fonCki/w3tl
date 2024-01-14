@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Card, Image, Icon } from 'semantic-ui-react';
-import { UserDetails } from '@models/userDetails';
+import { UserFull } from '@models/user/userFull';
 import { formatDistanceToNow } from 'date-fns';
 import { DEFAULT_BACKGROUND_IMAGE, getDefaultAvatarImage } from '@constants/constants'; // Adjust the import path as necessary
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 interface UserCardProps {
-    user: UserDetails;
+    user: UserFull;
 }
 
 const formatNumber = (num:number) => {

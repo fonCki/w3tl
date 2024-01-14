@@ -1,6 +1,6 @@
 // src/mocks/userRelationsMock.ts
 
-import { UserRelations } from '@models/userRelations';
+import { UserRelations } from '@models/user/userRelations';
 
 const userRelationsMock: UserRelations[] = [
     {

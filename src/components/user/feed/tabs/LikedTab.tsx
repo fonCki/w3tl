@@ -16,13 +16,9 @@ const LikedTab: React.FC<LikesTabProps> = ({ userId }) => {
     useEffect(() => {
         const fetchLikes = async () => {
             try {
-                const user = await userService.getUserById(userId);
-                if (user) {
-                    const likes = await tweetService.getAllTweetsThatUserLikes(user.id);
-                    console.log(likes);
-                    if (likes) {
-                        setLikes(likes);
-                    }
+                const likes = await tweetService.getAllTweetsThatUserLikes(userId);
+                if (likes) {
+                    setLikes(likes);
                 }
             } catch (error) {
                 console.error(error);

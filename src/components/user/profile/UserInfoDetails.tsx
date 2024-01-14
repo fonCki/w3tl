@@ -1,7 +1,9 @@
 import React from 'react';
-import { UserDetails as UserDetailsType } from '@models/userDetails';
+import { UserFull as UserDetailsType } from '@models/user/userFull';
 import { Icon } from 'semantic-ui-react';
 import { formatDistanceToNow } from 'date-fns';
+import SpecialContent from '@components/feed/SpecialContent';
+import { Tag } from 'primereact/tag';
 
 interface UserDetailsProps {
     userDetails: UserDetailsType;
@@ -11,7 +13,9 @@ interface UserDetailsProps {
 const UserInfoDetails: React.FC<UserDetailsProps> = ({ userDetails, isEditable }) => {
     return (
         <div>
-            <p className="text-gray-700 italic mt-4 mb-4">{userDetails.bio}</p>
+            <div className="my-4">
+                <SpecialContent content={userDetails.bio!} textStyle={'italic'} />
+            </div>
 
             {/* Conditional rendering for location and website */}
             <div className="flex items-center flex-wrap gap-2 my-3 sm:gap-7">

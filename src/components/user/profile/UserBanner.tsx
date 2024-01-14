@@ -1,9 +1,9 @@
 import React from 'react';
 import { DEFAULT_BACKGROUND_IMAGE } from '@constants/constants';
-import { UserDetails } from '@models/userDetails';
+import { UserFull } from '@models/user/userFull';
 
 interface UserBannerProps {
-    userDetails: UserDetails;
+    userDetails: UserFull;
 
 }
 

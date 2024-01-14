@@ -1,14 +1,14 @@
 
-import { User } from '@models/user';
-import { UserDetails } from '@models/userDetails';
+import { User } from '@models/user/user';
+import { UserFull } from '@models/user/userFull';
 import { Reply } from '@models/reply';
 import { DataItem } from '@models/dataItem';
 import { Message } from '@models/message';
 import { Notification } from '@models/notification';
 import { Trend } from '@models/trend';
 import { Tweet } from '@models/tweet';
-import { UserProfile } from '@models/userProfile';
-import { UserRelations } from '@models/userRelations';
+import { UserProfile } from '@models/user/userProfile';
+import { UserRelations } from '@models/user/userRelations';
 
 
 export const defaultUser: User = {
@@ -22,7 +22,7 @@ export const defaultUser: User = {
     createdAt: new Date(),
 };
 
-export const defaultUserDetails: UserDetails = {
+export const defaultUserDetails: UserFull = {
     bio: '',
     location: '',
     website: '',

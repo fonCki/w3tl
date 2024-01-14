@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Dropdown, List } from 'semantic-ui-react';
 import { MessageLine } from '@components/messages/MessageLine';
 import { Message } from '@models/message';
 import { HeaderButton } from '@components/buttons/HeaderButton';

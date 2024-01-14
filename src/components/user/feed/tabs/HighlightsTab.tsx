@@ -4,7 +4,6 @@ import { userService } from '@services/userService';
 import FeedContainer from '@components/feed/FeedContainer';
 import TweetLine from '@components/feed/TweetLine';
 import { Tweet } from '@models/tweet';
-import { defaultUser } from '@models/defaults';
 interface HighlightTabProps {
     userId: number;
 }
@@ -15,20 +14,17 @@ const HighlightsTab: React.FC<HighlightTabProps> = ({ userId }) => {
     useEffect(() => {
         const fetchHighs = async () => {
             try {
-                const user = await userService.getUserById(userId);
-                if (user) {
-                    const high = await tweetService.getAllTweetsThatUserHighlights(user.id)
-                    if (high) {
-                        setHigh(high);
-                    }
+                const high = await tweetService.getAllTweetsThatUserHighlights(userId);
+                if (high) {
+                    setHigh(high);
                 }
             } catch (error) {
                 console.error(error);
             }
         };
-            fetchHighs();
-        }
-        , [userId]);
+        fetchHighs();
+    }, [userId]);
+
     return (
         <div>
             {high.map((post) => (

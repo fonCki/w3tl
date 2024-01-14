@@ -372,6 +372,16 @@ export const tweetsMock: Tweet[] = [
         retweets: 70,
         comments: 30,
         createdAt: new Date("2023-09-06T09:45:00Z")
+    },
+    {
+        id: 38,
+        user: usersMock.find(u => u?.id === 11) || defaultUser,
+        content: "The latest news from NASA. #space",
+        video: "https://youtu.be/LLQEAOv_Ao8?si=3WcIcpyZLinqfKT5",
+        likes: 225,
+        retweets: 115,
+        comments: 55,
+        createdAt: new Date("2023-09-07T14:30:00Z")
     }
 
 ];

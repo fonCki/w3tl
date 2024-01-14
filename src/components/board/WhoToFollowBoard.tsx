@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { userService } from '@services/userService';
-import { UserDetails } from '@models/userDetails';
+import { UserFull } from '@models/user/userFull';
 import ReusableCard from '@components/board/ReusableCard'; // Import the reusable card component
 import UserCardComponent from '@components/card/UserSmallAdCard';
 
 const WhoToFollow: React.FC = () => {
     const [activeUserIndex, setActiveUserIndex] = useState(0);
-    const [users, setUsers] = useState<UserDetails[]>([]);
+    const [users, setUsers] = useState<UserFull[]>([]);
 
     useEffect(() => {
         const fetchUsers = async () => {

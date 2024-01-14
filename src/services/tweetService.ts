@@ -20,6 +20,9 @@ export const tweetService = {
         return tweetsMock.find(tweet => tweet.id === tweetId);
     },
 
+    async getTweetsWithMedia() {
+        return tweetsMock.filter(tweet => tweet.image !== null || tweet.video !== null || (tweet.image !== "" || tweet.video !== ""));
+    },
 
     async getAllTweetsThatUserLikes(userId: number) {
         const userRelation = userRelationsMock.find(relation => relation.userId === userId);
@@ -86,5 +89,8 @@ export const tweetService = {
     },
     async getHowManyReplysByTweetId(tweetId: number) {
         return commentsMock.filter(reply => reply.parentTweetId === tweetId).length;
-    }
+    },
+    async getAllReplyByUserId(userId: number) {
+        return commentsMock.filter(reply => reply.user.id === userId);
+    },
 };

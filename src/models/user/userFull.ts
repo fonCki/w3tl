@@ -1,4 +1,4 @@
-export interface UserDetails {
+export interface UserFull {
     bio?: string;
     location?: string;
     website?: string;

@@ -304,6 +304,13 @@ const repliesMock: Reply[] = [
         "content": "I'm always in search of a good book.",
         "createdAt": new Date(Date.now() - 1000 * 60 * 60 * 24 * 42)
     },
+    {
+        "id": 144,
+        "user": usersMock.find(u => u?.id ===11) || defaultUser,
+        "parentTweetId": 12,
+        "content": "I mean, Space exploration is truly fascinating!",
+        "createdAt": new Date(Date.now() - 10 * 60 * 60 * 24 * 43)
+    }
 ];
 
 export default repliesMock;

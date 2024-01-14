@@ -1,5 +1,5 @@
 // src/mocks/userProfilesMock.ts
-import { UserProfile } from '@models/userProfile';
+import { UserProfile } from '@models/user/userProfile';
 
 export const userProfilesMock: UserProfile[] = [
     {

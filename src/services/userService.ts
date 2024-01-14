@@ -1,7 +1,7 @@
 import usersMock from '@data/usersMock';
 import userProfilesMock from '@data/userProfilesMock';
 import userRelationsMock from '@data/userRelationsMock';
-import { UserDetails } from '@models/userDetails';
+import { UserFull } from '@models/user/userFull';
 import { defaultUser, defaultUserDetails } from '@models/defaults';
 
 const myId = 11;
@@ -10,7 +10,7 @@ export const userService = {
     async getCurrentUser() {
         return usersMock.find(user => user.id === myId);
     },
-    async getFullCurrentUser() : Promise<UserDetails | undefined> {
+    async getFullCurrentUser() : Promise<UserFull | undefined> {
         return this.getUserDetails(myId);
     },
 
@@ -41,13 +41,13 @@ export const userService = {
     },
 
     // New function to get comprehensive user details
-    async getUserDetails(userId: number): Promise<UserDetails | undefined> {
+    async getUserDetails(userId: number): Promise<UserFull | undefined> {
         const user = usersMock.find((user) => user.id === userId);
         const userProfile = userProfilesMock.find((profile) => profile.userId === userId);
         const userRelations = userRelationsMock.find((relation) => relation.userId === userId);
 
         if (user && userProfile) {
-            const userDetails: UserDetails = {
+            const userDetails: UserFull = {
                 bio: userProfile.bio,
                 location: userProfile.location,
                 website: userProfile.website,

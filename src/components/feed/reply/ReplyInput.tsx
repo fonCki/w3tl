@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Divider, Label } from 'semantic-ui-react';
-import Img from '@components/Tools/Image/Img';
+import Img from '@components/tools/image/Img';
 import { MAX_COMMENT_LENGTH } from '@constants/constants';
 import { useCurrentUser } from '@hooks/useCurrentUser';
 

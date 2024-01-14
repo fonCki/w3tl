@@ -1,5 +1,5 @@
 // src/models/reply.ts
-import { User } from '@models/user';
+import { User } from '@models/user/user';
 
 export interface Reply {
     id: number;

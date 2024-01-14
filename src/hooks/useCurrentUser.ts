@@ -1,23 +1,28 @@
-// hooks/useCurrentUser.ts
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { userService } from '@services/userService';
-import { UserDetails } from '@models/userDetails';
+import { setCurrentUser } from '@store/slices/userSlice';
+import { RootState } from '@store/store';
+import { UserFull } from '@models/user/userFull';
+import { defaultUserDetails } from '@models/defaults';
 
-export const useCurrentUser = (): UserDetails | undefined => {
-    const [currentUser, setCurrentUser] = useState<UserDetails | undefined>(undefined);
+export const useCurrentUser = (): UserFull => {
+    const dispatch = useDispatch();
+    const currentUser = useSelector((state: RootState) => state.user.currentUser);
 
     useEffect(() => {
         const fetchCurrentUser = async () => {
             try {
                 const user = await userService.getFullCurrentUser();
-                setCurrentUser(user);
+                dispatch(setCurrentUser(user ?? defaultUserDetails));
             } catch (error) {
                 console.error('Error fetching current user:', error);
+                dispatch(setCurrentUser(defaultUserDetails)); // Use default details in case of an error
             }
         };
 
         fetchCurrentUser();
-    }, []);
+    }, [dispatch]);
 
-    return currentUser;
+    return currentUser ?? defaultUserDetails; // Return defaultUserDetails if currentUser is null or undefined
 };

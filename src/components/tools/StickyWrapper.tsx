@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { StickyContainer, Sticky } from 'react-sticky';
 
 // Define a type for the Sticky child function argument
@@ -19,6 +19,8 @@ type StickyWrapperProps = {
 };
 
 const StickyWrapper: React.FC<StickyWrapperProps> = ({ mode, children, topOffset = 0, bottomOffset = 0 }) => {
+    const [isScreenLargeEnough, setIsScreenLargeEnough] = useState(window.innerHeight > 650);
+
     const renderStickyContent = ({
                                      style,
                                      isSticky,
@@ -34,12 +36,33 @@ const StickyWrapper: React.FC<StickyWrapperProps> = ({ mode, children, topOffset
         </div>
     );
 
+    useEffect(() => {
+        const handleResize = () => {
+            setIsScreenLargeEnough(window.innerHeight > 650);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        // Clean up
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+    // Function to render Sticky content
+    // ... rest of your component logic
+
+    if (!isScreenLargeEnough) {
+        // If the screen height is less than 650px, render children without Sticky
+        return <>{children}</>;
+    }
+
 
     switch (mode) {
         case 'Basic':
             return (
-                <StickyContainer>
-                    <Sticky topOffset={-topOffset} bottomOffset={bottomOffset}>
+                <StickyContainer style={{ height: '100%' }}>
+                <Sticky topOffset={-topOffset} bottomOffset={bottomOffset}>
                         {renderStickyContent}
                     </Sticky>
                 </StickyContainer>

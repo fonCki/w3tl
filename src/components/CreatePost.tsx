@@ -5,6 +5,9 @@ import { MAX_TWEET_LENGTH } from '@constants/constants';
 import { toggleCreatePostModal } from '@store/slices/menuSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
+import TweetInput from '@components/feed/TweetInput';
+import ReusableCard from '@components/board/ReusableCard';
+import FeedContainer from '@components/feed/FeedContainer';
 
 const CreatePost = () => {
     const [postContent, setPostContent] = useState('');
@@ -44,47 +47,23 @@ const CreatePost = () => {
         <Modal
             open={isModalOpen}
             onClose={closeModal}
+            width="small"
+            size={'tiny'}
+
         >
-            <Modal.Header>Create a New Post</Modal.Header>
-            <Modal.Content>
-                <TextArea
-                    placeholder="What's happening?"
-                    value={postContent}
-                    onChange={handlePostChange}
-                    style={{ minHeight: 100 }}
-                />
-                {hasReachedMaxCharacters && (
-                    <Label color="red">
-                        You've reached the maximum character limit!
-                    </Label>
-                )}
-                <Divider />
-                <input
-                    id="image-upload"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                />
-                <input
-                    id="video-upload"
-                    type="file"
-                    accept="video/*"
-                    onChange={handleFileChange}
-                />
-            </Modal.Content>
-            <Modal.Actions>
-                <Button color="red" onClick={() => closeModal()}>
-                    Cancel
-                </Button>
-                <Button
-                    positive
-                    onClick={handlePostSubmit}
-                    disabled={!postContent || postContent.length >= MAX_TWEET_LENGTH}
-                >
-                    Post
-                </Button>
-            </Modal.Actions>
+            <div className="relative rounded-full px-6 pt-6  dsfg  flex flex-col justify-center items-center bg-transparent">
+                <button onClick={closeModal} className="absolute top-0 left-0 m-2" style={{ color: 'gray' }}>
+                    X
+                </button>
+                {/* Your existing TweetInput content */}
+
+            <FeedContainer >
+            <TweetInput />
+            </FeedContainer>
+            </div>
+
         </Modal>
+
     );
 };
 

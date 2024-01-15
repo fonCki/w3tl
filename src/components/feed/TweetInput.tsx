@@ -4,7 +4,7 @@ import Img from '@components/tools/image/Img';
 import { useCurrentUser } from '@hooks/useCurrentUser';
 import { MAX_TWEET_LENGTH } from '@constants/constants';
 
-const TweetInputFeedHeader: React.FC = () => {
+const TweetInput: React.FC = () => {
     const [postContent, setPostContent] = useState('');
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const currentUser = useCurrentUser();
@@ -32,6 +32,7 @@ const TweetInputFeedHeader: React.FC = () => {
 
 
     return (
+
         <div className="p-4">
             <div className="flex items-start  space-x-4 ">
 
@@ -40,11 +41,12 @@ const TweetInputFeedHeader: React.FC = () => {
                 </div>
                 <textarea
                     className="flex-1 border border-gray-300 rounded-lg p-2 resize-none"
+
                     placeholder="What is happening?"
                     value={postContent}
                     onChange={handlePostChange}
                     maxLength={MAX_TWEET_LENGTH}
-                    style={{ fontSize: '18px', border: 'none', outline: 'none', height: '80px' }}
+                    style={{ fontSize: '18px', border: 'none', outline: 'none', height: '100px', }}
                 ></textarea>
             </div>
             <Divider />
@@ -91,5 +93,5 @@ const TweetInputFeedHeader: React.FC = () => {
         </div>
     );
 }
-export default TweetInputFeedHeader;
+export default TweetInput;
 

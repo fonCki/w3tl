@@ -29,25 +29,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <main className="flex justify-center align-middle overflow-auto bg-custom-gray pt-20">
                 <div className="grid grid-cols-12 gap-4 max-w-screen-xl mx-auto w-full">
                     <div className="col-span-1 col-start-1 sm:col-span-2 col-start-3 md:col-span-1 col-start-1 lg:col-span-3 flex-shrink-0 mr-2  lg:block ml-2 items-center justify-center h-full z-10 ">
-                            <MenuBar />
                         {/*<Left / >*/}
-                        {/*<StickyContainer style={{ height: '100%' }}> /!* Ensure enough height for scrolling *!/*/}
-                            {/*<Sticky >*/}
-                            {/*    {({ style }) => (*/}
-                            {/*        <div style={{ ...style, top:60, zIndex: 200, }}>*/}
-                            {/*            <MenuBar />*/}
-                            {/*        </div>*/}
-                            {/*    )}*/}
-                            {/*</Sticky>*/}
-                            {/*<div style={{ height: '100%' }} >*/}
-                            {/*    <h1>FInal</h1>*/}
-                            {/*</div>*/}
-                            {/* Add more Sticky elements as needed */}
-                        {/*</StickyContainer>*/}
-                        {/*<StickyWrapper mode="Stacked" topOffset={40}>*/}
-                        {/*    <MenuBar />*/}
-                        {/*</StickyWrapper>*/}
+                        {/*TODO fix sticky*/}
+                        <StickyWrapper mode={'Basic'} topOffset={80} bottomOffset={20}>
+                            <MenuBar />
+                        </StickyWrapper>
                     </div>
+
                     <div className="col-span-10 col-start-2 sm:col-span-9 md:col-start-2 md:col-span-7 lg:col-span-6">
                         {children} {/* Page-specific content goes here */}
                     </div>

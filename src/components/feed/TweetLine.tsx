@@ -36,7 +36,7 @@ const TweetLine: React.FC<TweetLineProps> = ({ tweet }) => {
             onMouseLeave={() => setShowActions(false)}
             className="relative hover:bg-gray-100" // Add relative positioning here
             >
-            <div className="bg-white flex justify-between align-middle w-full p-4 rounded-lg shadow hover:bg-gray-100">
+            <div className="bg-white flex justify-between align-middle w-full p-4 rounded-lg shadow hover:bg-gray-100 ">
                 <Feed.Label onClick={()=>navigate(`/user/${tweet.user.username}`)} className="cursor-pointer">
                     <div className="w-16 h-16" >
                         <Img userDetails={tweet.user} size="large" />

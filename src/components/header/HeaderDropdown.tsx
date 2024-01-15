@@ -33,9 +33,10 @@ const HeaderDropdown = () => {
 
                 <div className="py-1">
                     <Dropdown.Item
-                        text="Your Channel"
+                        text="Create Post"
                         icon="user"
                         className="text-sm text-gray-700 hover:bg-gray-100 px-4 py-2 cursor-pointer"
+                        onClick={()=>navigate('/create-post')}
                     />
                     <Dropdown.Item
                         text="Purchases and Memberships"

@@ -7,25 +7,28 @@ import Search from '@components/search/Search';
 import { Logo } from '@components/header/logo-header';
 import MessageDropdown from '@components/messages/MessageDropdown';
 import { useState } from 'react';
-import { Icon } from 'semantic-ui-react';
-
+import { toggleVisibility } from '@store/slices/menuSlice';
+import { useDispatch } from 'react-redux';
+import { handleToggleWithDelay } from '@utils/menuToggle';
 
 interface HeaderProps {
     toggleSidebar: () => void;
 }
 export const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
     const [showSearch, setShowSearch] = useState(true); // State to toggle search bar visibility
-    const [showSearchIcon, setShowSearchIcon] = useState(false); // State to toggle search icon visibility
 
-    const toggleSearch = () => {
-        setShowSearch(!showSearch);
+    const dispatch = useDispatch();
+
+    const handleToggleCompact = () => {
+        dispatch(toggleVisibility());
+        handleToggleWithDelay(dispatch);
     };
 
     return (
-        <header className="bg-white p-5 w-full flex justify-center items-center shadow-amber-100 h-16 fixed top-0 left-0 right-0 z-10">
+        <header className="bg-white p-5 w-full flex justify-center items-center shadow-amber-100 h-16 fixed top-0 left-0 right-0 z-50">
             <div className="max-w-screen-xl w-full flex justify-between items-center px-4 lg:px-0">
                 <div className="flex items-center gap-2 md:gap-5">
-                    <HeaderButton iconName="sidebar" onClick={toggleSidebar} />
+                    <HeaderButton iconName="sidebar" onClick={handleToggleCompact} />
                     <Logo />
                 </div>
 
@@ -40,7 +43,7 @@ export const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
                         <NavigationMenuItem className="relative">
                             {/* Search Icon - Visible on small screens */}
                             { <div className="sm:hidden">
-                                <HeaderButton iconName="search" onClick={toggleSearch} />
+                                <HeaderButton iconName="search" onClick={() => setShowSearch(!showSearch)} />
                             </div>}
                         </NavigationMenuItem>
                         <NavigationMenuItem className="relative">

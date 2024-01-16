@@ -47,20 +47,18 @@ const CreatePost = () => {
         <Modal
             open={isModalOpen}
             onClose={closeModal}
+            closeIcon
+            centered={false}
             width="small"
             size={'tiny'}
+            style={{ borderRadius:'30px', height: 'auto', top: 'auto', left: 'auto', bottom: 'auto', right: 'auto' }}
 
         >
-            <div className="relative rounded-full px-6 pt-6  dsfg  flex flex-col justify-center items-center bg-transparent">
-                <button onClick={closeModal} className="absolute top-0 left-0 m-2" style={{ color: 'gray' }}>
-                    X
-                </button>
-                {/* Your existing TweetInput content */}
-
-            <FeedContainer >
-            <TweetInput />
-            </FeedContainer>
+            <div className=" m-4" style={{ borderRadius: '30px' }}>
+                <TweetInput />
             </div>
+
+
 
         </Modal>
 

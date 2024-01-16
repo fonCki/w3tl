@@ -34,6 +34,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                         <StickyWrapper mode={'Basic'} topOffset={80} bottomOffset={20}>
                             <MenuBar />
                         </StickyWrapper>
+
                     </div>
 
                     <div className="col-span-10 col-start-2 sm:col-span-9 md:col-start-2 md:col-span-7 lg:col-span-6">

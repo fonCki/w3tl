@@ -10,9 +10,9 @@ const Bookmarks = () => {
     const title = routes.find(route => route.label === 'Bookmarks')?.label;
     return (
         <div>
-            <FeedContainer decoration={false} >
+            {/*<FeedContainer decoration={false} >*/}
                 <FeedTitle title={title}  />
-            </FeedContainer>
+            {/*</FeedContainer>*/}
             <HighlightsTab userId={myId} />
         </div>
     );

@@ -71,15 +71,12 @@ export const userService = {
     },
 
     async getTreandingUsers(top: number): Promise<UserFull[]> {
-        const arrayFullUsers: UserFull[] = [];
-        usersMock.slice(0, top).map((user) => {
-            this.getUserDetails(user.id).then((userDetails) => {
-                if (userDetails) {
-                    arrayFullUsers.push(userDetails);
-                }
-            });
-        });
-        return arrayFullUsers;
+        const users = usersMock.slice(0, top);
+        const userDetailsPromises = users.map(user => this.getUserDetails(user.id));
+        const userDetails = await Promise.all(userDetailsPromises);
+
+        // Filter out undefined values to ensure the array only contains UserFull objects
+        return userDetails.filter((user): user is UserFull => user !== undefined);
     },
 
     async getTopTenTreandingUsers(): Promise<UserFull[]> {

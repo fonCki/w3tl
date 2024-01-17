@@ -2,14 +2,15 @@
 // Path: src/components/pages/Explore.tsx
 import React from 'react';
 import { useNavigationActions } from '@hooks/useNavigationActions';
+import { routes } from '@constants/routesConfig';
+import FeedTitle from '@components/feed/FeedTitle';
 
 const Explore = () => {
-    const { navigateToHome } = useNavigationActions();
+    const title = routes.find(route => route.label === 'Explore')?.label;
 
     return (
         <div>
-            <h1>Explore</h1>
-            <button onClick={navigateToHome}>Go to Home</button>
+            <FeedTitle title={title} showUser={false} />
         </div>
     );
 };

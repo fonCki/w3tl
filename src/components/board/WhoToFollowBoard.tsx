@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { userService } from '@services/userService';
-import { UserFull } from '@models/user/userFull';
-import ReusableCard from '@components/board/ReusableCard'; // Import the reusable card component
 import UserCardComponent from '@components/card/UserSmallAdCard';
+import ReusableCard from '@components/board/ReusableCard';
+import { UserFull } from '@models/user/userFull';
 
 const WhoToFollow: React.FC = () => {
     const [activeUserIndex, setActiveUserIndex] = useState(0);
@@ -10,28 +10,18 @@ const WhoToFollow: React.FC = () => {
 
     useEffect(() => {
         const fetchUsers = async () => {
-            const fetchedUsers = await userService.getAllUsers();
-            setUsers(fetchedUsers.map(user => ({
-                ...user,
-                ...userService.getUserProfile(user.id),
-                followersCount: userService.getFollowers(user.id)?.length || 0,
-                followingCount: userService.getFollowing(user.id)?.length || 0,
-                createdAt: new Date(user.createdAt)
-            })));
+            const fetchedUsers = await userService.getTopTenTreandingUsers();
+            setUsers(fetchedUsers);
         };
         fetchUsers();
     }, []);
 
-    const handleNextUser = () => {
-        setActiveUserIndex((currentIndex) => (currentIndex + 1) % users.length);
-    };
-
     useEffect(() => {
         const interval = setInterval(() => {
-            handleNextUser();
+            setActiveUserIndex((currentIndex) => (currentIndex + 1) % users.length);
         }, 15000);
         return () => clearInterval(interval);
-    }, [handleNextUser]);
+    }, [users.length]);
 
     const userCardContent = users.length > 0 ? (
         <UserCardComponent user={users[activeUserIndex]} />
@@ -40,8 +30,8 @@ const WhoToFollow: React.FC = () => {
     return (
         <ReusableCard
             title="Who to Follow"
-            onActionClick={() => console.log('Who to follow action clicked')}
-            onShowMoreClick={() => console.log('Show more clicked')}
+            onActionClick={() => {}}
+            onShowMoreClick={() => {}}
         >
             {userCardContent}
         </ReusableCard>

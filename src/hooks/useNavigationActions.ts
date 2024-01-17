@@ -23,9 +23,14 @@ export const useNavigationActions = () => {
         }
     }
 
+    const navigateToUser = (username: string) => {
+        navigate(`/user/${username}`);
+    }
+
     return {
         navigateToHome,
         userNotFound,
         navigateToRoute,
+        navigateToUser
     };
 };

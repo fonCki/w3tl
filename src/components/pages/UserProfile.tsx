@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import UserCard from '@components/user/profile/User';
 import FeedContainer from '@components/feed/FeedContainer';
@@ -9,12 +9,12 @@ import { RootState } from '@store/store';
 import { Loader } from 'semantic-ui-react';
 import { routes } from '@constants/routesConfig';
 
+
 const UserProfile = () => {
     const { username } = useParams<{ username?: string }>();
     const userDetails = useFetchUserDetails(username);
     const isLoading = useSelector((state: RootState) => state.loading.isLoading);
     const navigate = useNavigate();
-
 
     if (isLoading) {
         return <Loader active inline="centered" />;

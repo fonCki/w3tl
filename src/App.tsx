@@ -7,13 +7,14 @@ import { Provider } from 'react-redux';
 import store from '@store/store';
 import 'primereact/resources/themes/saga-blue/theme.css';  //theme
 import 'primereact/resources/primereact.min.css';
+import ScrollToTop from '@components/tools/ScrollTop';
 
 
 function App() {
     return (
         <Provider store={store}>
-
         <Layout>
+            <ScrollToTop />
             <AppRoutes />
         </Layout>
         </Provider>

@@ -1,16 +1,28 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import UserCard from '@components/user/profile/User';
 import FeedContainer from '@components/feed/FeedContainer';
 import UserProfileSelection from '@components/user/feed/UserProfileSelection';
 import useFetchUserDetails from '@hooks/useFetchUserDetails';
+import { useSelector } from 'react-redux';
+import { RootState } from '@store/store';
+import { Loader } from 'semantic-ui-react';
+import { routes } from '@constants/routesConfig';
 
 const UserProfile = () => {
     const { username } = useParams<{ username?: string }>();
     const userDetails = useFetchUserDetails(username);
+    const isLoading = useSelector((state: RootState) => state.loading.isLoading);
+    const navigate = useNavigate();
+
+
+    if (isLoading) {
+        return <Loader active inline="centered" />;
+    }
 
     if (!userDetails) {
-        return <div>Loading...</div>;
+        navigate("/404");
+        return null;
     }
 
     return (

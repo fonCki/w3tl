@@ -1,23 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { IconType } from 'react-icons';
-import { FaHome, FaCompass, FaList, FaBookmark, FaUsers, FaEllipsisH, FaUser, FaPencilAlt } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
 import { setVisible, setCompactMode, setActiveTab, toggleCreatePostModal } from '@store/slices/menuSlice';
 import { handleToggleWithDelay } from '@utils/menuToggle';
-import { MenuItem } from '@constants/constants';
-import { menuItems } from '@constants/constants';
-import { Button } from 'semantic-ui-react';
+import { menuItems, RouteItem } from '@constants/routesConfig';
+import { PostButton } from '@components/buttons/postButton';
+import { useLocation } from 'react-router-dom';
+import { useNavigationActions } from '@hooks/useNavigationActions';
+import { FaPencilAlt } from 'react-icons/fa';
 
 
 const MenuBar: React.FC = () => {
-    const { isCompactMode, isVisible } = useSelector((state: RootState) => state.menu);
+    const { pathname } = useLocation();
+
+    const { isCompactMode, isVisible, activeTab } = useSelector((state: RootState) => state.menu);
     const dispatch = useDispatch();
     const [isLargeScreen, setIsLargeScreen] = useState(false);
-    const activeTab = useSelector((state: RootState) => state.menu.activeTab);
+    const { navigateToRoute } = useNavigationActions();
+
 
     const handleMenuItemClick = (tabName: string) => {
         dispatch(setActiveTab(tabName));
+        navigateToRoute(tabName);
     };
 
     const updateMenuState = () => {
@@ -38,6 +42,11 @@ const MenuBar: React.FC = () => {
     };
 
     useEffect(() => {
+        const currentRoute = menuItems.find(item => pathname.startsWith(item.path));
+        dispatch(setActiveTab(currentRoute ? currentRoute.label : ''));
+    }, [pathname, dispatch]);
+
+    useEffect(() => {
         updateMenuState();
         window.addEventListener('resize', updateMenuState);
         return () => window.removeEventListener('resize', updateMenuState);
@@ -51,37 +60,35 @@ const MenuBar: React.FC = () => {
         : (isLargeScreen ? '-translate-y-full' : '-translate-x-full');
 
     return (
-        <div
-            className={`rounded-lg bg-custom-gray bg-opacity-80 text-gray-600 transition-transform duration-300 ease-in-out ${transitionClass} ${isCompactMode ? 'p-0 m-0' : 'px-4 mx-4'} w-fit`}
-            style={{ height: 'calc(100vh - 8rem)' }}
-        >
-            <div className={`${isCompactMode ? 'w-20' : 'w-60'}`}>
-                <ul className={`flex-1 flex flex-col bg-white bg-opacity-50 justify-between shadow-md rounded-3xl  gap-2 ${isCompactMode ? 'p-0 m-0' : 'ml-16'}`}>
-                    {menuItems.map((item: MenuItem) => (
-                        <li key={item.label}
-                            className={`flex items-center p-4 m-2 justify-${isCompactMode ? 'center' : 'start'} 
+        <div className={`relative ${isCompactMode ? '' : 'pt-10 '} relative`}>
+            <div
+                className={`rounded-lg bg-custom-gray bg-opacity-80 text-gray-600 transition-transform duration-300 ease-in-out ${transitionClass} ${isCompactMode ? 'p-0 m-0' : 'px-4 mx-4 pb-22 pr-6'} w-fit h-fit rounded-full`}
+            >
+                <div className={`${isCompactMode ? 'w-20' : 'w-60'}`}>
+                    <ul className={`flex-1 flex flex-col  justify-between  gap-2 ${isCompactMode ? 'p-0 m-0' : 'ml-16'}`}>
+                        <div className="flex flex-col gap-2 bg-white bg-opacity-50 shadow-sm rounded-3xl">
+                            {menuItems.map((item: RouteItem) => (
+                                <li key={item.label}
+                                    onClick={() => handleMenuItemClick(item.label)}
+                                    className={`flex items-center p-4 m-2 justify-${isCompactMode ? 'center' : 'start'} 
                                     hover:bg-gray-200 rounded-full transition-all duration-300 w-fit cursor-pointer 
                                     ${activeTab === item.label ? 'font-bold text-button-blue' : 'text-gray-600'}
-                                    ${item.isPostButton ? 'bg-button-blue text-white font-bold  hover:bg-blue text-center' : ''}`}>
-                            <item.icon className="text-xl" />
-                            {!isCompactMode && <span className="ml-2">{item.label}</span>}
-                        </li>
-                    ))}
-                    {!isCompactMode && (
-                    <Button className="w-full mt-4" color="blue" size="large" style={{ borderRadius: '9999px' }}
-                            onClick={() => dispatch(toggleCreatePostModal())}>
-                        Post
-                    </Button>
-
-                    )}
-                    {isCompactMode && (
-                        <li
-                            onClick={() => dispatch(toggleCreatePostModal())}
-                            className="flex items-center p-4 m-2 justify-center hover:bg-gray-200 rounded-full transition-all duration-300 w-fit cursor-pointer bg-button-blue text-white font-bold hover:bg-blue text-center">
-                            <FaPencilAlt className="text-xl" />
-                        </li>
-                    )}
-                </ul>
+                                   }`}>
+                                    <item.icon className="text-xl" />
+                                    {!isCompactMode && <span className="ml-2">{item.label}</span>}
+                                </li>
+                            ))}
+                        </div>
+                        {!isCompactMode && (<PostButton />)}
+                        {isCompactMode && (
+                            <li
+                                onClick={() => dispatch(toggleCreatePostModal())}
+                                className="flex items-center p-4 m-2 justify-center hover:bg-gray-200 rounded-full transition-all duration-300 w-fit cursor-pointer bg-button-blue text-white font-bold hover:bg-blue text-center">
+                                <FaPencilAlt className="text-xl" />
+                            </li>
+                        )}
+                    </ul>
+                </div>
             </div>
         </div>
     );

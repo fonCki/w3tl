@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { menuItems } from '@constants/constants';
+import { menuItems } from '@constants/routesConfig';
 
 interface MenuState {
   isCompactMode: boolean;
   isVisible: boolean;
   activeTab: string;
-    isCreatePostModalOpen: boolean;
+  isCreatePostModalOpen: boolean;
 }
 
 const initialState: MenuState = {

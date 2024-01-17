@@ -5,11 +5,12 @@ import StickyWrapper from '@components/tools/StickyWrapper';
 
 const Right = () => {
     return (
-        <div>
+        // TODO fix this sticky hack
+        <div className="h-[50%]">
             {/*<StickyWrapper mode={'Stacked'} topOffset={80} bottomOffset={20}>*/}
             <TrendingBoard />
             {/*</StickyWrapper>*/}
-            <StickyWrapper mode={'Stacked'} topOffset={80} bottomOffset={20}>
+            <StickyWrapper mode={'Basic'} topOffset={80} bottomOffset={20}>
             <WhoToFollow />
             </StickyWrapper>
         </div>

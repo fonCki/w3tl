@@ -7,44 +7,49 @@ export default defineConfig({
     plugins: [react()],
     resolve: {
         alias: [{
-            find: "@components",
+            find: '@components',
             replacement: resolve(__dirname, './src/components'),
         }, {
-            find: "@pages",
+            find: '@pages',
             replacement: resolve(__dirname, './src/pages'),
         }, {
-            find: "@utils",
+            find: '@utils',
             replacement: resolve(__dirname, './src/utils'),
         }, {
-            find: "@assets",
+            find: '@assets',
             replacement: resolve(__dirname, './src/assets'),
         }, {
-            find: "@hooks",
+            find: '@hooks',
             replacement: resolve(__dirname, './src/hooks'),
         }, {
-            find: "@store",
+            find: '@store',
             replacement: resolve(__dirname, './src/store'),
         }, {
-            find: "@config",
+            find: '@config',
             replacement: resolve(__dirname, './src/config'),
         }, {
-            find: "@services",
+            find: '@services',
             replacement: resolve(__dirname, './src/services'),
         }, {
-            find: "@types",
+            find: '@types',
             replacement: resolve(__dirname, './src/types'),
         }, {
-            find: "@data",
+            find: '@data',
             replacement: resolve(__dirname, './src/mocks'),
         }, {
-            find: "@constants",
+            find: '@constants',
             replacement: resolve(__dirname, './src/constants'),
         }, {
-            find: "@models",
+            find: '@models',
             replacement: resolve(__dirname, './src/models'),
         }, {
-            find: "@hooks",
+            find: '@hooks',
             replacement: resolve(__dirname, './src/hooks'),
-        }]
-    }
+        },
+        {
+            find: '@actions',
+            replacement: resolve(__dirname, './src/actions'),
+        },
+    ],
+},
 });

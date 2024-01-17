@@ -3,11 +3,13 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import menuReducer from '@store/slices/menuSlice';
 import userReducer from '@store/slices/userSlice';
+import loadingReducer from '@store/slices/loadingSlice';
 // import other reducers
 
 const rootReducer = combineReducers({
     user: userReducer,
     menu: menuReducer,
+    loading: loadingReducer,
     // other reducers
 });
 

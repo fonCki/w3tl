@@ -11,12 +11,8 @@ import { toggleVisibility } from '@store/slices/menuSlice';
 import { useDispatch } from 'react-redux';
 import { handleToggleWithDelay } from '@utils/menuToggle';
 
-interface HeaderProps {
-    toggleSidebar: () => void;
-}
-export const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
+export const Header = () => {
     const [showSearch, setShowSearch] = useState(true); // State to toggle search bar visibility
-
     const dispatch = useDispatch();
 
     const handleToggleCompact = () => {

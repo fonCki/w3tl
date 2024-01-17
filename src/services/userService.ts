@@ -4,7 +4,7 @@ import userRelationsMock from '@data/userRelationsMock';
 import { UserFull } from '@models/user/userFull';
 import { defaultUser, defaultUserDetails } from '@models/defaults';
 
-const myId = 11;
+export const myId = 11;
 
 export const userService = {
     async getCurrentUser() {

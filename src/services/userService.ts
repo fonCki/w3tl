@@ -69,4 +69,21 @@ export const userService = {
 
         return defaultUserDetails; // Use the default user details if any data is missing
     },
+
+    async getTreandingUsers(top: number): Promise<UserFull[]> {
+        const arrayFullUsers: UserFull[] = [];
+        usersMock.slice(0, top).map((user) => {
+            this.getUserDetails(user.id).then((userDetails) => {
+                if (userDetails) {
+                    arrayFullUsers.push(userDetails);
+                }
+            });
+        });
+        return arrayFullUsers;
+    },
+
+    async getTopTenTreandingUsers(): Promise<UserFull[]> {
+        return this.getTreandingUsers(10);
+    },
+
 };

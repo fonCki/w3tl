@@ -7,6 +7,7 @@ import { IconType } from 'react-icons';
 import Explore from '@components/pages/Explore';
 import Lists from '@components/pages/Lists';
 import Bookmarks from '@components/pages/Bookmarks';
+import Communities from '@components/pages/Communities';
 // Import other components as needed
 
 export interface RouteItem {
@@ -21,9 +22,9 @@ export const routes: RouteItem[] = [
     { path: '/', component: Home, label: 'Home', icon: FaHome, isMenuBar: false },
     { path: '/home', component: Home, label: 'Home', icon: FaHome, isMenuBar: true },
     { path: '/explore', component: Explore, label: 'Explore', icon: FaCompass, isMenuBar: true },
-    { path: '/lists', component: Lists, label: 'Lists.tsx', icon: FaList, isMenuBar: true },
+    { path: '/lists', component: Lists, label: 'Lists', icon: FaList, isMenuBar: true },
     { path: '/bookmarks', component: Bookmarks, label: 'Bookmarks', icon: FaBookmark , isMenuBar: true },
-    { path: '/communities', component: UserProfile, label: 'Communities', icon: FaUsers , isMenuBar: true },
+    { path: '/communities', component: Communities, label: 'Communities', icon: FaUsers , isMenuBar: true },
     { path: '/profile', component: Post, label: 'Profile', icon: FaUser, isMenuBar: true },
     { path: '/more', component: Home, label: 'More', icon: FaEllipsisH, isMenuBar: true },
     { path: '/user/:username', component: UserProfile, label: 'User Profile', icon: FaUser, isMenuBar: false },

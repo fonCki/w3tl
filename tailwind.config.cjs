@@ -4,13 +4,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        blue: "#495CEF",
+        blue: "#2285d0",
         yellow: "#FFC328",
         "gray-dark": "#8D8D8D",
         "gray-med": "#D9D9D9",
         "gray-light": "#F3F3F3",
         'custom-gray': '#f2f1f1',
-        'custom-blue': '#007bff', // Example blue color
+        'custom-blue': '#2285d0', // Example blue color
         'custom-light-blue': '#e7f5ff', // Example blue color
         'custom-red': '#ff4757', // Example red color
         primary: '#007bff', // Replace with your preferred primary color
@@ -19,7 +19,7 @@ module.exports = {
         'primary-dark': '#0056b3', // Darker shade of your primary color
         'secondary-dark': '#545b62',
         'black-border': '#000000',
-        'button-blue': '#007bff',
+        'button-blue': '#2285d0',
         'button-red': '#ff4757',
         'button-green': '#28a745',
         'button-yellow': '#ffc328',

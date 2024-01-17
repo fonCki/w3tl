@@ -20,6 +20,7 @@ const FollowButton = () => {
         <div>
             {!isFollowing && (
                 <button
+                    color="blue"
                     className={`${buttonStyle} bg-primary hover:bg-primary-dark`}
                     onClick={handleFollow}>
                     Follow

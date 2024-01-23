@@ -26,6 +26,27 @@ export const userService = {
         return usersMock;
     },
 
+    async searchUsers(query: string)    {
+        return usersMock.filter(user => user.username.toLowerCase().includes(query.toLowerCase()));
+    },
+
+    // New function to search users with a limit and sorted by most exact match
+    async searchUsersWithLimit(query: string, limit: number)    {
+        const users = usersMock.filter(user => user.username.toLowerCase().includes(query.toLowerCase()));
+        const sortedUsers = users.sort((user1, user2) => {
+            const user1ExactMatch = user1.username.toLowerCase() === query.toLowerCase();
+            const user2ExactMatch = user2.username.toLowerCase() === query.toLowerCase();
+            if (user1ExactMatch && !user2ExactMatch) {
+                return -1;
+            }
+            if (!user1ExactMatch && user2ExactMatch) {
+                return 1;
+            }
+            return 0;
+        });
+        return sortedUsers.slice(0, limit);
+    },
+
     async getFollowers(userId: number) {
         const relations = userRelationsMock.find(relation => relation.userId === userId);
         return relations?.followers.map(followerId => this.getUserById(followerId));

@@ -14,14 +14,14 @@ const FollowButton = () => {
     };
 
     // Define a fixed width for the buttons
-    const buttonStyle = "bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded-full disabled:opacity-50 w-18 sm:w-32 text-sm sm:text-base";
+    const buttonStyle = "bg-button-blue hover:bg-primary-dark text-white font-bold py-2 px-4 rounded-full disabled:opacity-50 w-18 sm:w-32 text-sm sm:text-base";
 
     return (
         <div>
             {!isFollowing && (
                 <button
                     color="blue"
-                    className={`${buttonStyle} bg-primary hover:bg-primary-dark`}
+                    className={`${buttonStyle}`}
                     onClick={handleFollow}>
                     Follow
                 </button>

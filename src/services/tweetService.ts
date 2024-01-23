@@ -16,6 +16,26 @@ export const tweetService = {
         return tweetsMock;
     },
 
+    async searchTweets(query: string) {
+        return tweetsMock.filter(tweet => tweet.content.toLowerCase().includes(query.toLowerCase()));
+    },
+
+    async searchTweetsWithLimit(query: string, limit: number) {
+        const tweets = tweetsMock.filter(tweet => tweet.content.toLowerCase().includes(query.toLowerCase()));
+        const sortedTweets = tweets.sort((tweet1, tweet2) => {
+            const tweet1ExactMatch = tweet1.content.toLowerCase() === query.toLowerCase();
+            const tweet2ExactMatch = tweet2.content.toLowerCase() === query.toLowerCase();
+            if (tweet1ExactMatch && !tweet2ExactMatch) {
+                return -1;
+            }
+            if (!tweet1ExactMatch && tweet2ExactMatch) {
+                return 1;
+            }
+            return 0;
+        });
+        return sortedTweets.slice(0, limit);
+    },
+
     async getTweetById(tweetId: number) {
         return tweetsMock.find(tweet => tweet.id === tweetId);
     },

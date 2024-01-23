@@ -28,7 +28,7 @@ export const Header = () => {
                     <Logo />
                 </div>
 
-                {/* Search Bar - Hidden on small screens */}
+                {/* Search.tsx Bar - Hidden on small screens */}
                 {showSearch && <div className="hidden sm:block">
                     <Search />
                 </div>}
@@ -37,7 +37,7 @@ export const Header = () => {
                 <NavigationMenu.Root>
                     <NavigationMenu.List className="flex items-center gap-2 md:gap-5">
                         <NavigationMenuItem className="relative">
-                            {/* Search Icon - Visible on small screens */}
+                            {/* Search.tsx Icon - Visible on small screens */}
                             { <div className="sm:hidden">
                                 <HeaderButton iconName="search" onClick={() => setShowSearch(!showSearch)} />
                             </div>}

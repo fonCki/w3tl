@@ -17,11 +17,11 @@ interface UserSmallAdCardProps {
 }
 
 const UserSmallAdCard: React.FC<UserSmallAdCardProps> = ({
-     user,
-     showLocation = true,
-     showWebsite = true,
-     showFollowers = true,
-     showJoined = true, }) => {
+                                                             user,
+                                                             showLocation = true,
+                                                             showWebsite = true,
+                                                             showFollowers = true,
+                                                             showJoined = true, }) => {
     const navigate = useNavigate();
 
     const handleCardClick = () => {
@@ -30,12 +30,18 @@ const UserSmallAdCard: React.FC<UserSmallAdCardProps> = ({
 
     return (
         <Card className="max-w-sm rounded overflow-hidden shadow-lg" onClick={handleCardClick}>
-            <Image
-                src={user.avatar || getDefaultAvatarImage(user.username)}
-                wrapped ui={false}
-                className="w-full"
-                alt={`${user.username}'s avatar`}
-            />
+            <div className="relative w-full h-45">
+                <Image
+                    src={user.avatar || getDefaultAvatarImage(user.username)}
+                    className="w-full"
+                    alt={`${user.username}'s avatar`}
+                />
+                <div
+                    className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-0 hover:bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 ease-in-out">
+                    <button className="ui button inverted bg-blue" style={{ borderRadius: '9999px' }
+                    }>Follow</button>
+                </div>
+            </div>
             <Card.Content className="px-6 py-4">
                 <Card.Header className="font-bold text-xl mb-2">
                     {user.name}
@@ -69,19 +75,19 @@ const UserSmallAdCard: React.FC<UserSmallAdCardProps> = ({
                 </CardContent>
             </Card.Content>
             {showJoined || showFollowers && (
-            <Card.Content extra>
-                {showJoined && (
-                <div className="flex items-center space-x-2 gap-2">
-                    <span className="material-icons text-gray-400 text-base">event</span>
-                    <p className="text-gray-500 text-sm">Joined {formatDistanceToNow(new Date(user.createdAt), { addSuffix: false })}</p>
-                </div>
-                )}
-                {showFollowers && (
-                <div className="flex items-center space-x-2 gap-2">
-                    <span className="material-icons text-gray-400 text-base">group</span>
-                    <p className="text-gray-500 text-sm">{formatNumber(user.followersCount)} Followers</p>
-                </div>)}
-            </Card.Content>)}
+                <Card.Content extra>
+                    {showJoined && (
+                        <div className="flex items-center space-x-2 gap-2">
+                            <span className="material-icons text-gray-400 text-base">event</span>
+                            <p className="text-gray-500 text-sm">Joined {formatDistanceToNow(new Date(user.createdAt), { addSuffix: false })}</p>
+                        </div>
+                    )}
+                    {showFollowers && (
+                        <div className="flex items-center space-x-2 gap-2">
+                            <span className="material-icons text-gray-400 text-base">group</span>
+                            <p className="text-gray-500 text-sm">{formatNumber(user.followersCount)} Followers</p>
+                        </div>)}
+                </Card.Content>)}
         </Card>
     );
 };

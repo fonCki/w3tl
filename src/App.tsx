@@ -8,16 +8,19 @@ import store from '@store/store';
 import 'primereact/resources/themes/saga-blue/theme.css';  //theme
 import 'primereact/resources/primereact.min.css';
 import ScrollToTop from '@components/tools/ScrollTop';
+import { ReduxStateDisplay } from '@components/tools/ReduxStateDisplay';
 
 
 function App() {
     return (
         <Provider store={store}>
-        <Layout>
-            <ScrollToTop />
-            <AppRoutes />
-        </Layout>
+             <ReduxStateDisplay />
+            <Layout>
+                <ScrollToTop />
+                <AppRoutes />
+            </Layout>
         </Provider>
     );
 }
+
 export default App;

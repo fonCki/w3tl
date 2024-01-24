@@ -10,7 +10,7 @@ import { useNavigationActions } from '@hooks/useNavigationActions';
 import { FaPencilAlt } from 'react-icons/fa';
 
 
-const MenuBar: React.FC = () => {
+const SideBar: React.FC = () => {
     const { pathname } = useLocation();
 
     const { isCompactMode, isVisible, activeTab } = useSelector((state: RootState) => state.menu);
@@ -94,4 +94,4 @@ const MenuBar: React.FC = () => {
     );
 };
 
-export default MenuBar;
+export default SideBar;

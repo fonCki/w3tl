@@ -12,9 +12,11 @@ import { useState } from 'react';
 
 interface TweetLineProps {
     tweet: Tweet;
+    highlightQuery?: string;
+
 }
 
-const TweetLine: React.FC<TweetLineProps> = ({ tweet }) => {
+const TweetLine: React.FC<TweetLineProps> = ({ tweet, highlightQuery }) => {
     const navigate = useNavigate();
     const [showActions, setShowActions] = useState(false);
 
@@ -50,7 +52,7 @@ const TweetLine: React.FC<TweetLineProps> = ({ tweet }) => {
 
                         <div className="cursor-pointer" onClick={()=>navigate(`/post/${tweet.id}`)}>
                     <Feed.Extra className="text-lg w-full mb-4 mt-2 text-justify">
-                        <SpecialContent content={tweet.content} /> {/* Pass the actual users data */}
+                        <SpecialContent content={tweet.content} highlightQuery={highlightQuery} />
                     </Feed.Extra>
                     {tweet.image && <Media imageUrl={tweet.image} />}
                     {tweet.video && <Media videoUrl={tweet.video} />}

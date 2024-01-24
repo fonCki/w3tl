@@ -6,10 +6,11 @@ import { DEFAULT_BACKGROUND_IMAGE, getDefaultAvatarImage } from '@constants/cons
 import { useNavigate } from 'react-router-dom';
 import SpecialContent from '@components/feed/SpecialContent';
 import formatNumber  from '@utils/formatNumber';
+import { User } from '@models/user/user';
 
 
 interface UserSmallAdCardProps {
-    user: UserFull;
+    user: User |UserFull;
     showLocation?: boolean;
     showWebsite?: boolean;
     showFollowers?: boolean;
@@ -21,9 +22,13 @@ const UserSmallAdCard: React.FC<UserSmallAdCardProps> = ({
                                                              showLocation = true,
                                                              showWebsite = true,
                                                              showFollowers = true,
-                                                             showJoined = true, }) => {
+                                                             showJoined = true,
+                                                         }) => {
     const navigate = useNavigate();
 
+    const isUserFull = (user: User | UserFull): user is UserFull => {
+        return 'followersCount' in user;
+    };
     const handleCardClick = () => {
         navigate(`/user/${user.username}`);
     };
@@ -51,10 +56,12 @@ const UserSmallAdCard: React.FC<UserSmallAdCardProps> = ({
                 <Card.Meta className="text-gray-700 text-base">
                     <span>@{user.username}</span>
                 </Card.Meta>
+                {isUserFull(user) && (
                 <Card.Description className="w-full h-14 overflow-hidden">
                     <SpecialContent content={user.bio!} textStyle={'italic'} limitThreeLines={true} textSize={14} />
-                </Card.Description>
+                </Card.Description>)}
 
+                {isUserFull(user) && (
                 <CardContent className="flex flex-col items-start flex-wrap ">
                     {showLocation && user.location && (
 
@@ -72,9 +79,10 @@ const UserSmallAdCard: React.FC<UserSmallAdCardProps> = ({
                             </p>
                         </div>
                     )}
-                </CardContent>
+                </CardContent>)}
             </Card.Content>
-            {showJoined || showFollowers && (
+
+            {isUserFull(user) && (showJoined || showFollowers && (
                 <Card.Content extra>
                     {showJoined && (
                         <div className="flex items-center space-x-2 gap-2">
@@ -87,7 +95,8 @@ const UserSmallAdCard: React.FC<UserSmallAdCardProps> = ({
                             <span className="material-icons text-gray-400 text-base">group</span>
                             <p className="text-gray-500 text-sm">{formatNumber(user.followersCount)} Followers</p>
                         </div>)}
-                </Card.Content>)}
+                </Card.Content>)
+            )}
         </Card>
     );
 };

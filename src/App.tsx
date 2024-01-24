@@ -14,7 +14,7 @@ import { ReduxStateDisplay } from '@components/tools/ReduxStateDisplay';
 function App() {
     return (
         <Provider store={store}>
-             <ReduxStateDisplay />
+             {/*<ReduxStateDisplay />*/}
             <Layout>
                 <ScrollToTop />
                 <AppRoutes />

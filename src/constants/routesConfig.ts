@@ -32,7 +32,7 @@ export interface RouteItem {
 }
 
 export const routes: RouteItem[] = [
-    { path: '/', component: Home, label: 'Home', icon: FaHome, isMenuBar: false },
+    { path: '/', component: Home, label: 'home', icon: FaHome, isMenuBar: false },
     { path: '/home', component: Home, label: 'Home', icon: FaHome, isMenuBar: true },
     { path: '/explore', component: Explore, label: 'Explore', icon: FaCompass, isMenuBar: true },
     { path: '/lists', component: Lists, label: 'Lists', icon: FaList, isMenuBar: true },

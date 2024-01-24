@@ -2,7 +2,7 @@ import React, { ReactNode, useState } from 'react';
 import Header from '@components/header/Header';
 import Right from '@components/board/Right';
 import 'semantic-ui-css/semantic.min.css';
-import MenuBar from '@components/MenuBar';
+import SideBar from '@components/SideBar';
 import StickyWrapper from '@components/tools/StickyWrapper';
 import CreatePost from '@components/CreatePost';
 import PostFabButton from '@components/postFabButton';
@@ -34,7 +34,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                         {/*<Left / >*/}
                         {/*TODO fix sticky*/}
                         <StickyWrapper mode={'Basic'} topOffset={70} bottomOffset={20}>
-                            <MenuBar />
+                            <SideBar />
                         </StickyWrapper>
                     </div>
 

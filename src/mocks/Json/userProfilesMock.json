@@ -1,66 +1,66 @@
 [
   {
-    "userId": 1,
+    "username": 1,
     "bio": "Nature lover and hiker",
     "location": "San Francisco, CA",
     "website": "https://naturelover.com"
   },
   {
-    "userId": 2,
+    "username": 2,
     "bio": "Tech enthusiast and VR innovator",
     "location": "Silicon Valley, CA",
     "website": "https://techwizard.com"
   },
   {
-    "userId": 3,
+    "username": 3,
     "bio": "Urban explorer and street photographer",
     "location": "New York, NY",
     "website": "https://cityexplorer.com"
   },
   {
-    "userId": 4,
+    "username": 4,
     "bio": "History buff and museum geek",
     "location": "London, UK",
     "website": "https://historybuff.com"
   },
   {
-    "userId": 5,
+    "username": 5,
     "bio": "Art enthusiast and gallery curator",
     "location": "Paris, France",
     "website": "https://artenthusiast.com"
   },
   {
-    "userId": 6,
+    "username": 6,
     "bio": "Fitness coach and marathon runner",
     "location": "Berlin, Germany",
     "website": "https://fitnessfreak.com"
   },
   {
-    "userId": 7,
+    "username": 7,
     "bio": "Music lover, guitarist, and songwriter",
     "location": "Nashville, TN",
     "website": "https://musiclover.com"
   },
   {
-    "userId": 8,
+    "username": 8,
     "bio": "Avid reader and aspiring author",
     "location": "Boston, MA",
     "website": "https://bookworm.com"
   },
   {
-    "userId": 9,
+    "username": 9,
     "bio": "Adventurer and travel blogger",
     "location": "Sydney, Australia",
     "website": "https://adventureseeker.com"
   },
   {
-    "userId": 10,
+    "username": 10,
     "bio": "Culinary enthusiast and food blogger, Tech enthusiast and VR innovator",
     "location": "Tandil, Argentina",
     "website": "https://alfonso.ridao.ar"
   },
     {
-        "userId": 11,
+        "username": 11,
         "bio": "Culinary enthusiast and food blogger, Tech enthusiast and VR innovator",
         "location": "Tandil, Argentina",
         "website": "https://alfonso.ridao.ar",
@@ -68,7 +68,7 @@
     }
 ,
   {
-    "userId": 12,
+    "username": 12,
     "bio": "Me gusta bailar y hacer la vertical, Tambien actuo, pinto y escribo #Tech",
     "location": "Buenos Aires",
     "website": "https://alma.com.ar"

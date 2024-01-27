@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { tweetService } from '@services/tweetService';
-import { userService } from '@services/userService';
 import FeedContainer from '@components/feed/FeedContainer';
 import TweetLine from '@components/feed/TweetLine';
 import { Tweet } from '@models/tweet';
-import { defaultUser } from '@models/defaults';
+import { ServiceFactory } from '@services/serviceFactory';
 interface LikesTabProps {
-    userId: number;
+    username: string;
 }
 
 
-const LikedTab: React.FC<LikesTabProps> = ({ userId }) => {
+const LikedTab: React.FC<LikesTabProps> = ({ username }) => {
     const [likes, setLikes] = useState<Tweet[]>([]);
+    const tweetService = ServiceFactory.getTweetService();
 
     useEffect(() => {
         const fetchLikes = async () => {
             try {
-                const likes = await tweetService.getAllTweetsThatUserLikes(userId);
+                const likes = await tweetService.getAllTweetsThatUserLikes(username);
                 if (likes) {
                     setLikes(likes);
                 }
@@ -26,7 +25,7 @@ const LikedTab: React.FC<LikesTabProps> = ({ userId }) => {
         };
 
         fetchLikes(); // Move this line here to call the function
-    }, [userId]);
+    }, [username]);
 
     return (
         <div>

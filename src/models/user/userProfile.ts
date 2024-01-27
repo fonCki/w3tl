@@ -1,7 +1,8 @@
 export interface UserProfile {
-    userId: number;
+    id: string;
     bio?: string;
     location?: string;
     website?: string;
     background?: string;
+    pub: string;
 }

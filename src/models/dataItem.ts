@@ -1,6 +1,6 @@
 
 export interface DataItem  {
-    id: number; // Adding the 'id' property
+    id: string;
     category: string;
     title: string;
 };

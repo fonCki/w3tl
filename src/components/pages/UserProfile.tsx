@@ -30,7 +30,7 @@ const UserProfile = () => {
             <FeedContainer>
                 <UserCard userDetails={userDetails} />
             </FeedContainer>
-            <UserProfileSelection userId={userDetails.id} />
+            <UserProfileSelection username={userDetails.id} />
         </div>
     );
 };

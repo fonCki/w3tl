@@ -1,5 +1,5 @@
 export interface Trend {
-    id: number;
+    id: string;
     hashtag: string;
     category?: string;
     tweetsCount: number;

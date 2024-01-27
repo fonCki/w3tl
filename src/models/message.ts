@@ -1,7 +1,7 @@
 import { User } from '@models/user/user';
 
 export interface Message {
-    id: number;
+    id: string;
     sender: User;
     receiver: User;
     content: string;

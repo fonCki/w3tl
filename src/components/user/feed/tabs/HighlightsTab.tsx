@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { tweetService } from '@services/tweetService';
-import { userService } from '@services/userService';
 import FeedContainer from '@components/feed/FeedContainer';
 import TweetLine from '@components/feed/TweetLine';
 import { Tweet } from '@models/tweet';
+import { ServiceFactory } from '@services/serviceFactory';
 interface HighlightTabProps {
-    userId: number;
+    userId: string;
 }
 
 const HighlightsTab: React.FC<HighlightTabProps> = ({ userId }) => {
     const [high, setHigh] = useState<Tweet[]>([]);
+    const tweetService = ServiceFactory.getTweetService();
 
     useEffect(() => {
         const fetchHighs = async () => {

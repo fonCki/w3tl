@@ -1,14 +1,14 @@
 
 // store.ts
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import auth from '@store/slices/authSlice';
 import menuReducer from '@store/slices/menuSlice';
-import userReducer from '@store/slices/userSlice';
 import loadingReducer from '@store/slices/loadingSlice';
 import searchReducer from '@store/slices/searchSlice';
 // import other reducers
 
 const rootReducer = combineReducers({
-    user: userReducer,
+    auth: auth,
     menu: menuReducer,
     loading: loadingReducer,
     search: searchReducer,

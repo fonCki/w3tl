@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Divider, Label } from 'semantic-ui-react';
 import Img from '@components/tools/image/Img';
 import { MAX_COMMENT_LENGTH } from '@constants/constants';
-import { useCurrentUser } from '@hooks/useCurrentUser';
+import { useSelector } from 'react-redux';
+import { RootState } from '@store/store';
 
 const TweetInputFeedHeader: React.FC = () => {
     const [postContent, setPostContent] = useState('');
-    const currentUser = useCurrentUser();
+    const currentUser = useSelector((state: RootState) => state.auth.currentUser);
+
 
     const handlePostChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setPostContent(event.target.value);

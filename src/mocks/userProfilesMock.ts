@@ -3,151 +3,173 @@ import { UserProfile } from '@models/user/userProfile';
 
 export const userProfilesMock: UserProfile[] = [
     {
-        userId: 1,
+        id: "1",
         bio: "Nature lover and hiker",
         location: "San Francisco, CA",
-        website: "https://naturelover.com"
+        website: "https://naturelover.com",
+        pub: "did:ethr:0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8"
     },
     {
-        userId: 2,
+        id: "2",
         bio: "Tech enthusiast and VR innovator",
         location: "Silicon Valley, CA",
-        website: "https://techwizard.com"
+        website: "https://techwizard.com",
+        pub: "did:ethr:0x7cB57B5A97eAbe94205C07890BE4c1aDd31E486fA8"
     },
     {
-        userId: 3,
+        id: "3",
         bio: "Urban explorer and street photographer",
         location: "New York, NY",
-        website: "https://cityexplorer.com"
+        website: "https://cityexplorer.com",
+        pub: "did:ethr:0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A9"
     },
     {
-        userId: 4,
+        id: "4",
         bio: "History buff and museum geek",
         location: "London, UK",
-        website: "https://historybuff.com"
+        website: "https://historybuff.com",
+        pub: "did:ethr:0x7cB57B5A97eAbe94205C07890BE4c1aD31E486B0"
     },
     {
-        userId: 5,
+        id: "5",
         bio: "Art enthusiast and gallery curator",
         location: "Paris, France",
-        website: "https://artenthusiast.com"
+        website: "https://artenthusiast.com",
+        pub: "did:ethr:0x7cB57B5A97eAbe94205C07890BE4c1aD31E486B1"
     },
     {
-        userId: 6,
+        id: "6",
         bio: "Fitness coach and marathon runner",
         location: "Berlin, Germany",
-        website: "https://fitnessfreak.com"
+        website: "https://fitnessfreak.com",
+        pub: "did:ethr:0x7cB57B5A97eAbe94205C07890BE4c1aD31E486B2"
     },
     {
-        userId: 7,
+        id: "7",
         bio: "Music lover, guitarist, and songwriter",
         location: "Nashville, TN",
-        website: "https://musiclover.com"
+        website: "https://musiclover.com",
+        pub: "did:ethr:0x7cB57B5A97eAbe94205C07890BE4c1aD31E486B3"
     },
     {
-        userId: 8,
+        id: "8",
         bio: "Avid reader and aspiring author",
         location: "Boston, MA",
-        website: "https://bookworm.com"
+        website: "https://bookworm.com",
+        pub: "did:ethr:0x7cB57B5A97eAbe94205C07890BE4c1aD31E486B4"
     },
     {
-        userId: 9,
+        id: "9",
         bio: "Adventurer and travel blogger",
         location: "Sydney, Australia",
-        website: "https://adventureseeker.com"
+        website: "https://adventureseeker.com",
+        pub: "did:ethr:0x7cB57B5A97eAbe94205C07890BE4c1aD31E486B5"
     },
     {
-        userId: 10,
-        bio: "Culinary enthusiast and food blogger, Tech enthusiast and VR innovator",
-        location: "Tandil, Argentina",
-        website: "https://alfonso.ridao.ar"
-    },
-    {
-        userId: 11,
-        bio: "Culinary enthusiast and food blogger, Tech enthusiast and VR innovator",
+        id: "10",
+        bio: "Culinary enthusiast and food blogger",
         location: "Tandil, Argentina",
         website: "https://alfonso.ridao.ar",
-        background: "https://i0.wp.com/9to5mac.com/wp-content/uploads/sites/6/2021/09/Apple-TV.png?w=1500&quality=82&strip=all&ssl=1"
+        pub: "did:ethr:0x7cB57B5A97eAbe94205C07890BE4c1aD31E486B6"
     },
     {
-        userId: 12,
+        id: "11",
+        bio: "Culinary enthusiast and food blogger",
+        location: "Tandil, Argentina",
+        website: "https://alfonso.ridao.ar",
+        pub: "did:ethr:0x7cB57B5A97eAbe94205C07890BE4c1aD31E486B7"
+    },
+    {
+        id: "12",
         bio: "Me gusta bailar y hacer la vertical, Tambien actuo, pinto y escribo #Tech",
         location: "Buenos Aires",
-        website: "https://alma.com.ar"
+        website: "https://alma.com.ar",
+        pub: "did:ethr:0x7cB57B5A97eAbe94205C07890BE4c1aD31E486B8"
     },
     {
-        userId: 13,
+        id: "13",
         bio: "Traveler and wanderlust enthusiast",
         location: "Miami, FL",
-        website: "https://travelbug.com"
+        website: "https://travelbug.com",
+        pub: "did:ethr:0x7cB57B5A97eAbe94205C07890BE4c1aD31E486B9"
     },
     {
-        userId: 14,
+        id: "14",
         bio: "Foodie and culinary explorer",
         location: "Los Angeles, CA",
-        website: "https://foodieadventures.com"
+        website: "https://foodieadventures.com",
+        pub: "did:ethr:0x7cB57B5A97eAbe94205C07890BE4c1aD31E486C0"
     },
     {
-        userId: 15,
+        id: "15",
         bio: "Gamer and esports fanatic",
         location: "Seattle, WA",
-        website: "https://gamerworld.com"
+        website: "https://gamerworld.com",
+        pub: "did:ethr:0x7cB57B5A97eAbe94205C07890BE4c1aD31E486C1"
     },
     {
-        userId: 16,
+        id: "16",
         bio: "Botanist and plant lover",
         location: "Portland, OR",
-        website: "https://plantlover.com"
+        website: "https://plantlover.com",
+        pub: "did:ethr:0x7cB57B5A97eAbe94205C07890BE4c1aD31E486C2"
     },
     {
-        userId: 17,
+        id: "17",
         bio: "Animal rights activist and pet lover",
         location: "Denver, CO",
-        website: "https://animalrights.org"
+        website: "https://animalrights.org",
+        pub: "did:ethr:0x7cB57B5A97eAbe94205C07890BE4c1aD31E486C3"
     },
     {
-        userId: 18,
+        id: "18",
         bio: "Outdoor enthusiast and hiking guide",
         location: "Salt Lake City, UT",
-        website: "https://outdoorenthusiast.com"
+        website: "https://outdoorenthusiast.com",
+        pub: "did:ethr:0x7cB57B5A97eAbe94205C07890BE4c1aD31E486C4"
     },
     {
-        userId: 19,
+        id: "19",
         bio: "Coffee connoisseur and barista",
         location: "Austin, TX",
-        website: "https://coffeeaddict.com"
+        website: "https://coffeeaddict.com",
+        pub: "did:ethr:0x7cB57B5A97eAbe94205C07890BE4c1aD31E486C5"
     },
     {
-        userId: 20,
+        id: "20",
         bio: "Film buff and movie critic",
         location: "Chicago, IL",
-        website: "https://filmcritic.com"
+        website: "https://filmcritic.com",
+        pub: "did:ethr:0x7cB57B5A97eAbe94205C07890BE4c1aD31E486C6"
     },
     {
-        userId: 21,
+        id: "21",
         bio: "Craftsman and DIY enthusiast",
         location: "Houston, TX",
-        website: "https://craftsmanlife.com"
+        website: "https://craftsmanlife.com",
+        pub: "did:ethr:0x7cB57B5A97eAbe94205C07890BE4c1aD31E486C7"
     },
     {
-        userId: 22,
+        id: "22",
         bio: "Yoga instructor and mindfulness advocate",
         location: "San Diego, CA",
-        website: "https://yogalife.com"
+        website: "https://yogalife.com",
+        pub: "did:ethr:0x7cB57B5A97eAbe94205C07890BE4c1aD31E486C8"
     },
     {
-        userId: 23,
+        id: "23",
         bio: "Fashionista and style influencer",
         location: "Miami, FL",
-        website: "https://fashionista.com"
+        website: "https://fashionista.com",
+        pub: "did:ethr:0x7cB57B5A97eAbe94205C07890BE4c1aD31E486C9"
     },
     {
-        userId: 24,
+        id: "24",
         bio: "Fitness guru and personal trainer",
         location: "Dallas, TX",
-        website: "https://fitnessexpert.com"
+        website: "https://fitnessexpert.com",
+        pub: "did:ethr:0x7cB57B5A97eAbe94205C07890BE4c1aD31E486D0"
     }
-
 ];
 
 export default userProfilesMock;

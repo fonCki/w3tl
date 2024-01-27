@@ -1,14 +1,16 @@
 // useFetchUserDetails.ts
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { userService } from '@services/userService';
 import { UserFull } from '@models/user/userFull';
 import { useNavigationActions} from '@hooks/useNavigationActions';
+import { ServiceFactory } from '@services/serviceFactory';
 
 const useFetchUserDetails = (username: string | undefined) => {
     const [userDetails, setUserDetails] = useState<UserFull | null>(null);
     const navigate = useNavigate();
     const { userNotFound } = useNavigationActions();
+    const userService = ServiceFactory.getUserService();
+
 
     useEffect(() => {
         if (!username) {

@@ -3,16 +3,17 @@ import { useParams } from 'react-router-dom';
 import FeedContainer from '@components/feed/FeedContainer';
 import TweetLine from '@components/feed/TweetLine';
 import ReplyLine from '@components/feed/reply/ReplyLine';
-import { tweetService } from '@services/tweetService';
 import { Tweet } from '@models/tweet';
 import { Reply } from '@models/reply';
 import { defaultTweet } from '@models/defaults';
 import ReplyInput from '@components/feed/reply/ReplyInput';
+import { ServiceFactory } from '@services/serviceFactory';
 
 const Post: React.FC = () => {
     const { id } = useParams<{ id?: string }>();
     const [tweet, setTweet] = useState<Tweet>(defaultTweet);
     const [replies, setReplies] = useState<Reply[]>([]);
+    const tweetService = ServiceFactory.getTweetService();
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -22,12 +23,11 @@ const Post: React.FC = () => {
             console.error("Invalid or missing id");
             return;
         }
-        const parsedId = parseInt(id, 10);
 
         // Fetch the tweet by ID
         const fetchTweet = async () => {
             try {
-                const fetchedTweet = await tweetService.getTweetById(parsedId);
+                const fetchedTweet = await tweetService.getTweetById(id);
                 if (fetchedTweet) {
                     setTweet(fetchedTweet);
                 }
@@ -39,7 +39,7 @@ const Post: React.FC = () => {
         // Fetch replies for the tweet
         const fetchReplies = async () => {
             try {
-                const fetchedReplies = await tweetService.getAllReplysByTweetId(parsedId);
+                const fetchedReplies = await tweetService.getAllRepliesByTweetId(id);
                 setReplies(fetchedReplies);
             } catch (error) {
                 console.error('Error fetching replies:', error);
@@ -58,7 +58,6 @@ const Post: React.FC = () => {
             <FeedContainer>
                 <ReplyInput />
             </FeedContainer>
-
             {replies.map(reply => (
                 <FeedContainer key={reply.id}>
                     <ReplyLine reply={reply} />

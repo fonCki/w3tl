@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { tweetService } from '@services/tweetService';
 import FeedContainer from '@components/feed/FeedContainer';
 import { validateImageUrl, validateVideoUrl } from '@utils/mediaValidator';
 import { Tweet as OriginalTweet } from '@models/tweet';
 import Thumbnail from '@components/tools/image/Thumbnail';
+import { ServiceFactory } from '@services/serviceFactory';
 
 interface ExtendedTweet extends OriginalTweet {
     isValidImage?: boolean;
@@ -11,17 +11,19 @@ interface ExtendedTweet extends OriginalTweet {
 }
 
 interface MediaTabProps {
-    userId: number;
+    username: number;
 }
 
-const MediaTab: React.FC<MediaTabProps> = ({ userId }) => {
+const MediaTab: React.FC<MediaTabProps> = ({ username }) => {
     const [mediaTweets, setMediaTweets] = useState<ExtendedTweet[]>([]);
+    const tweetService = ServiceFactory.getTweetService();
+
 
     useEffect(() => {
         const fetchAndValidateMediaTweets = async () => {
             try {
                 const tweets = await tweetService.getTweetsWithMedia();
-                const userMediaTweets = tweets.filter(tweet => tweet.user.id === userId && (tweet.image || tweet.video));
+                const userMediaTweets = tweets.filter(tweet => tweet.user.id === username && (tweet.image || tweet.video));
 
                 const validatedTweets = await Promise.all(userMediaTweets.map(async tweet => {
                     const isValidImage = tweet.image ? await validateImageUrl(tweet.image) : false;
@@ -36,7 +38,7 @@ const MediaTab: React.FC<MediaTabProps> = ({ userId }) => {
         };
 
         fetchAndValidateMediaTweets();
-    }, [userId]);
+    }, [username]);
 
     return (
         <FeedContainer>

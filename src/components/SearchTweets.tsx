@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { tweetService } from '@services/tweetService';
 import FeedTitle from '@components/feed/FeedTitle';
 import FeedContainer from '@components/feed/FeedContainer';
 
 import { Tweet } from '@models/tweet';
-import TweetLine from '@components/feed/TweetLine'; // Assuming this is your Tweet model
+import TweetLine from '@components/feed/TweetLine';
+import { ServiceFactory } from '@services/serviceFactory'; // Assuming this is your Tweet model
 
 interface SearchTweetsProps {
     query: string;
@@ -12,6 +12,8 @@ interface SearchTweetsProps {
 
 const SearchTweets: React.FC<SearchTweetsProps> = ({ query }) => {
     const [tweets, setTweets] = useState<Tweet[]>([]);
+    const tweetService = ServiceFactory.getTweetService();
+
 
     useEffect(() => {
         const fetchTweets = async () => {

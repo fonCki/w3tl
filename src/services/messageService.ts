@@ -1,9 +1,9 @@
-import messagesMock from '@data/messagesMock.json';
+import messagesMock from '@data/Json/messagesMock.json';
 
 export const messageService = {
-    getMessagesByUserId(userId: number) {
+    getMessagesByusername(username: number) {
         return messagesMock.filter(message =>
-            message.sender.id === userId || message.receiver.id === userId
+            message.sender.id === username || message.receiver.id === username
         );
     },
 

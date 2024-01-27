@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Icon } from 'semantic-ui-react';
 import { Tweet } from '@models/tweet';
-import { tweetService } from '@services/tweetService'; // import your tweet service
+import { ServiceFactory } from '@services/serviceFactory';
 
 interface TweetMetaProps {
     tweet: Tweet;
@@ -16,13 +16,15 @@ const TweetMeta: React.FC<TweetMetaProps> = ({ tweet, onLike, onRetweet, onComme
     const [isRetweeted, setIsRetweeted] = useState(false);
     const [isCommented, setIsCommented] = useState(false);
     const [isHighlighted, setIsHighlighted] = useState(false);
+    const myService = ServiceFactory.getMyOwnService();
+
 
     useEffect(() => {
         async function fetchData() {
-            setIsLiked(await tweetService.isTweetLikedByMe(tweet.id));
-            setIsRetweeted(await tweetService.isTweetRetweetedByMe(tweet.id));
-            setIsCommented(await tweetService.isTweetCommentedByMe(tweet.id));
-            setIsHighlighted(await tweetService.isTweetHighlightedByMe(tweet.id));
+            setIsLiked(await myService.isTweetLikedByMe(tweet.id));
+            setIsRetweeted(await myService.isTweetRetweetedByMe(tweet.id));
+            setIsCommented(await myService.isTweetCommentedByMe(tweet.id));
+            setIsHighlighted(await myService.isTweetHighlightedByMe(tweet.id));
         }
 
         fetchData();

@@ -50,6 +50,10 @@ export default defineConfig({
             find: '@actions',
             replacement: resolve(__dirname, './src/actions'),
         },
+        {
+            find: '@interfaces',
+            replacement: resolve(__dirname, './src/interfaces'),
+        },
     ],
-},
+    },
 });

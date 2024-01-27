@@ -10,7 +10,7 @@ const MessagesDropdown: React.FC = () => {
 
     useEffect(() => {
         const loadMessages = async () => {
-            const fetchedMessages = await messageService.getMessagesByUserId(10);
+            const fetchedMessages = await messageService.getMessagesByusername(10);
             setMessages(fetchedMessages);
         };
         loadMessages();

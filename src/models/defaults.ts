@@ -12,7 +12,7 @@ import { UserRelations } from '@models/user/userRelations';
 
 
 export const defaultUser: User = {
-    id: 0,
+    id: "0",
     verified: false,
     username: 'Unknown',
     avatar: 'unknown-avatar',
@@ -29,7 +29,7 @@ export const defaultUserDetails: UserFull = {
     background: '',
     followersCount: 0,
     followingCount: 0,
-    id: 0,
+    id: "0",
     username: 'Unknown',
     verified: false,
     avatar: 'default-avatar.png',
@@ -37,10 +37,11 @@ export const defaultUserDetails: UserFull = {
     name: 'Unknown',
     lastname: 'User',
     createdAt: new Date(),
+    pub: '',
 };
 
 export const defaultComment: Reply = {
-    id: 0,
+    id: "0",
     user: defaultUser,
     parentTweetId: 0,
     content: '',
@@ -48,13 +49,13 @@ export const defaultComment: Reply = {
 };
 
 export const defaultDataItem: DataItem = {
-    id: 0,
+    id: "0",
     category: '',
     title: '',
 };
 
 export const defaultMessage: Message = {
-    id: 0,
+    id: "0",
     sender: defaultUser,
     receiver: defaultUser,
     content: '',
@@ -63,7 +64,7 @@ export const defaultMessage: Message = {
 };
 
 export const defaultNotification: Notification = {
-    id: 0,
+    id: "0",
     user: 0,
     title: '',
     description: '',
@@ -73,14 +74,14 @@ export const defaultNotification: Notification = {
 };
 
 export const defaultTrend: Trend = {
-    id: 0,
+    id:"0",
     hashtag: '',
     category: '',
     tweetsCount: 0,
 };
 
 export const defaultTweet: Tweet = {
-    id: 0,
+    id: "0",
     user: defaultUser,
     content: '',
     image: '',
@@ -92,7 +93,7 @@ export const defaultTweet: Tweet = {
 };
 
 export const defaultUserProfile: UserProfile = {
-    userId: 0,
+    id: "0",
     bio: '',
     location: '',
     website: '',
@@ -100,7 +101,7 @@ export const defaultUserProfile: UserProfile = {
 };
 
 export const defaultUserRelations: UserRelations = {
-    userId: 0,
+    id: "0",
     followers: [],
     following: [],
     likedTweetIds: [],

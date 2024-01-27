@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { userService } from '@services/userService';
 import FeedTitle from '@components/feed/FeedTitle';
 import FeedContainer from '@components/feed/FeedContainer';
 import UserSmallAdCard from '@components/card/UserSmallAdCard';
 import { User } from '@models/user/user';
 import { Divider } from 'semantic-ui-react';
+import { ServiceFactory } from '@services/serviceFactory';
 
 
 interface SearchUsersProps {
@@ -13,6 +13,7 @@ interface SearchUsersProps {
 
 const SearchUsers: React.FC<SearchUsersProps> = ({ query }) => {
     const [users, setUsers] = useState<User[]>([]); // State for storing users
+    const userService = ServiceFactory.getUserService();
 
     useEffect(() => {
         const fetchUsers = async () => {

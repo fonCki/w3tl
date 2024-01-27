@@ -1,6 +1,6 @@
 import { User } from '@models/user/user';
 export interface Tweet {
-    id: number;
+    id: string;
     user: User;
     content: string;
     image?: string;

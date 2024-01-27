@@ -1,5 +1,5 @@
 export interface User {
-    id: number;
+    id: string;
     verified?: boolean;
     username: string;
     avatar?: string;

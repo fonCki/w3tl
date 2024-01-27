@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Modal, Button, TextArea, Divider, Label } from 'semantic-ui-react';
-import { useCurrentUser } from '@hooks/useCurrentUser';
 import { MAX_TWEET_LENGTH } from '@constants/constants';
 import { toggleCreatePostModal } from '@store/slices/menuSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,7 +11,8 @@ import FeedContainer from '@components/feed/FeedContainer';
 const CreatePost = () => {
     const [postContent, setPostContent] = useState('');
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const currentUser = useCurrentUser();
+    const currentUser = useSelector((state: RootState) => state.auth.currentUser);
+
 
     const dispatch = useDispatch();
     const isModalOpen = useSelector((state: RootState) => state.menu.isCreatePostModalOpen);

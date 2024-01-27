@@ -1,6 +1,8 @@
 import React from 'react';
-import { useCurrentUser } from '@hooks/useCurrentUser';
-import { FaUser } from 'react-icons/fa'; // Import an icon
+
+import { FaUser } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
+import { RootState } from '@store/store'; // Import an icon
 
 interface FeedTitleProps {
     title?: string;
@@ -8,7 +10,7 @@ interface FeedTitleProps {
 }
 
 const FeedTitle: React.FC<FeedTitleProps> = ({ title, showUser = true }) => {
-    const currentUser = useCurrentUser();
+    const currentUser = useSelector((state: RootState) => state.auth.currentUser);
 
     return (
         <div className="flex items-center justify-start align-middle p-1 m-1">
@@ -19,7 +21,7 @@ const FeedTitle: React.FC<FeedTitleProps> = ({ title, showUser = true }) => {
                             {/*<span className="text-gray-500 mx-2">·</span> */}
                             <br />
                             {/*<FaUser className="inline text-xl text-gray-500 mr-1" /> /!* User icon *!/*/}
-                            <span className="italic text-gray-500 text-xl">@{currentUser.username}</span>
+                            <span className="italic text-gray-500 text-xl">@{currentUser?.username}</span>
                         </>
                     )}
                 </p>

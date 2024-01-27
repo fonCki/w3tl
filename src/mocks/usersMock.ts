@@ -2,7 +2,7 @@ import { User } from '@models/user/user';
 
 const usersMock: User[] = [
     {
-        id: 1,
+        id: "1",
         username: "naturelover",
         verified: true || false,
         avatar: "https://i.pravatar.cc/150?img=1" || "undefined",
@@ -12,7 +12,7 @@ const usersMock: User[] = [
         createdAt: new Date("2020-10-10"),
     },
 {
-        id: 2,
+        id: "2",
         username: "techguy",
         verified: true || false,
         avatar: "https://i.pravatar.cc/150?img=2" || "undefined",
@@ -22,7 +22,7 @@ const usersMock: User[] = [
         createdAt: new Date("2021-11-11"),
     },
 {
-        id: 3,
+        id: "3",
         username: "cityexplorer",
         verified: true || false,
         avatar: "https://i.pravatar.cc/150?img=3" || "undefined",
@@ -32,7 +32,7 @@ const usersMock: User[] = [
         createdAt: new Date("2020-02-02"),
     },
 {
-        id: 4,
+        id: "4",
         username: "historybuff",
         verified: true || false,
         avatar: "https://i.pravatar.cc/150?img=4" || "undefined",
@@ -42,7 +42,7 @@ const usersMock: User[] = [
         createdAt: new Date("2022-08-02"),
     },
 {
-        id: 5,
+        id: "5",
         username: "artenthusiast",
         verified: true || false,
         avatar: "https://i.pravatar.cc/150?img=5" || "undefined",
@@ -52,7 +52,7 @@ const usersMock: User[] = [
         createdAt: new Date("2021-02-02"),
     },
 {
-        id: 6,
+        id: "6",
         username: "fitnessfreak",
         verified: true || false,
         avatar: "https://i.pravatar.cc/150?img=6" || "undefined",
@@ -62,7 +62,7 @@ const usersMock: User[] = [
         createdAt: new Date("2022-02-01"),
     },
 {
-        id: 7,
+        id: "7",
         username: "musiclover",
         verified: true || false,
         avatar: "https://i.pravatar.cc/150?img=7" || "undefined",
@@ -72,7 +72,7 @@ const usersMock: User[] = [
         createdAt: new Date("2022-03-02"),
     },
 {
-        id: 8,
+        id: "8",
         username: "bookworm",
         verified: true || false,
         avatar: "https://i.pravatar.cc/150?img=8" || "undefined",
@@ -82,7 +82,7 @@ const usersMock: User[] = [
         createdAt: new Date("2023-01-02"),
     },
 {
-        id: 9,
+        id: "9",
         username: "adventureseeker",
         verified: true || false,
         avatar: "https://i.pravatar.cc/150?img=9" || "undefined",
@@ -92,7 +92,7 @@ const usersMock: User[] = [
         createdAt: new Date("2022-04-05"),
     },
 {
-        id: 10,
+        id: "10",
         username: "thisisus",
         verified: true || false,
         avatar: "https://i.pravatar.cc/150?img=10" || "undefined",
@@ -102,7 +102,7 @@ const usersMock: User[] = [
         createdAt: new Date("2019-01-06"),
     },
 {
-        id: 11,
+        id: "11",
         username: "alfonsoridao",
         verified: true || false,
         avatar: "https://lh3.googleusercontent.com/a/ACg8ocKhjPCUUYR4SLVcVW5V4yZpSYVYba9MxKEsGP3U5AubmHA=s96-c" || "undefined",
@@ -112,7 +112,7 @@ const usersMock: User[] = [
         createdAt: new Date("2024-01-01"),
     },
 {
-        id: 12,
+        id: "12",
         username: "almita",
         verified: true || false,
         avatar: "" || undefined,
@@ -122,7 +122,7 @@ const usersMock: User[] = [
         createdAt: new Date("2024-01-01"),
     },
         {
-                id: 13,
+                id: "13",
                 username: "travelbug",
                 verified: true || false,
                 avatar: "https://i.pravatar.cc/150?img=13" || "undefined",
@@ -132,7 +132,7 @@ const usersMock: User[] = [
                 createdAt: new Date("2023-05-15"),
         },
         {
-                id: 14,
+                id: "14",
                 username: "foodie",
                 verified: true || false,
                 avatar: "https://i.pravatar.cc/150?img=14" || "undefined",
@@ -142,7 +142,7 @@ const usersMock: User[] = [
                 createdAt: new Date("2021-07-20"),
         },
         {
-                id: 15,
+                id: "15",
                 username: "gamer",
                 verified: true || false,
                 avatar: "https://i.pravatar.cc/150?img=15" || "undefined",
@@ -152,7 +152,7 @@ const usersMock: User[] = [
                 createdAt: new Date("2022-09-18"),
         },
         {
-                id: 16,
+                id: "16",
                 username: "gardener",
                 verified: true || false,
                 avatar: "https://i.pravatar.cc/150?img=16" || "undefined",
@@ -162,7 +162,7 @@ const usersMock: User[] = [
                 createdAt: new Date("2020-03-10"),
         },
         {
-                id: 17,
+                id: "17",
                 username: "petlover",
                 verified: true || false,
                 avatar: "https://i.pravatar.cc/150?img=17" || "undefined",
@@ -172,7 +172,7 @@ const usersMock: User[] = [
                 createdAt: new Date("2021-12-05"),
         },
         {
-                id: 18,
+                id: "18",
                 username: "hikingenthusiast",
                 verified: true || false,
                 avatar: "https://i.pravatar.cc/150?img=18" || "undefined",
@@ -182,7 +182,7 @@ const usersMock: User[] = [
                 createdAt: new Date("2022-06-25"),
         },
         {
-                id: 19,
+                id: "19",
                 username: "coffeelover",
                 verified: true || false,
                 avatar: "https://i.pravatar.cc/150?img=19" || "undefined",
@@ -192,7 +192,7 @@ const usersMock: User[] = [
                 createdAt: new Date("2020-08-12"),
         },
         {
-                id: 20,
+                id: "20",
                 username: "filmgeek",
                 verified: true || false,
                 avatar: "https://i.pravatar.cc/150?img=20" || "undefined",
@@ -202,7 +202,7 @@ const usersMock: User[] = [
                 createdAt: new Date("2021-04-30"),
         },
         {
-                id: 21,
+                id: "21",
                 username: "craftsman",
                 verified: true || false,
                 avatar: "https://i.pravatar.cc/150?img=21" || "undefined",
@@ -212,7 +212,7 @@ const usersMock: User[] = [
                 createdAt: new Date("2022-07-17"),
         },
         {
-                id: 22,
+                id: "22",
                 username: "yogalover",
                 verified: true || false,
                 avatar: "https://i.pravatar.cc/150?img=22" || "undefined",
@@ -222,7 +222,7 @@ const usersMock: User[] = [
                 createdAt: new Date("2023-03-08"),
         },
         {
-                id: 23,
+                id: "23",
                 username: "fashionista",
                 verified: true || false,
                 avatar: "https://i.pravatar.cc/150?img=23" || "undefined",
@@ -232,7 +232,7 @@ const usersMock: User[] = [
                 createdAt: new Date("2021-10-14"),
         },
         {
-                id: 24,
+                id: "24",
                 username: "fitnessguru",
                 verified: true || false,
                 avatar: "https://i.pravatar.cc/150?img=24" || "undefined",

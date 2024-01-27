@@ -5,7 +5,7 @@ export interface UserFull {
     background?: string;
     followersCount: number;
     followingCount: number;
-    id: number;
+    id: string;
     username: string;
     verified: boolean;
     avatar?: string;
@@ -13,4 +13,6 @@ export interface UserFull {
     name?: string;
     lastname?: string;
     createdAt: Date;
+    pub: string;
+
 }

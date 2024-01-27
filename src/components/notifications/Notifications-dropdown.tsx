@@ -9,7 +9,7 @@ const NotificationsDropdown: React.FC = () => {
     const [notifications, setNotifications] = useState<Notification[]>([]);
 
     useEffect(() => {
-        const fetchedNotifications = notificationService.getNotificationsByUserId(10      );
+        const fetchedNotifications = notificationService.getNotificationsByusername(10      );
         setNotifications(fetchedNotifications);
     }, []);
 

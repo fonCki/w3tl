@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Divider, Label } from 'semantic-ui-react';
 import Img from '@components/tools/image/Img';
-import { useCurrentUser } from '@hooks/useCurrentUser';
 import { MAX_TWEET_LENGTH } from '@constants/constants';
+import { useSelector } from 'react-redux';
+import { RootState } from '@store/store';
 
 const TweetInput: React.FC = () => {
     const [postContent, setPostContent] = useState('');
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const currentUser = useCurrentUser();
+    const currentUser = useSelector((state: RootState) => state.auth.currentUser);
+
 
 
 

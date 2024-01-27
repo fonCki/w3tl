@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
-import { useCurrentUser } from '@hooks/useCurrentUser';
 import { useNavigate } from 'react-router-dom';
 import { useNavigationActions } from '@hooks/useNavigationActions';
+import { useSelector } from 'react-redux';
+import { RootState } from '@store/store';
 
 const Profile = () => {
-    const currentUser = useCurrentUser(); // Using the hook
+    const currentUser = useSelector((state: RootState) => state.auth.currentUser);
     const navigate = useNavigate();
     const { userNotFound, navigateToUser } = useNavigationActions();
 

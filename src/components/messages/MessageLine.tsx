@@ -11,8 +11,8 @@ interface MessageLineProps {
 
 export const MessageLine: React.FC<MessageLineProps> = ({ message, onMessageClick }) => {
     // Function to find user details based on user ID
-    const getUserDetails = (userId: number) => {
-        return usersMock.find(user => user.id === userId);
+    const getUserDetails = (username: number) => {
+        return usersMock.find(user => user.id === username);
     };
 
     // Resolve sender details

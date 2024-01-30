@@ -1,5 +1,5 @@
 import { Reply } from '@models/reply';
-import usersMock from '@data/usersMock';
+import usersMock from '@data/usersNewMock';
 import { defaultUser } from '@models/defaults';
 
 const repliesMock: Reply[] = [

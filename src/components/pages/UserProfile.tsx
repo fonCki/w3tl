@@ -16,6 +16,10 @@ const UserProfile = () => {
     const isLoading = useSelector((state: RootState) => state.loading.isLoading);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        console.log('userDetails', userDetails)
+    }, []);
+
     if (isLoading) {
         return <Loader active inline="centered" />;
     }

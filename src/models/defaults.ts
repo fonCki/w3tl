@@ -1,6 +1,6 @@
 
 import { User } from '@models/user/user';
-import { UserFull } from '@models/user/userFull';
+import { User } from '@models/user/user';
 import { Reply } from '@models/reply';
 import { DataItem } from '@models/dataItem';
 import { Message } from '@models/message';
@@ -22,7 +22,7 @@ export const defaultUser: User = {
     createdAt: new Date(),
 };
 
-export const defaultUserDetails: UserFull = {
+export const defaultUserDetails: User = {
     bio: '',
     location: '',
     website: '',

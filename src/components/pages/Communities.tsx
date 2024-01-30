@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { UserFull } from '@models/user/userFull';
+import { User } from '@models/user/user';
 import UserSmallAdCard from '@components/card/UserSmallAdCard';
 import FeedContainer from '@components/feed/FeedContainer';
 import { ServiceFactory } from '@services/serviceFactory';
 
 const Communities = () => {
-    const [trends, setTrends] = useState<UserFull[]>([]);
+    const [trends, setTrends] = useState<User[]>([]);
     const userService = ServiceFactory.getUserService();
 
 

@@ -47,15 +47,17 @@ const Login: React.FC = () => {
         // }
         // )
     }
-    const handleSignUpSuccess = async (success: boolean) => {
-        if (success) {
-            setIsModalOpen(false); // Close the signup modal
-            try {
-                await login(username, password); // Auto-login
-            } catch (error) {
-                console.error('Automatic login failed:', error);
-            }
+
+    const handleSignUpSuccess = async (username: string, password: string) => {
+        console.log('Signup successful, this is un and pw:', username, password);
+        setUsername(username);
+        setPassword(password);
+        try {
+            await login(username, password); // Auto-login
+        } catch (error) {
+            console.error('Automatic login failed:', error);
         }
+
     };
 
 

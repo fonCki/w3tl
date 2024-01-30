@@ -7,7 +7,6 @@ import { DataItem } from '@models/dataItem'; // Import the DataItem type
 import { User } from '@models/user/user'; // Assuming this is your User model
 import { Tweet } from '@models/tweet';
 import { ServiceFactory } from '@services/serviceFactory';
-import { UserFull } from '@models/user/userFull'; // Assuming this is your Tweet model
 
 export const useSearch = () => {
     const LIMIT = 5;
@@ -26,7 +25,7 @@ export const useSearch = () => {
                 const tweets = await tweetService.searchTweetsWithLimit(searchQuery,LIMIT);
 
                 // Transform users and tweets to DataItem format with explicit types
-                const userResults: DataItem[] = users.map((user: UserFull) => ({
+                const userResults: DataItem[] = users.map((user: User) => ({
                     id: user.id,
                     title: user.username,
                     category: 'user',

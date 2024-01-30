@@ -1,10 +1,10 @@
 import React from 'react';
 import { Image } from 'semantic-ui-react';
-import { UserFull } from '@models/user/userFull'; // Adjust the import path as necessary
+import { User } from '@models/user/user'; // Adjust the import path as necessary
 import { getDefaultAvatarImage } from '@constants/constants';
 
 interface ImgProps {
-    userDetails: UserFull | null;
+    userDetails: User | null;
     size?: 'mini' | 'tiny' | 'small' | 'medium' | 'large' | 'big' | 'huge' | 'massive' | number;
 }
 

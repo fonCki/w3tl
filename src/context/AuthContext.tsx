@@ -24,7 +24,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     useEffect(() => {
         // Check if the user is already authenticated on app load
         const checkAuth = async () => {
-            if (authService.isAuthenticated()) {
+            if (await authService.isAuthenticated()) {
                 console.log('User already authenticated');
                 const userData = await authService.getCurrentUser();
                 console.log('User data:', userData);
@@ -43,7 +43,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             console.log('result', result)
             if (result.success) {
                 console.log('Login success:', result.user);
-                dispatch(setCurrentUser(result.user!)); // Assuming result.user is of type UserFull
+                dispatch(setCurrentUser(result.user!)); // Assuming result.user is of type User
                 dispatch(setAuthentication(true));
             } else {
                 console.error('Login error:', result.error);

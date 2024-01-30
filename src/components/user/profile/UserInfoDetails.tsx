@@ -1,5 +1,5 @@
 import React from 'react';
-import { UserFull as UserDetailsType } from '@models/user/userFull';
+import { User as UserDetailsType } from '@models/user/user';
 import { Icon } from 'semantic-ui-react';
 import { formatDistanceToNow } from 'date-fns';
 import SpecialContent from '@components/feed/SpecialContent';

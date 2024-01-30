@@ -1,9 +1,9 @@
 // slices/authSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UserFull } from '@models/user/userFull'; // Adjust the import path as necessary
+import { User } from '@models/user/user'; // Adjust the import path as necessary
 
 interface AuthState {
-    currentUser: UserFull | null;
+    currentUser: User | null;
     isAuthenticated: boolean;
 }
 
@@ -16,7 +16,7 @@ export const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        setCurrentUser: (state, action: PayloadAction<UserFull | null>) => {
+        setCurrentUser: (state, action: PayloadAction<User | null>) => {
             state.currentUser = action.payload;
             state.isAuthenticated = !!action.payload;
         },

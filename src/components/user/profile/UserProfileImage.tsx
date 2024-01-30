@@ -1,11 +1,11 @@
 import React from 'react';
 import { Image } from 'semantic-ui-react';
-import { UserFull } from '@models/user/userFull';
+import { User } from '@models/user/user';
 import { getDefaultAvatarImage } from '@constants/constants';
 import Img from '@components/tools/image/Img';
 
 interface UserProfileImageProps {
-    userDetails: UserFull;
+    userDetails: User;
     isEditable: boolean;
 }
 

@@ -1,8 +1,9 @@
 // src/services/gun/gunService.ts
 import Gun from 'gun';
 import 'gun/sea';
-import { UserFull } from '@models/user/userFull';
+import { User } from '@models/user/user';
 import { IAuthService } from '@interfaces/IAuthService';
+import * as console from 'console';
 
 const gun = Gun();
 
@@ -26,7 +27,7 @@ const checkUsername = async (username: string): Promise<boolean> => {
 };
 
 class GunAuthService implements IAuthService {
-    async createUser(username: string, name: string, lastname: string, email: string, password: string): Promise<{ success: boolean; newUser?: UserFull; error?: any }> {
+    async createUser(username: string, name: string, lastname: string, email: string, password: string): Promise<{ success: boolean; newUser?: User; error?: any }> {
         return new Promise(async (resolve, reject) => {
             const usernameExists = await checkUsername(username);
             if (usernameExists) {
@@ -39,7 +40,8 @@ class GunAuthService implements IAuthService {
                     reject({ success: false, error: ack.err });
                 } else {
                     console.log('User created:', ack);
-                    const fullUser: UserFull = {
+                    const fullUser: User = {
+                        createdAt: new Date().toISOString(),
                         bio: 'Culinary enthusiast and food blogger, Tech enthusiast and VR innovator',
                         location: 'Tandil, Argentina',
                         website: 'https://alfonso.ridao.ar',
@@ -53,7 +55,7 @@ class GunAuthService implements IAuthService {
                         email,
                         name,
                         lastname,
-                        pub: ack.pub,
+                        pub: ack.pub
                     };
 
                     gun.get(`users/${fullUser.id}`).put(fullUser, (putAck: any) => {
@@ -70,14 +72,14 @@ class GunAuthService implements IAuthService {
         });
     }
 
-    async getCurrentUser(): Promise<UserFull | undefined> {
+    async getCurrentUser(): Promise<User | undefined> {
         console.log('Getting current user...');
         return new Promise((resolve) => {
             const user = currentUser();
             if (user.is) {
                 gun.get(`users/${aliasFinalCut(user.is.alias)}`).once((userData) => {
                     if (userData) {
-                        const fullUserData: UserFull = { id: user.is.pub, ...userData };
+                        const fullUserData: User = { id: user.is.pub, ...userData };
                         resolve(fullUserData);
                     } else {
                         resolve(undefined);
@@ -89,7 +91,7 @@ class GunAuthService implements IAuthService {
         });
     }
 
-    async authenticate(username: string, password: string): Promise<{ success: boolean; user?: UserFull; error?: any }> {
+    async authenticate(username: string, password: string): Promise<{ success: boolean; user?: User; error?: any }> {
         return new Promise((resolve, reject) => {
             gun.user().auth(username, password, (ack) => {
                 if ('err' in ack) {
@@ -109,14 +111,15 @@ class GunAuthService implements IAuthService {
         });
     }
 
-    isAuthenticated(): boolean {
-        const user = currentUser();
-        return !!user.is;
-    }
 
     logout(): void {
         console.log('Logging out...');
         gun.user().leave();
+    }
+
+    isAuthenticated(): Promise<boolean> {
+            const user = currentUser();
+            return Promise.resolve(!!user.is);
     }
 }
 

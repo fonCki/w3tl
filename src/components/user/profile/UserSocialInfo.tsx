@@ -1,9 +1,9 @@
 import React from 'react';
-import { UserFull } from '@models/user/userFull';
+import { User } from '@models/user/user';
 import formatNumber from '@utils/formatNumber';
 
 interface UserSocialInfoProps {
-    userDetails: UserFull;
+    userDetails: User;
 }
 
 const UserSocialInfo: React.FC<UserSocialInfoProps> = ({ userDetails }) => {

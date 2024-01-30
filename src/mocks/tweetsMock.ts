@@ -1,6 +1,6 @@
 // src/mocks/tweetsMock.ts
 import { Tweet } from '@models/tweet';
-import usersMock from '@data/usersMock';
+import usersMock from '@data/usersNewMock';
 import { defaultUser } from '@models/defaults';
 
 export const tweetsMock: Tweet[] = [

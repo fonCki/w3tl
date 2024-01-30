@@ -5,7 +5,7 @@ import { ServiceFactory } from '@services/serviceFactory';
 interface SignUpModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSignUpSuccess?: (success: boolean) => void; // Callback for handling signup success
+    onSignUpSuccess: (username: string, password: string) => void; // New prop
 }
 
 const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onSignUpSuccess }) => {
@@ -28,10 +28,10 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onSignUpSucc
         const result = await authService.createUser(username, name, lastname, email, password);
 
         if (result.success) {
+            console.log('Signup successful:', result);
+            onSignUpSuccess(email, password); // Call the function with username and password
+            console.log("username and password", username, password);
             onClose(); // Close the modal on successful signup
-            if (onSignUpSuccess) {
-                onSignUpSuccess(true); // Notify parent component about the success
-            }
         } else {
             // Display the error message
             setErrorMessage(result.error || 'Signup failed');

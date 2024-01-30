@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import UserCardComponent from '@components/card/UserSmallAdCard';
 import ReusableCard from '@components/board/ReusableCard';
-import { UserFull } from '@models/user/userFull';
+import { User } from '@models/user/user';
 import { ServiceFactory } from '@services/serviceFactory';
 
 const WhoToFollow: React.FC = () => {
     const [activeUserIndex, setActiveUserIndex] = useState(0);
-    const [users, setUsers] = useState<UserFull[]>([]);
+    const [users, setUsers] = useState<User[]>([]);
     const userService = ServiceFactory.getUserService();
 
 

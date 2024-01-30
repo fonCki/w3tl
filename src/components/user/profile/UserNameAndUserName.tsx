@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from 'semantic-ui-react';
-import { UserFull as UserDetailsType } from '@models/user/userFull';
+import { User as UserDetailsType } from '@models/user/user';
 
 
 interface UserDetailsProps {

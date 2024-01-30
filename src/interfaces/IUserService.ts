@@ -1,15 +1,15 @@
-import { UserFull } from '@models/user/userFull';
+import { User } from '@models/user/user';
 
 export interface IUserService {
-    getUserById(username: string): Promise<UserFull | undefined>;
-    getUserByUsername(username: string): Promise<UserFull | undefined>;
-    getAllUsers(): Promise<UserFull[]>;
-    searchUsers(query: string): Promise<UserFull[]>;
-    searchUsersWithLimit(query: string, limit: number): Promise<UserFull[]>;
-    getFollowers(username: string): Promise<UserFull[]>;
-    getFollowing(username: string): Promise<UserFull[]>;
-    getUserProfile(username: string): Promise<UserFull | undefined>;
-    getUserDetails(username: string): Promise<UserFull | undefined>;
-    getTreandingUsers(top: number): Promise<UserFull[]>;
-    getTopTenTreandingUsers(): Promise<UserFull[]>;
+    getUserById(username: string): Promise<User | undefined>;
+    getUserByUsername(username: string): Promise<User | undefined>;
+    getAllUsers(): Promise<User[]>;
+    searchUsers(query: string): Promise<User[]>;
+    searchUsersWithLimit(query: string, limit: number): Promise<User[]>;
+    getFollowers(username: string): Promise<User[]>;
+    getFollowing(username: string): Promise<User[]>;
+    getUserProfile(username: string): Promise<User | undefined>;
+    getUserDetails(username: string): Promise<User | undefined>;
+    getTreandingUsers(top: number): Promise<User[]>;
+    getTopTenTreandingUsers(): Promise<User[]>;
 }

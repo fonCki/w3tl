@@ -10,7 +10,7 @@ import MediaTab from '@components/user/feed/tabs/MediaTab';
 
 
 interface UserProfileSelectionProps {
-    username: number;
+    userId: string;
 }
 const UserProfileSelection: React.FC<UserProfileSelectionProps> = ({ userId }) => {
 const tabList = ['Posts', 'Replies', 'Media', 'Likes'];

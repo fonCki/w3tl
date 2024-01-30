@@ -1,10 +1,9 @@
 // src/interfaces/IAuthService.ts
-import { UserFull } from '@models/user/userFull';
-
+import { User } from '@models/user/user';
 export interface IAuthService {
-    createUser(username: string, name: string, lastname: string, email: string, password: string): Promise<{ success: boolean; newUser?: UserFull; error?: any }>;
-    getCurrentUser(): Promise<UserFull | undefined>;
-    authenticate(username: string, password: string): Promise<{ success: boolean; user?: UserFull; error?: any }>;
-    isAuthenticated(): boolean;
+    createUser(username: string, name: string, lastname: string, email: string, password: string): Promise<{ success: boolean; newUser?: User; error?: any }>;
+    getCurrentUser(): Promise<User | undefined>;
+    authenticate(username: string, password: string): Promise<{ success: boolean; user?: User; error?: any }>;
+    isAuthenticated(): Promise<boolean>;
     logout(): void;
 }

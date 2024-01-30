@@ -3,10 +3,10 @@
 // import { userService } from '@services/userService';
 // import { setCurrentUser } from '@store/slices/authSlice';
 // import { RootState } from '@store/store';
-// import { UserFull } from '@models/user/userFull';
+// import { User } from '@models/user/userFull';
 // import { defaultUserDetails } from '@models/defaults';
 //
-// export const useCurrentUser = (): UserFull => {
+// export const useCurrentUser = (): User => {
 //     const dispatch = useDispatch();
 //     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
 //

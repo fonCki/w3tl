@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Card, Image, Icon, CardContent, CardDescription } from 'semantic-ui-react';
-import { UserFull } from '@models/user/userFull';
 import { formatDistanceToNow } from 'date-fns';
 import { DEFAULT_BACKGROUND_IMAGE, getDefaultAvatarImage } from '@constants/constants'; // Adjust the import path as necessary
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +9,7 @@ import { User } from '@models/user/user';
 
 
 interface UserSmallAdCardProps {
-    user: User |UserFull;
+    user: User |User;
     showLocation?: boolean;
     showWebsite?: boolean;
     showFollowers?: boolean;
@@ -26,7 +25,7 @@ const UserSmallAdCard: React.FC<UserSmallAdCardProps> = ({
                                                          }) => {
     const navigate = useNavigate();
 
-    const isUserFull = (user: User | UserFull): user is UserFull => {
+    const isUserFull = (user: User | User): user is User => {
         return 'followersCount' in user;
     };
     const handleCardClick = () => {

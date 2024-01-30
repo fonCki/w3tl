@@ -11,7 +11,7 @@ interface ExtendedTweet extends OriginalTweet {
 }
 
 interface MediaTabProps {
-    username: number;
+    username: string;
 }
 
 const MediaTab: React.FC<MediaTabProps> = ({ username }) => {

@@ -20,10 +20,8 @@ function App() {
             <LoadingProvider>
             {/* Wrap your application layout with AuthProvider */}
             <AuthProvider>
-                <Layout>
                     <ScrollToTop />
                     <AppRoutes />
-                </Layout>
             </AuthProvider>
             </LoadingProvider>
         </Provider>

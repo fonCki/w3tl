@@ -5,6 +5,17 @@ import { IUserService } from '@interfaces/IUserService';
 import { User } from '@models/user/user';
 
 export class firebaseUserService implements IUserService {
+    userExists(username: string): Promise<boolean> {
+        const usersRef = collection(db, 'users');
+        const q = firebaseQuery(usersRef, where('username', '==', username));
+        return new Promise((resolve, reject) => {
+            getDocs(q).then(querySnapshot => {
+                resolve(!querySnapshot.empty);
+            }).catch(err => {
+                reject(err);
+            });
+        });
+    }
     async getUserById(userId: string): Promise<User | undefined> {
         const userDocRef = doc(db, 'users', userId);
         const userDoc = await getDoc(userDocRef);

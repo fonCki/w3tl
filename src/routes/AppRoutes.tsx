@@ -7,7 +7,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import ProtectedRoute from './ProtectedRoute';
 import { RootState } from '@store/store';
 import Login from '@components/pages/Login';
-import NotFound from '@components/404'; // Assuming you have this file in the same directory
+import NotFound from '@components/404';
+import Layout from '../Layout';
+import WelcomePage from '@components/pages/WelcomePage'; // Assuming you have this file in the same directory
 
 const AppRoutes = () => {
     const location = useLocation();
@@ -24,12 +26,15 @@ const AppRoutes = () => {
     return (
         <Routes>
             <Route path="/login" element={
-                isAuthenticated ? <Navigate to="/" replace /> : <Login />
+                isAuthenticated ? <Navigate to="/" replace /> : <WelcomePage />
+            } />
+            <Route path="/welcome" element={
+                isAuthenticated ? <Navigate to="/" replace /> : <WelcomePage />
             } />
             {routes.map((route, index) => (
                 <Route key={index} path={route.path} element={
                     route.protected ?
-                        <ProtectedRoute><route.component /></ProtectedRoute> :
+                        <Layout><ProtectedRoute><route.component /></ProtectedRoute></Layout> :
                         <route.component />
                 } />
             ))}

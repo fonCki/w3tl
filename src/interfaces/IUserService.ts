@@ -2,6 +2,7 @@ import { User } from '@models/user/user';
 
 export interface IUserService {
     getUserById(username: string): Promise<User | undefined>;
+    userExists(username: string): Promise<boolean>;
     getUserByUsername(username: string): Promise<User | undefined>;
     getAllUsers(): Promise<User[]>;
     searchUsers(query: string): Promise<User[]>;

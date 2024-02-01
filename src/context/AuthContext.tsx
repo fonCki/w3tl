@@ -35,17 +35,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, [dispatch, setLoading]);
 
     const login = async (username: string, password: string) => {
-        setLoading(true); // Start global loading
+        dispatch(setLoading(true)); // Start global loading
         try {
             const result = await authService.authenticate(username, password);
             if (result.success) {
                 dispatch(setCurrentUser(result.user!));
                 dispatch(setAuthentication(true));
             } else {
-                console.error('Login error:', result.error);
+                throw new Error(result.error || 'Authentication failed');
             }
         } catch (error) {
-            console.error('Error in login:', error);
+            throw error; // Re-throw the error to be handled in the component
         } finally {
             dispatch(setLoading(false));
         }

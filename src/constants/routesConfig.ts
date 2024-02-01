@@ -22,9 +22,12 @@ import Profile from '@components/pages/Profile';
 import Search from '@components/pages/Search';
 import { TbFaceIdError } from 'react-icons/tb';
 import Login from '@components/pages/Login';
+import WelcomePage from '@components/pages/WelcomePage';
 
 export const HOME_ROUTE = '/';
 export const LOGIN_ROUTE = '/login';
+
+export const WELCOME = '/welcome';
 export const HOME_MENU_ROUTE = '/home';
 export const EXPLORE_MENU_ROUTE = '/explore';
 export const LISTS_MENU_ROUTE = '/lists';
@@ -49,6 +52,7 @@ export interface RouteItem {
 export const routes: RouteItem[] = [
     { path: HOME_ROUTE, component: Home, label: 'home', icon: FaHome, isMenuBar: false, protected: true },
     { path: LOGIN_ROUTE, component: Login, label: 'Login', icon: FaHome, isMenuBar: false, protected: false },
+    { path: WELCOME, component: WelcomePage, label: 'Welcome', icon: FaHome, isMenuBar: false, protected: false },
     { path: HOME_MENU_ROUTE, component: Home, label: 'Home', icon: FaHome, isMenuBar: true, protected: true },
     { path: EXPLORE_MENU_ROUTE, component: Explore, label: 'Explore', icon: FaCompass, isMenuBar: true, protected: true },
     { path: LISTS_MENU_ROUTE, component: Lists, label: 'Lists', icon: FaList, isMenuBar: true, protected: true },

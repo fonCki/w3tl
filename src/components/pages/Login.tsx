@@ -24,7 +24,7 @@ const Login: React.FC = () => {
         }
     }, [isAuthenticated, navigate]);
 
-    const handleSubmit = async (event: React.FormEvent) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         dispatch(setLoading(true));
         try {

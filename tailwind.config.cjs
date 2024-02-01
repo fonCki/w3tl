@@ -23,6 +23,10 @@ module.exports = {
         'button-red': '#ff4757',
         'button-green': '#28a745',
         'button-yellow': '#ffc328',
+        google: '#DB4437', // Google red
+        googleHover: '#C1351D', // A darker red for hover state
+        github: '#333', // GitHub's color is usually a shade of black
+        githubHover: '#211F1F', // A darker shade for hover state
       },
     },
   },

@@ -1,9 +1,8 @@
 // context/AuthContext.tsx
-import React, { createContext, useContext, ReactNode, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentUser, setAuthentication } from '@store/slices/authSlice'; // Adjust the import path as necessary
-import { RootState } from '@store/store';
-import { ServiceFactory } from '@services/serviceFactory'; // Adjust the import path as necessary
+import React, { createContext, useContext, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setCurrentUser, setAuthentication, setLoading } from '@store/slices/authSlice';
+import { ServiceFactory } from '@services/serviceFactory';
 
 interface AuthContextType {
     login: (username: string, password: string) => Promise<void>;
@@ -15,49 +14,49 @@ const AuthContext = createContext<AuthContextType>({
     logout: () => {},
 });
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const dispatch = useDispatch();
-    const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
     const authService = ServiceFactory.getAuthService();
 
-
     useEffect(() => {
-        // Check if the user is already authenticated on app load
         const checkAuth = async () => {
+            dispatch(setLoading(true));
             if (await authService.isAuthenticated()) {
-                console.log('User already authenticated');
                 const userData = await authService.getCurrentUser();
-                console.log('User data:', userData);
                 if (userData) {
                     dispatch(setCurrentUser(userData));
                     dispatch(setAuthentication(true));
                 }
             }
+            dispatch(setLoading(false));
         };
 
         checkAuth();
-    }, [dispatch]);
+    }, [dispatch, setLoading]);
+
     const login = async (username: string, password: string) => {
+        setLoading(true); // Start global loading
         try {
             const result = await authService.authenticate(username, password);
-            console.log('result', result)
             if (result.success) {
-                console.log('Login success:', result.user);
-                dispatch(setCurrentUser(result.user!)); // Assuming result.user is of type User
+                dispatch(setCurrentUser(result.user!));
                 dispatch(setAuthentication(true));
             } else {
                 console.error('Login error:', result.error);
             }
         } catch (error) {
             console.error('Error in login:', error);
+        } finally {
+            dispatch(setLoading(false));
         }
     };
 
-
     const logout = () => {
+        setLoading(true); // Start global loading
         authService.logout();
         dispatch(setCurrentUser(null));
         dispatch(setAuthentication(false));
+        dispatch(setLoading(false));
     };
 
     return (

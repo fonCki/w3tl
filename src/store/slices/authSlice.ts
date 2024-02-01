@@ -5,11 +5,14 @@ import { User } from '@models/user/user'; // Adjust the import path as necessary
 interface AuthState {
     currentUser: User | null;
     isAuthenticated: boolean;
+    isLoading: boolean;
 }
 
 const initialState: AuthState = {
     currentUser: null,
     isAuthenticated: false,
+    isLoading: true, // Add a loading state
+
 };
 
 export const authSlice = createSlice({
@@ -23,8 +26,11 @@ export const authSlice = createSlice({
         setAuthentication: (state, action: PayloadAction<boolean>) => {
             state.isAuthenticated = action.payload;
         },
+        setLoading: (state, action: PayloadAction<boolean>) => {
+            state.isLoading = action.payload;
+        },
     },
 });
 
-export const { setCurrentUser, setAuthentication } = authSlice.actions;
+export const { setCurrentUser, setAuthentication, setLoading } = authSlice.actions;
 export default authSlice.reducer;

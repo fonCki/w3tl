@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { menuItems } from '@constants/routesConfig';
+import { HOME_MENU_ROUTE, HOME_ROUTE, menuItems } from '@constants/routesConfig';
 
 interface MenuState {
   isCompactMode: boolean;
@@ -11,7 +11,8 @@ interface MenuState {
 const initialState: MenuState = {
   isCompactMode: false, // false for full mode, true for compact mode
   isVisible: true,      // true for visible, false for invisible
-  activeTab: menuItems[0].label,
+  // activeTab: menuItems[0].label,
+  activeTab: "Home",
   isCreatePostModalOpen: false,
 
 };

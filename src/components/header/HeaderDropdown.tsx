@@ -5,10 +5,14 @@ import Img from '@components/tools/image/Img';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '@store/store';
+import { useAuth } from '@context/AuthContext';
+
 
 
 const HeaderDropdown = () => {
     const navigate = useNavigate();
+    const {logout } = useAuth();
+
 
 
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
@@ -91,6 +95,7 @@ const HeaderDropdown = () => {
                         text="Sign Out"
                         icon="sign out"
                         className="text-sm text-gray-700 hover:bg-gray-100 px-4 py-2 cursor-pointer"
+                        onClick={logout}
                     />
                 </div>
             </Dropdown.Menu>

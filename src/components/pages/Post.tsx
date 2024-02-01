@@ -19,7 +19,7 @@ const Post: React.FC = () => {
         window.scrollTo(0, 0);
         // Validate and parse id to an integer
         if (!id || !/^\d+$/.test(id)) {
-            //TODO navigate to 404 page
+            //TODO navigate to 404.tsx page
             console.error("Invalid or missing id");
             return;
         }

@@ -10,11 +10,14 @@ import 'primereact/resources/primereact.min.css';
 import ScrollToTop from '@components/tools/ScrollTop';
 import { ReduxStateDisplay } from '@components/tools/ReduxStateDisplay';
 import { AuthProvider } from './context/AuthContext';
+import { LoadingProvider } from './context/LoadingProvider'; // Import the loading provider
 
 
 function App() {
     return (
         <Provider store={store}>
+            {/*<ReduxStateDisplay />*/}
+            <LoadingProvider>
             {/* Wrap your application layout with AuthProvider */}
             <AuthProvider>
                 <Layout>
@@ -22,6 +25,7 @@ function App() {
                     <AppRoutes />
                 </Layout>
             </AuthProvider>
+            </LoadingProvider>
         </Provider>
     );
 }

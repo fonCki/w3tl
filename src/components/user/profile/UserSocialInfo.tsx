@@ -3,22 +3,22 @@ import { User } from '@models/user/user';
 import formatNumber from '@utils/formatNumber';
 
 interface UserSocialInfoProps {
-    userDetails: User;
+    user: User;
 }
 
-const UserSocialInfo: React.FC<UserSocialInfoProps> = ({ userDetails }) => {
+const UserSocialInfo: React.FC<UserSocialInfoProps> = ({ user }) => {
     return (
         <div>
             <div className="flex items-center space-x-6">
-                {userDetails.followersCount !== null && userDetails.followersCount !== undefined && (
+                {user.followersCount !== null && user.followersCount !== undefined && (
                     <div className="flex items-center">
-                        <p className="text-gray-600 font-bold text-lg">{formatNumber(userDetails.followersCount)}&nbsp;
+                        <p className="text-gray-600 font-bold text-lg">{formatNumber(user.followersCount)}&nbsp;
                             <span className="text-gray-400 text-sm font-thin">Followers</span></p>
                     </div>
                 )}
-                {userDetails.followingCount !== null && userDetails.followingCount !== undefined && (
+                {user.followingCount !== null && user.followingCount !== undefined && (
                     <div className="flex items-center">
-                        <p className="text-gray-600 font-bold text-lg">{formatNumber(userDetails.followingCount)}&nbsp;
+                        <p className="text-gray-600 font-bold text-lg">{formatNumber(user.followingCount)}&nbsp;
                             <span className="text-gray-400 text-sm font-thin ">Following</span></p>
                     </div>
                 )}

@@ -12,7 +12,7 @@ const WhoToFollow: React.FC = () => {
 
     useEffect(() => {
         const fetchUsers = async () => {
-            const fetchedUsers = await userService.getTopTenTreandingUsers();
+            const fetchedUsers = await userService.getTreandingUsers(10)
             setUsers(fetchedUsers);
         };
         fetchUsers();

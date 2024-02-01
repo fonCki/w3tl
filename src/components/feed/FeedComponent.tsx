@@ -31,6 +31,7 @@ const FeedComponent = () => {
             ))}
         </Feed>
     );
+
 };
 
 export default FeedComponent;

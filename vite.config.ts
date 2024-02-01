@@ -54,6 +54,10 @@ export default defineConfig({
             find: '@interfaces',
             replacement: resolve(__dirname, './src/interfaces'),
         },
-    ],
+        {
+            find: '@context',
+            replacement: resolve(__dirname, './src/context'),
+        },
+        ],
     },
 });

@@ -6,8 +6,6 @@ interface SpecialContentProps {
     textSize?: number; // text size as an integer
     limitThreeLines?: boolean; // new prop to control line clamping
     highlightQuery?: string; // New prop for the search query
-
-
 }
 
 const SpecialContent: React.FC<SpecialContentProps> = ({
@@ -17,6 +15,8 @@ const SpecialContent: React.FC<SpecialContentProps> = ({
                                                            limitThreeLines = false,
                                                            highlightQuery = ''
                                                        }) => {
+
+    const MAX_LINES_CONTENT = 2;
     const parseContent = (text: string) => {
         if (!text) return null;
 
@@ -55,7 +55,7 @@ const SpecialContent: React.FC<SpecialContentProps> = ({
     if (limitThreeLines) {
         baseStyle.display = '-webkit-box';
         baseStyle.WebkitBoxOrient = 'vertical';
-        baseStyle.WebkitLineClamp = 3;
+        baseStyle.WebkitLineClamp = MAX_LINES_CONTENT;
         baseStyle.overflow = 'hidden';
         baseStyle.textOverflow = 'ellipsis';
     }

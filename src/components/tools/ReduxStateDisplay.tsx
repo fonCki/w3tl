@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@store/store'; // Adjust the import path as necessary
 
 export const ReduxStateDisplay: React.FC = () => {
-    const userState = useSelector((state: RootState) => state.user);
+    const userState = useSelector((state: RootState) => state.auth);
     const menuState = useSelector((state: RootState) => state.menu);
     const loadingState = useSelector((state: RootState) => state.loading);
     const searchState = useSelector((state: RootState) => state.search);
@@ -50,9 +50,9 @@ export const ReduxStateDisplay: React.FC = () => {
         >
             <h3>Redux State Display</h3>
             <pre>User State: {JSON.stringify(userState, null, 2)}</pre>
-            <pre>Menu Statine: {JSON.stringify(menuState, null, 2)}</pre>
-            <pre>Loading State: {JSON.stringify(loadingState, null, 2)}</pre>
-            <pre>Search State: {JSON.stringify(searchState, null, 2)}</pre>
+            {/*<pre>Menu Statine: {JSON.stringify(menuState, null, 2)}</pre>*/}
+            {/*<pre>Loading State: {JSON.stringify(loadingState, null, 2)}</pre>*/}
+            {/*<pre>Search State: {JSON.stringify(searchState, null, 2)}</pre>*/}
             {/* Display other states here if needed */}
         </div>
     );

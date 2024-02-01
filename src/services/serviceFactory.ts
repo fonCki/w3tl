@@ -3,13 +3,11 @@ import { IUserService } from '@interfaces/IUserService';
 import { ITweetService } from '@interfaces/ITweetService';
 import { IAuthService } from '@interfaces/IAuthService';
 import { IMyOwnService } from '@interfaces/IMyOwnService';
-
-import { gunService } from '@services/gun/gunService';
 import { firebaseAuthService } from '@services/firebase/firebaseAuthService';
-import { mockUserService } from '@services/mock/mockUserService';
-import { mockTweetService } from '@services/mock/mockTweetService';
 import { mockMyOwnService } from '@services/mock/mockMyOwnService';
 import { firebaseUserService } from '@services/firebase/firebaseUserService';
+import { firebaseTweetService } from '@services/firebase/firebaseTweetService';
+import { myOwnFirebaseService } from '@services/firebase/myOwnFirebaseService';
 
 
 export class ServiceFactory {
@@ -28,13 +26,15 @@ export class ServiceFactory {
 
     static getTweetService(): ITweetService {
         // This could be based on an environment variable or config
-        return mockTweetService; // Return the instance directly
+        // return mockTweetService; // Return the instance directly
         // return new FirebaseUserService(); when ready
+        return new firebaseTweetService();
     }
 
     static getMyOwnService(): IMyOwnService {
         // This could be based on an environment variable or config
-        return mockMyOwnService; // Return the instance directly
+        // return mockMyOwnService; // Return the instance directly
         // return new FirebaseUserService(); when ready
+        return new myOwnFirebaseService();
     }
 }

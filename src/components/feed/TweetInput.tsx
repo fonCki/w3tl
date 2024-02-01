@@ -4,24 +4,48 @@ import Img from '@components/tools/image/Img';
 import { MAX_TWEET_LENGTH } from '@constants/constants';
 import { useSelector } from 'react-redux';
 import { RootState } from '@store/store';
+import FirebaseTweetActionService from '@services/firebase/firebaseTweetActionService';
 
-const TweetInput: React.FC = () => {
+
+interface TweetInputProps {
+    onTweetPost: (success: boolean, message?: string) => void;
+}
+const TweetInput: React.FC<TweetInputProps> = ({ onTweetPost }) => {
     const [postContent, setPostContent] = useState('');
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
-
-
-
+    const tweetActionService = new FirebaseTweetActionService();
 
     const handlePostChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setPostContent(event.target.value);
     };
 
-    const handlePostSubmit = () => {
-        console.log('Post content:', postContent);
-        // Here you would typically handle the post submission to your backend or state management
+    const handlePostSubmit = async () => {
+        if (!currentUser) {
+            console.error('No user logged in');
+            return;
+        }
+        try {
+            const result = await tweetActionService.postTweet(postContent, {
+                // Add any additional data here, like images or videos
+            });
+
+            if (result.success) {
+                console.log('Tweet posted successfully:', result.tweetId);
+                onTweetPost(true, 'Tweet posted successfully');
+            } else {
+                console.error('Error posting tweet:', result.error);
+                onTweetPost(false, result.error);
+            }
+        } catch (error) {
+            console.error('Error posting tweet:', error);
+            //TODO
+            onTweetPost(false, "error");
+        }
+
         setPostContent(''); // Clear the input after submit
     };
+
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {

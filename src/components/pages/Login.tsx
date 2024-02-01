@@ -1,11 +1,12 @@
-// src/components/Login.tsx
 import React, { useEffect, useState } from 'react';
 import { Button, Form, Input } from 'semantic-ui-react';
 import SignUpModal from '@components/SignUpModal';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
-import { useSelector } from 'react-redux';
+import { setLoading } from '@store/slices/authSlice';
+
 
 const Login: React.FC = () => {
     const [username, setUsername] = useState('');
@@ -13,24 +14,26 @@ const Login: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { login, logout } = useAuth();
     const navigate = useNavigate();
-
-    // Access isAuthenticated and user from Redux state
     const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-    const user = useSelector((state: RootState) => state.auth.currentUser);
+    const dispatch = useDispatch();
+
 
     useEffect(() => {
         if (isAuthenticated) {
-            console.log('User already logged in:', user); // Print user details
-            // navigate('/home'); // Adjust the route as needed
+            // navigate('/home'); // Redirect to home page or desired route
         }
-    }, [isAuthenticated, user, navigate]);
+    }, [isAuthenticated, navigate]);
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
+        dispatch(setLoading(true));
         try {
             await login(username, password);
+            navigate('/home'); // Redirect after successful login
         } catch (error) {
             console.error('Login failed:', error);
+        } finally {
+            dispatch(setLoading(false));
         }
     };
 
@@ -38,26 +41,18 @@ const Login: React.FC = () => {
         setIsModalOpen(true);
     };
 
-
-    async function handlePrintUsers() {
-        // console.log('print users')
-        // const [users] = await gunService.getAllUsers()
-        // forEach(users, (user) => {
-        //     console.log(user);
-        // }
-        // )
-    }
-
     const handleSignUpSuccess = async (username: string, password: string) => {
-        console.log('Signup successful, this is un and pw:', username, password);
         setUsername(username);
         setPassword(password);
+        dispatch(setLoading(true));
         try {
             await login(username, password); // Auto-login
+            navigate('/home'); // Redirect after successful login
         } catch (error) {
             console.error('Automatic login failed:', error);
+        } finally {
+            dispatch(setLoading(false));
         }
-
     };
 
 
@@ -90,7 +85,7 @@ const Login: React.FC = () => {
                 onSignUpSuccess={handleSignUpSuccess}
             />
             <Button onClick={logout}>Logout</Button>
-            <Button onClick={handlePrintUsers}>Print users</Button>
+
         </div>
     );
 };

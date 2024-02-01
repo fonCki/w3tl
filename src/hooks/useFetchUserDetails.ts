@@ -1,4 +1,3 @@
-// useFetchUserDetails.ts
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User } from '@models/user/user';
@@ -10,7 +9,6 @@ const useFetchUserDetails = (username: string | undefined) => {
     const navigate = useNavigate();
     const { userNotFound } = useNavigationActions();
     const userService = ServiceFactory.getUserService();
-
 
     useEffect(() => {
         if (!username) {
@@ -25,14 +23,7 @@ const useFetchUserDetails = (username: string | undefined) => {
                     userNotFound();
                     return;
                 }
-
-                const details = await userService.getUserDetails(user.id);
-                if (!details) {
-                    userNotFound();
-                    return;
-                }
-
-                setUserDetails(details);
+                setUserDetails(user);
             } catch (error) {
                 console.error(error);
                 userNotFound();
@@ -40,7 +31,7 @@ const useFetchUserDetails = (username: string | undefined) => {
         }
 
         fetchDetails();
-    }, [username, navigate]);
+    }, [username, navigate, userNotFound, userService]);
 
     return userDetails;
 };

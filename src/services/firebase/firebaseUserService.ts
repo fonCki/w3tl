@@ -55,16 +55,6 @@ export class firebaseUserService implements IUserService {
         throw new Error('Method not implemented.');
     }
 
-    async getUserProfile(userId: string): Promise<User | undefined> {
-        // Assuming the user's profile is stored in the 'users' collection
-        return this.getUserById(userId);
-    }
-
-    async getUserDetails(userId: string): Promise<User | undefined> {
-        // Assuming you want to return the same data as getUserById
-        return this.getUserById(userId);
-    }
-
     async getTreandingUsers(top: number): Promise<User[]> {
         // This would require a specific structure or metric to determine "trending"
         // For simplicity, returning the first 'top' users
@@ -74,8 +64,5 @@ export class firebaseUserService implements IUserService {
         return querySnapshot.docs.map(doc => doc.data() as User);
     }
 
-    async getTopTenTreandingUsers(): Promise<User[]> {
-        return this.getTreandingUsers(10);
-    }
 }
 

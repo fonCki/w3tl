@@ -6,7 +6,8 @@ import { setSearchQuery } from '@store/slices/searchSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import ProtectedRoute from './ProtectedRoute';
 import { RootState } from '@store/store';
-import Login from '@components/pages/Login'; // Assuming you have this file in the same directory
+import Login from '@components/pages/Login';
+import NotFound from '@components/404'; // Assuming you have this file in the same directory
 
 const AppRoutes = () => {
     const location = useLocation();
@@ -22,9 +23,9 @@ const AppRoutes = () => {
 
     return (
         <Routes>
-            {/*<Route path="/login" element={*/}
-            {/*    isAuthenticated ? <Navigate to="/" replace /> : <Login />*/}
-            {/*} />*/}
+            <Route path="/login" element={
+                isAuthenticated ? <Navigate to="/" replace /> : <Login />
+            } />
             {routes.map((route, index) => (
                 <Route key={index} path={route.path} element={
                     route.protected ?
@@ -32,6 +33,7 @@ const AppRoutes = () => {
                         <route.component />
                 } />
             ))}
+            <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
         </Routes>
     );
 };

@@ -4,11 +4,11 @@ import TweetLine from '@components/feed/TweetLine';
 import { Tweet } from '@models/tweet';
 import { ServiceFactory } from '@services/serviceFactory';
 interface PostsTabProps {
-    username: string;
+    userId: string;
 }
 
 
-const PostsTab: React.FC<PostsTabProps> = ({ username }) => {
+const PostsTab: React.FC<PostsTabProps> = ({ userId }) => {
     const [posts, setPosts] = useState<Tweet[]>([]);
     const tweetService = ServiceFactory.getTweetService();
 
@@ -16,7 +16,7 @@ const PostsTab: React.FC<PostsTabProps> = ({ username }) => {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const posts = await tweetService.getTweetsByUserNickname(username);
+                const posts = await tweetService.getTweetsByUserId(userId)
                 if (posts) {
                     setPosts(posts);
                 }
@@ -25,7 +25,7 @@ const PostsTab: React.FC<PostsTabProps> = ({ username }) => {
             }
         };
         fetchPosts();
-    }, [username]);
+    }, [userId]);
 
     return (
         <div>

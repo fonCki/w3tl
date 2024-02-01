@@ -11,10 +11,10 @@ interface ExtendedTweet extends OriginalTweet {
 }
 
 interface MediaTabProps {
-    username: string;
+    userId: string;
 }
 
-const MediaTab: React.FC<MediaTabProps> = ({ username }) => {
+const MediaTab: React.FC<MediaTabProps> = ({ userId }) => {
     const [mediaTweets, setMediaTweets] = useState<ExtendedTweet[]>([]);
     const tweetService = ServiceFactory.getTweetService();
 
@@ -23,7 +23,7 @@ const MediaTab: React.FC<MediaTabProps> = ({ username }) => {
         const fetchAndValidateMediaTweets = async () => {
             try {
                 const tweets = await tweetService.getTweetsWithMedia();
-                const userMediaTweets = tweets.filter(tweet => tweet.user.id === username && (tweet.image || tweet.video));
+                const userMediaTweets = tweets.filter(tweet => tweet.user.id === userId && (tweet.image || tweet.video));
 
                 const validatedTweets = await Promise.all(userMediaTweets.map(async tweet => {
                     const isValidImage = tweet.image ? await validateImageUrl(tweet.image) : false;
@@ -38,7 +38,7 @@ const MediaTab: React.FC<MediaTabProps> = ({ username }) => {
         };
 
         fetchAndValidateMediaTweets();
-    }, [username]);
+    }, [userId]);
 
     return (
         <FeedContainer>

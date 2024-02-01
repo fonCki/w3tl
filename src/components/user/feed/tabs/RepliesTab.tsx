@@ -9,10 +9,10 @@ import FeedSpacer from '@components/feed/FeedSpacer';
 import { ServiceFactory } from '@services/serviceFactory';
 
 interface RepliesTabProps {
-    username: string;
+    userId: string;
 }
 
-const RepliesTab: React.FC<RepliesTabProps> = ({ username }) => {
+const RepliesTab: React.FC<RepliesTabProps> = ({ userId }) => {
     const [replies, setReplies] = useState<Reply[]>([]);
     const [parentTweets, setParentTweets] = useState<Map<string, Tweet>>(new Map());
     const [groupedReplies, setGroupedReplies] = useState<Map<string, Reply[]>>(new Map());
@@ -21,7 +21,7 @@ const RepliesTab: React.FC<RepliesTabProps> = ({ username }) => {
     useEffect(() => {
         const fetchReplies = async () => {
             try {
-                const replies = await tweetService.getTweetsByUserNickname(username)
+                const replies = await tweetService.getTweetsByUserId(userId);
                 if (replies) {
                     setReplies(replies);
                 }
@@ -31,7 +31,7 @@ const RepliesTab: React.FC<RepliesTabProps> = ({ username }) => {
         };
 
         fetchReplies();
-    }, [username]);
+    }, [userId]);
 
     useEffect(() => {
         // Group replies by parent tweet ID (string)

@@ -3,21 +3,28 @@ import { User } from '@models/user/user';
 import UserSmallAdCard from '@components/card/UserSmallAdCard';
 import FeedContainer from '@components/feed/FeedContainer';
 import { ServiceFactory } from '@services/serviceFactory';
+import { setLoading as setDbLoading } from '@store/slices/loadingSlice';
+import { useDispatch } from 'react-redux';
 
 const Communities = () => {
     const [trends, setTrends] = useState<User[]>([]);
     const userService = ServiceFactory.getUserService();
+    const dispatch = useDispatch();
 
 
     useEffect(() => {
+        dispatch(setDbLoading(true));
+
         const fetchTrendsUsers = async () => {
             try {
-                const trends = await userService.getTopTenTreandingUsers();
+                const trends = await userService.getTreandingUsers(9)
                 if (trends) {
                     setTrends(trends);
                 }
             } catch (error) {
                 console.error(error);
+            } finally {
+                dispatch(setDbLoading(false));
             }
         };
         fetchTrendsUsers();

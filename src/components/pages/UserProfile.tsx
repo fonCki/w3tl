@@ -1,40 +1,64 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import UserCard from '@components/user/profile/User';
 import FeedContainer from '@components/feed/FeedContainer';
 import UserProfileSelection from '@components/user/feed/UserProfileSelection';
-import useFetchUserDetails from '@hooks/useFetchUserDetails';
-import { useSelector } from 'react-redux';
-import { RootState } from '@store/store';
-import { Loader } from 'semantic-ui-react';
-import { routes } from '@constants/routesConfig';
+import { User } from '@models/user/user';
+import { ServiceFactory } from '@services/serviceFactory';
+import { setLoading as setDbLoading } from '@store/slices/loadingSlice';
+import { useDispatch } from 'react-redux'; // Adjust import path
+
 
 
 const UserProfile = () => {
     const { username } = useParams<{ username?: string }>();
-    const userDetails = useFetchUserDetails(username);
-    const isLoading = useSelector((state: RootState) => state.loading.isLoading);
+    const [user, setUser] = useState<User | null>(null);
     const navigate = useNavigate();
+    const userService = ServiceFactory.getUserService();
+    const dispatch = useDispatch();
+
 
     useEffect(() => {
-        console.log('userDetails', userDetails)
-    }, []);
+        async function fetchUserDetails() {
+            dispatch(setDbLoading(true));
 
-    if (isLoading) {
-        return <Loader active inline="centered" />;
-    }
+            if (!username) {
+                console.error('No username provided');
+                dispatch(setDbLoading(false));
+                navigate('/404');
+                return;
+            }
 
-    if (!userDetails) {
-        navigate("/404");
-        return null;
+            try {
+                const fetchedUser = await userService.getUserByUsername(username);
+                if (!fetchedUser) {
+                    console.error('User not found');
+                    navigate('/404');
+                } else {
+                    console.log('User found:', fetchedUser);
+                    setUser(fetchedUser);
+                }
+            } catch (error) {
+                console.error(error);
+                navigate('/404');
+            } finally {
+                dispatch(setDbLoading(false));
+            }
+        }
+
+        fetchUserDetails();
+    }, [username]);
+
+    if (!user) {
+        return null; // Or a loading spinner
     }
 
     return (
         <div>
             <FeedContainer>
-                <UserCard userDetails={userDetails} />
+                <UserCard user={user} />
             </FeedContainer>
-            <UserProfileSelection username={userDetails.id} />
+            <UserProfileSelection userId={user.id} />
         </div>
     );
 };

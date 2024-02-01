@@ -5,8 +5,6 @@ import { toggleCreatePostModal } from '@store/slices/menuSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
 import TweetInput from '@components/feed/TweetInput';
-import ReusableCard from '@components/board/ReusableCard';
-import FeedContainer from '@components/feed/FeedContainer';
 
 const CreatePost = () => {
     const [postContent, setPostContent] = useState('');
@@ -43,6 +41,12 @@ const CreatePost = () => {
 
     const hasReachedMaxCharacters = postContent.length >= MAX_TWEET_LENGTH;
 
+    const handleTweetPostResult = (success: boolean, message?: string) => {
+        if (success) {
+            closeModal();
+        }
+    }
+
     return (
         <Modal
             open={isModalOpen}
@@ -52,10 +56,9 @@ const CreatePost = () => {
             width="small"
             size={'tiny'}
             style={{ borderRadius:'30px', height: 'auto', top: 'auto', left: 'auto', bottom: 'auto', right: 'auto' }}
-
         >
             <div className=" m-4" style={{ borderRadius: '30px' }}>
-                <TweetInput />
+                <TweetInput onTweetPost={handleTweetPostResult} />
             </div>
 
 

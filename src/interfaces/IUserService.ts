@@ -8,8 +8,5 @@ export interface IUserService {
     searchUsersWithLimit(query: string, limit: number): Promise<User[]>;
     getFollowers(username: string): Promise<User[]>;
     getFollowing(username: string): Promise<User[]>;
-    getUserProfile(username: string): Promise<User | undefined>;
-    getUserDetails(username: string): Promise<User | undefined>;
     getTreandingUsers(top: number): Promise<User[]>;
-    getTopTenTreandingUsers(): Promise<User[]>;
 }

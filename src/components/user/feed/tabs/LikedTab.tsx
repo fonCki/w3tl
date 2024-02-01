@@ -4,18 +4,18 @@ import TweetLine from '@components/feed/TweetLine';
 import { Tweet } from '@models/tweet';
 import { ServiceFactory } from '@services/serviceFactory';
 interface LikesTabProps {
-    username: string;
+    userId: string;
 }
 
 
-const LikedTab: React.FC<LikesTabProps> = ({ username }) => {
+const LikedTab: React.FC<LikesTabProps> = ({ userId }) => {
     const [likes, setLikes] = useState<Tweet[]>([]);
     const tweetService = ServiceFactory.getTweetService();
 
     useEffect(() => {
         const fetchLikes = async () => {
             try {
-                const likes = await tweetService.getAllTweetsThatUserLikes(username);
+                const likes = await tweetService.getAllTweetsThatUserLikes(userId);
                 if (likes) {
                     setLikes(likes);
                 }
@@ -25,7 +25,7 @@ const LikedTab: React.FC<LikesTabProps> = ({ username }) => {
         };
 
         fetchLikes(); // Move this line here to call the function
-    }, [username]);
+    }, [userId]);
 
     return (
         <div>

@@ -8,7 +8,7 @@ const Feed = () => {
         <div>
             <FeedContainer>
                 <div>
-                    <TweetInput />
+                    <TweetInput onTweetPost={() => {console.log("Tweet posted")} } />
                 </div>
 
             </FeedContainer>

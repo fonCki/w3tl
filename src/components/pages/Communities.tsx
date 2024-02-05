@@ -14,7 +14,6 @@ const Communities = () => {
 
     useEffect(() => {
         dispatch(setDbLoading(true));
-
         const fetchTrendsUsers = async () => {
             try {
                 const trends = await userService.getTreandingUsers(9)

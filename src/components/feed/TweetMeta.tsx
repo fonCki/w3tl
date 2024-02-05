@@ -16,17 +16,16 @@ const TweetMeta: React.FC<TweetMetaProps> = ({ tweet, onLike, onRetweet, onComme
     const [isRetweeted, setIsRetweeted] = useState(false);
     const [isCommented, setIsCommented] = useState(false);
     const [isHighlighted, setIsHighlighted] = useState(false);
-    const myService = ServiceFactory.getMyOwnService();
+    // const myService = ServiceFactory.getMyUserInteractionService()
 
 
     useEffect(() => {
         async function fetchData() {
-            setIsLiked(await myService.isTweetLikedByMe(tweet.id));
-            setIsRetweeted(await myService.isTweetRetweetedByMe(tweet.id));
-            setIsCommented(await myService.isTweetCommentedByMe(tweet.id));
-            setIsHighlighted(await myService.isTweetHighlightedByMe(tweet.id));
+            // setIsLiked(await myService.isTweetLikedByMe(tweet.id));
+            // setIsRetweeted(await myService.isTweetRetweetedByMe(tweet.id));
+            // setIsCommented(await myService.isTweetCommentedByMe(tweet.id));
+            // setIsHighlighted(await myService.isTweetHighlightedByMe(tweet.id));
         }
-
         fetchData();
     }, [tweet.id]);
 

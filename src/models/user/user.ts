@@ -2,7 +2,7 @@ export interface User {
     id: string;                 // Unique identifier for the user
     username: string;           // Username for the user
     name: string;               // User's name
-    lastname?: string;          // User's last name, optional
+    lastname: string;          // User's last name, optional
     email?: string;             // User's email, can be null or hidden based on context
     avatar?: string;            // URL to the user's avatar image, optional
     bio?: string;               // User's biography

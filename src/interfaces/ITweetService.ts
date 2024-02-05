@@ -1,4 +1,5 @@
 export interface ITweetService {
+    //TODO handle errors
     getTweetsByUserId(userId: string): Promise<any[]>;
     getTweetsByUserNickname(userNickname: string): Promise<any[]>;
     getAllTweets(): Promise<any[]>;

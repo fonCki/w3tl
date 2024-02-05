@@ -1,4 +1,4 @@
-// src/interfaces/ITweetActionService.ts
+// src/interfaces/IUserProfileService.ts
 
 export interface ITweetActionService {
     postTweet(userId: string, content: string, additionalData?: any): Promise<{ success: boolean; tweetId?: string; error?: string }>;

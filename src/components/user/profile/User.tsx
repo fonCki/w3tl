@@ -5,11 +5,19 @@ import UserActions from '@components/user/profile/UserActions';
 import UserInfoDetails from '@components/user/profile/UserInfoDetails';
 import UserSocialInfo from '@components/user/profile/UserSocialInfo';
 import UserNameAndUserName from '@components/user/profile/UserNameAndUserName';
+import { Button } from 'semantic-ui-react';
+import UpdateUserModal from '@components/UpdateUserModal';
 
 interface UserCardProps {
     user: User;
     isEditable?: boolean;
 };
+
+function handleClick() {
+    //open UpdateUserModal
+    console.log('Follow.tsx clicked');
+
+}
 
 const UserCard: React.FC<UserCardProps> = ({ user, isEditable = false }) => {
     return (
@@ -20,7 +28,7 @@ const UserCard: React.FC<UserCardProps> = ({ user, isEditable = false }) => {
                 <UserProfileImage user={user} isEditable={isEditable} />
             </div>
             <div className="h-20  flex pr-4  sm:gap-3">
-                <UserActions />
+                <UserActions user={user} isEditable={isEditable} />
             </div>
             <div className="pl-4 sm:p-4">
                 <UserNameAndUserName user={user} isEditable={isEditable} />

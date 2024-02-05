@@ -9,6 +9,7 @@ import {
     FaUser,
     FaPencilAlt,
     FaSearch,
+    FaCalendar
 } from 'react-icons/fa';
 import Home from '@components/pages/Home';
 import UserProfile from '@components/pages/UserProfile';
@@ -23,10 +24,10 @@ import Search from '@components/pages/Search';
 import { TbFaceIdError } from 'react-icons/tb';
 import Login from '@components/pages/Login';
 import WelcomePage from '@components/pages/WelcomePage';
+import Follow from '@components/pages/Follow';
 
 export const HOME_ROUTE = '/';
 export const LOGIN_ROUTE = '/login';
-
 export const WELCOME = '/welcome';
 export const HOME_MENU_ROUTE = '/home';
 export const EXPLORE_MENU_ROUTE = '/explore';
@@ -34,6 +35,7 @@ export const LISTS_MENU_ROUTE = '/lists';
 export const BOOKMARKS_MENU_ROUTE = '/bookmarks';
 export const COMMUNITIES_MENU_ROUTE = '/communities';
 export const PROFILE_MENU_ROUTE = '/profile';
+export const PROFILE_FOLLOWERS = '/profile/followers';
 export const MORE_MENU_ROUTE = '/more';
 export const USER_PROFILE_ROUTE = '/user/:username';
 export const POST_ROUTE = '/post/:id';
@@ -57,8 +59,9 @@ export const routes: RouteItem[] = [
     { path: EXPLORE_MENU_ROUTE, component: Explore, label: 'Explore', icon: FaCompass, isMenuBar: true, protected: true },
     { path: LISTS_MENU_ROUTE, component: Lists, label: 'Lists', icon: FaList, isMenuBar: true, protected: true },
     { path: BOOKMARKS_MENU_ROUTE, component: Bookmarks, label: 'Bookmarks', icon: FaBookmark , isMenuBar: true, protected: true },
-    { path: COMMUNITIES_MENU_ROUTE, component: Communities, label: 'Communities', icon: FaUsers , isMenuBar: true, protected: true },
-    { path: PROFILE_MENU_ROUTE, component: Profile, label: 'Profile', icon: FaUser, isMenuBar: true, protected: true },
+    { path: COMMUNITIES_MENU_ROUTE, component: Communities, label: 'Events', icon: FaCalendar , isMenuBar: true, protected: true },
+    { path: PROFILE_MENU_ROUTE, component: Profile, label: 'Profile', icon: FaUser, isMenuBar: false, protected: true },
+    { path: PROFILE_FOLLOWERS, component: Follow, label: 'Followers', icon: FaUsers, isMenuBar: true, protected: true },
     { path: MORE_MENU_ROUTE, component: Home, label: 'More', icon: FaEllipsisH, isMenuBar: true, protected: true },
     { path: USER_PROFILE_ROUTE, component: UserProfile, label: 'User Profile', icon: FaUser, isMenuBar: false, protected: true },
     { path: POST_ROUTE, component: Post, label: 'Post', icon: FaPencilAlt, isMenuBar: false, protected: true },

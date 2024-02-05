@@ -1,7 +1,7 @@
 // src/services/firebase/FirebaseTweetActionService.ts
 import { db } from '@services/firebase/config/firebaseConfig';
 import { doc, updateDoc, deleteDoc, addDoc, collection, getDoc } from 'firebase/firestore';
-import { ITweetActionService } from '@interfaces/ITweetsActionSerice';
+import { ITweetActionService } from '@interfaces/ITweetsActionService';
 import { Tweet } from '@models/tweet';
 import  store  from '@store/store';
 

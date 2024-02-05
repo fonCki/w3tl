@@ -8,8 +8,19 @@ import {
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { IAuthService } from '@interfaces/IAuthService';
 import { User } from '@models/user/user';
+import { sendPasswordResetEmail } from 'firebase/auth';
+
 
 export class firebaseAuthService implements IAuthService {
+    async sendPasswordResetEmail(email: string): Promise<void> {
+        try {
+            await sendPasswordResetEmail(auth, email);
+        } catch (error) {
+            console.error('Error sending password reset email:', error);
+            throw error;
+        }
+    }
+
     async createUser(username: string, name: string, lastname: string, email: string, password: string): Promise<{
         success: boolean;
         newUser?: User;
@@ -64,16 +75,17 @@ export class firebaseAuthService implements IAuthService {
         });
     }
 
-    async authenticate(username: string, password: string): Promise<{ success: boolean; user?: User; error?: string }> {
+    async authenticate(username: string, password: string): Promise<{ success: boolean; user?: User; token?: string; error?: string }> {
         try {
             const userCredential = await signInWithEmailAndPassword(auth, username, password);
             const firebaseUser = userCredential.user;
             if (firebaseUser) {
+                const token = await firebaseUser.getIdToken();
                 const userDocRef = doc(db, 'users', firebaseUser.uid);
                 const userDoc = await getDoc(userDocRef);
                 if (userDoc.exists()) {
                     const userDetails = userDoc.data() as User;
-                    return { success: true, user: userDetails };
+                    return { success: true, user: userDetails, token };
                 }
             }
             return { success: false, error: 'User details not found.' };
@@ -81,6 +93,7 @@ export class firebaseAuthService implements IAuthService {
             return { success: false, error: error.message };
         }
     }
+
 
     isAuthenticated(): Promise<boolean> {
         return new Promise((resolve) => {

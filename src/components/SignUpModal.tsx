@@ -1,100 +1,102 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Modal, Input, Message } from 'semantic-ui-react';
+import { Button, Form, Modal, Input, Message, Loader, Dimmer } from 'semantic-ui-react';
 import { ServiceFactory } from '@services/serviceFactory';
-import 'semantic-ui-css/semantic.min.css';
+import { ERROR_MESSAGES } from '@constants/errorMessages';
+import useUsernameCheck from '@hooks/useUsernameCheck';
+import {
+    validateEmail,
+    validateLastname,
+    validateName,
+    validatePassword,
+    validateUsername,
+} from '@utils/validationUtils';
 
 interface SignUpModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSignUpSuccess: (username: string, password: string) => void;
+    onSignUpSuccess: (email:string, password:string) => void;
 }
 
-const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onSignUpSuccess }) => {
+const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onSignUpSuccess, }) => {
     const [username, setUsername] = useState('');
     const [name, setName] = useState('');
     const [lastname, setLastname] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const [isUsernameValid, setIsUsernameValid] = useState(false);
-    const [isCheckingUsername, setIsCheckingUsername] = useState(false);
-
-    const emailRegex = /^([\w-]+@([\w-]+\.)+[\w-]{2,4})?$/;
-
     const [isNameValid, setIsNameValid] = useState(true);
     const [isLastnameValid, setIsLastnameValid] = useState(true);
     const [isEmailValid, setIsEmailValid] = useState(true);
     const [isPasswordValid, setIsPasswordValid] = useState(true);
+    const [loading, setLoading] = useState(false); // New state for loading indicator
+    const { setUsernameAndCheck, isUsernameValid, isCheckingUsername } = useUsernameCheck();
 
-    const userService = ServiceFactory.getUserService();
+
+    const emailRegex = /^([\w-]+@([\w-]+\.)+[\w-]{2,4})?$/;
     const authService = ServiceFactory.getAuthService();
 
-    useEffect(() => {
-        const timer = setTimeout(async () => {
-            if (username) {
-                setIsCheckingUsername(true);
-                const exists = await userService.userExists(username);
-                if (exists) {
-                    setErrorMessage('Username is already taken.');
-                    setIsUsernameValid(!exists);
-                    setIsCheckingUsername(false);
-                } else {
-                    setIsUsernameValid(true);
-                    setIsCheckingUsername(false);
-                    setErrorMessage('')
-                }
-            }
-        }, 1000);
-        return () => clearTimeout(timer);
-    }, [username]);
+    const handleUsernameChange = (newUsername:string) => {
+        setUsername(newUsername.toLowerCase());  // Update local state
+        setUsernameAndCheck(newUsername.toLowerCase()); // Update hook state
+    };
 
     const handleSignUp = async () => {
-        // check required fields
-        if (name === '') {
-            setIsNameValid(false);
-            setErrorMessage('Name is required.');
+        // Validation checks
+        const usernameError = validateUsername(username);
+        const nameError = validateName(name);
+        const lastnameError = validateLastname(lastname);
+        const emailError = validateEmail(email);
+        const passwordError = validatePassword(password);
+
+        if (usernameError || nameError || lastnameError || emailError || passwordError) {
+            setErrorMessage(usernameError || nameError || lastnameError || emailError || passwordError);
             return;
         }
-        if (lastname === '') {
-            setIsLastnameValid(false);
-            setErrorMessage('Last name is required.');
+
+        if (!isUsernameValid) {
+            setErrorMessage(ERROR_MESSAGES.usernameTaken);
             return;
         }
-        if (email === '' || !emailRegex.test(email)) {
-            setIsEmailValid(false);
-            setErrorMessage('Email is not valid.');
-            return;
-        }
-        if (password === '') {
-            setIsPasswordValid(false);
-            setErrorMessage('Password is required.');
-            return;
-        }
-        // Clear previous errors
+
         setErrorMessage('');
-        const result = await authService.createUser(username, name, lastname, email, password);
-        if (result.success) {
-            onSignUpSuccess(email, password);
-            onClose(); // Close the modal on successful signup
-        } else {
-            setErrorMessage(result.error || 'Signup failed');
+        setLoading(true); // Start loading
+        try {
+            const result = await authService.createUser(username, name, lastname, email, password);
+            if (result.success) {
+                onSignUpSuccess(email, password);
+                onClose();
+            } else {
+                setErrorMessage(result.error || 'Signup failed');
+            }
+        } catch (error) {
+            setErrorMessage('An error occurred during signup.');
+        } finally {
+            setLoading(false); // Stop loading regardless of the outcome
         }
     };
+
 
     return (
         <Modal open={isOpen} onClose={onClose} className="max-w-xl" closeIcon={true}>
             <Modal.Header>Sign Up</Modal.Header>
             <Modal.Content>
+                {loading ? (
+                <Dimmer active inverted>
+                    <Loader>Creating account...</Loader>
+                </Dimmer>
+                ) : (
                 <Form onSubmit={(e) => {e.preventDefault(); handleSignUp();}}>
-                    <Form.Field>
+                    <Form.Field error={!isUsernameValid}>
                         <Input
                             label="@"
                             labelPosition="left"
                             placeholder="Username"
                             value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            icon={(isCheckingUsername ? 'spinner' : isUsernameValid ? 'check' : 'times')}
-                            iconColor={isUsernameValid ? 'green' : 'red'}
+                            onChange={(e) => handleUsernameChange(e.target.value)}
+                            icon={{
+                                name: isCheckingUsername ? 'spinner' : isUsernameValid ? 'check' : 'times',
+                                style: { color: isUsernameValid ? 'green' : 'red' }
+                            }}
                         />
                     </Form.Field>
                     <Form.Group widths='equal'>
@@ -104,8 +106,8 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onSignUpSucc
                                 iconPosition='left'
                                 placeholder="Name"
                                 value={name}
-                                onChange={(e) => {setName(e.target.value); setIsNameValid(true);}}
-                                onBlur={() => setIsNameValid(name !== '')}
+                                onChange={(e) => setName(e.target.value)}
+                                onBlur={() => setIsNameValid(name.trim().length > 0)}
                             />
                         </Form.Field>
                         <Form.Field error={!isLastnameValid}>
@@ -114,8 +116,8 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onSignUpSucc
                                 iconPosition='left'
                                 placeholder="Lastname"
                                 value={lastname}
-                                onChange={(e) => {setLastname(e.target.value); setIsLastnameValid(true);}}
-                                onBlur={() => setIsLastnameValid(lastname !== '')}
+                                onChange={(e) => setLastname(e.target.value)}
+                                onBlur={() => setIsLastnameValid(lastname.trim().length > 0)}
                             />
                         </Form.Field>
                     </Form.Group>
@@ -126,7 +128,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onSignUpSucc
                             placeholder="Email"
                             type="email"
                             value={email}
-                            onChange={(e) => {setEmail(e.target.value); setIsEmailValid(true);}}
+                            onChange={(e) => setEmail(e.target.value)}
                             onBlur={() => setIsEmailValid(emailRegex.test(email))}
                         />
                     </Form.Field>
@@ -137,13 +139,14 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onSignUpSucc
                             placeholder="Password"
                             type="password"
                             value={password}
-                            onChange={(e) => {setPassword(e.target.value); setIsPasswordValid(true);}}
-                            onBlur={() => setIsPasswordValid(password !== '')}
+                            onChange={(e) => setPassword(e.target.value)}
+                            onBlur={() => setIsPasswordValid(password.length >= 6)}
                         />
                     </Form.Field>
                     {errorMessage && <Message negative>{errorMessage}</Message>}
-                    <Button fluid color='blue' type='submit' disabled={isCheckingUsername}>Sign Up</Button>
+                    <Button fluid color='blue' type='submit' disabled={isCheckingUsername !}>Sign Up</Button>
                 </Form>
+                    )}
             </Modal.Content>
         </Modal>
     );

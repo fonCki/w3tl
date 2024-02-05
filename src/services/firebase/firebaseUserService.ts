@@ -3,6 +3,7 @@ import { db } from '@services/firebase/config/firebaseConfig';
 import { collection, query as firebaseQuery, where, getDocs, doc, getDoc, limit } from 'firebase/firestore';
 import { IUserService } from '@interfaces/IUserService';
 import { User } from '@models/user/user';
+import usersMock from '@data/usersNewMock';
 
 export class firebaseUserService implements IUserService {
     userExists(username: string): Promise<boolean> {
@@ -56,14 +57,13 @@ export class firebaseUserService implements IUserService {
     }
 
     async getFollowers(userId: string): Promise<User[]> {
-        // Assuming you have a structure for followers in your database
-        // This method would need a suitable database structure to work properly
-        throw new Error('Method not implemented.');
+        //TODO implement
+        return usersMock.sort(() => Math.random() - 0.5).slice(0, 5);
     }
 
     async getFollowing(userId: string): Promise<User[]> {
-        // Similar to getFollowers, requires a specific database structure
-        throw new Error('Method not implemented.');
+        //TODO implement
+        return usersMock.sort(() => Math.random() - 0.5).slice(0, 5);
     }
 
     async getTreandingUsers(top: number): Promise<User[]> {

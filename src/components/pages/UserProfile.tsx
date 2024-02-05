@@ -6,7 +6,8 @@ import UserProfileSelection from '@components/user/feed/UserProfileSelection';
 import { User } from '@models/user/user';
 import { ServiceFactory } from '@services/serviceFactory';
 import { setLoading as setDbLoading } from '@store/slices/loadingSlice';
-import { useDispatch } from 'react-redux'; // Adjust import path
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@store/store'; // Adjust import path
 
 
 
@@ -16,12 +17,13 @@ const UserProfile = () => {
     const navigate = useNavigate();
     const userService = ServiceFactory.getUserService();
     const dispatch = useDispatch();
+    const currentUser = useSelector((state: RootState) => state.auth.currentUser);
+
 
 
     useEffect(() => {
         async function fetchUserDetails() {
             dispatch(setDbLoading(true));
-
             if (!username) {
                 console.error('No username provided');
                 dispatch(setDbLoading(false));
@@ -53,10 +55,13 @@ const UserProfile = () => {
         return null; // Or a loading spinner
     }
 
+    const isViewingOwnProfile = (currentUser && user.id === currentUser.id) || undefined;
+
+
     return (
         <div>
             <FeedContainer>
-                <UserCard user={user} />
+                <UserCard user={user} isEditable={isViewingOwnProfile} />
             </FeedContainer>
             <UserProfileSelection userId={user.id} />
         </div>

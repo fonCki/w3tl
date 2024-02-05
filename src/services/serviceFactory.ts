@@ -2,12 +2,14 @@
 import { IUserService } from '@interfaces/IUserService';
 import { ITweetService } from '@interfaces/ITweetService';
 import { IAuthService } from '@interfaces/IAuthService';
-import { IMyOwnService } from '@interfaces/IMyOwnService';
 import { firebaseAuthService } from '@services/firebase/firebaseAuthService';
-import { mockMyOwnService } from '@services/mock/mockMyOwnService';
 import { firebaseUserService } from '@services/firebase/firebaseUserService';
 import { firebaseTweetService } from '@services/firebase/firebaseTweetService';
-import { myOwnFirebaseService } from '@services/firebase/myOwnFirebaseService';
+import { IUserProfileService } from '@interfaces/IUserProfileService';
+import { firebaseUserProfileService } from '@services/firebase/firebaseUserProfileService';
+import { firebaseUserInteractionService } from '@services/firebase/firebaseUserInteractionService';
+import { IUserRelations } from '@interfaces/IUserRelations';
+import { firebaseUserRelationsService } from '@services/firebase/firebaseUserRelationsService';
 
 
 export class ServiceFactory {
@@ -31,10 +33,11 @@ export class ServiceFactory {
         return new firebaseTweetService();
     }
 
-    static getMyOwnService(): IMyOwnService {
-        // This could be based on an environment variable or config
-        // return mockMyOwnService; // Return the instance directly
-        // return new FirebaseUserService(); when ready
-        return new myOwnFirebaseService();
+    static getUserProfileService(): IUserProfileService {
+        return new firebaseUserProfileService();
+    }
+
+    static getUserRelationsService(): IUserRelations {
+        return new firebaseUserRelationsService();
     }
 }

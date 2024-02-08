@@ -43,6 +43,7 @@ export class firebaseUserService implements IUserService {
     }
 
     async searchUsers(searchQuery: string): Promise<User[]> {
+        searchQuery = searchQuery.toLowerCase();
         const usersRef = collection(db, 'users');
         const q = firebaseQuery(usersRef, where('username', '>=', searchQuery), where('username', '<=', searchQuery + '\uf8ff'));
         const querySnapshot = await getDocs(q);
@@ -50,6 +51,7 @@ export class firebaseUserService implements IUserService {
     }
 
     async searchUsersWithLimit(searchQuery: string, limitCount: number): Promise<User[]> {
+        searchQuery = searchQuery.toLowerCase();
         const usersRef = collection(db, 'users');
         const q = firebaseQuery(usersRef, where('username', '>=', searchQuery), where('username', '<=', searchQuery + '\uf8ff'), limit(limitCount));
         const querySnapshot = await getDocs(q);

@@ -7,37 +7,60 @@ import { firebaseUserService } from '@services/firebase/firebaseUserService';
 import { firebaseTweetService } from '@services/firebase/firebaseTweetService';
 import { IUserProfileService } from '@interfaces/IUserProfileService';
 import { firebaseUserProfileService } from '@services/firebase/firebaseUserProfileService';
-import { firebaseUserInteractionService } from '@services/firebase/firebaseUserInteractionService';
 import { IUserRelations } from '@interfaces/IUserRelations';
 import { firebaseUserRelationsService } from '@services/firebase/firebaseUserRelationsService';
+import { ITweetActionService } from '@interfaces/ITweetsActionService';
+import firebaseTweetActionService from '@services/firebase/firebaseTweetActionService';
 
+class ServiceFactory {
+    private static authServiceInstance: IAuthService | null = null;
+    private static tweetActionServiceInstance: ITweetActionService | null = null;
+    private static tweetServiceInstance: ITweetService | null = null;
+    private static userProfileServiceInstance: IUserProfileService | null = null;
+    private static userRelationsServiceInstance: IUserRelations | null = null;
+    private static userServiceInstance: IUserService | null = null;
 
-export class ServiceFactory {
     static getAuthService(): IAuthService {
-        // This could be based on an environment variable or config
-        // return gunService; // Return the instance directly
-        return new firebaseAuthService(); // when ready
+        if (!this.authServiceInstance) {
+            this.authServiceInstance = new firebaseAuthService();
+        }
+        return this.authServiceInstance;
+    }
+
+    static getTweetActionService(): ITweetActionService {
+        if (!this.tweetActionServiceInstance) {
+            this.tweetActionServiceInstance = new firebaseTweetActionService();
+        }
+        return this.tweetActionServiceInstance;
     }
 
     static getUserService(): IUserService {
-        // This could be based on an environment variable or config
-        //return mockUserService; // Return the instance directly
-        // return new FirebaseUserService(); when ready
-        return new firebaseUserService();
+        if (!this.userServiceInstance) {
+            this.userServiceInstance = new firebaseUserService();
+        }
+        return this.userServiceInstance;
     }
 
     static getTweetService(): ITweetService {
-        // This could be based on an environment variable or config
-        // return mockTweetService; // Return the instance directly
-        // return new FirebaseUserService(); when ready
-        return new firebaseTweetService();
+        if (!this.tweetServiceInstance) {
+            this.tweetServiceInstance = new firebaseTweetService();
+        }
+        return this.tweetServiceInstance;
     }
 
     static getUserProfileService(): IUserProfileService {
-        return new firebaseUserProfileService();
+        if (!this.userProfileServiceInstance) {
+            this.userProfileServiceInstance = new firebaseUserProfileService();
+        }
+        return this.userProfileServiceInstance;
     }
 
     static getUserRelationsService(): IUserRelations {
-        return new firebaseUserRelationsService();
+        if (!this.userRelationsServiceInstance) {
+            this.userRelationsServiceInstance = new firebaseUserRelationsService();
+        }
+        return this.userRelationsServiceInstance;
     }
 }
+
+export { ServiceFactory };

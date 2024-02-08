@@ -17,9 +17,9 @@ const UserLine: React.FC<UserLineProps> = ({ user }) => {
             <div className="bg-white rounded-lg shadow-lg hover:bg-gray-200 cursor-pointer transition duration-300 flex justify-between items-center p-4">
             <div className="" onClick={() => navigate(`/user/${user.username}`)}>
                 <div className="flex items-center space-x-4">
-                    <div className="w-16 h-16 rounded-full overflow-hidden">
-                        <Img userDetails={user} size="massive" />
-                    </div>
+
+                        <Img userDetails={user} />
+
                     <div>
                         <div className="flex items-center space-x-2">
                             <span className="font-bold text-xl">{user.name}</span>

@@ -25,7 +25,7 @@ const ReplyLine: React.FC<ReplyLineProps> = ({ reply }) => {
                 </span>
             </div>
             <div className="flex-shrink-0">
-                <Img userDetails={reply.user} size="mini" />
+                <Img userDetails={reply.user} />
             </div>
             <div className="flex-1">
                 <PostHeader tweetOrReply={reply} />

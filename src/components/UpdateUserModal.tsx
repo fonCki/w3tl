@@ -56,6 +56,7 @@ const UpdateUserModal: React.FC<UpdateUserModalProps> = ({ isOpen, onClose, user
         setLoading(true); // Start loading
         try {
             const updatedUser = { ...user, username, name, lastname, bio, location, website };
+            console.log('Updating user:', updatedUser);
             const result = await userProfileService.updateProfile(updatedUser);
             if (result.success) {
                 dispatch(setCurrentUser(updatedUser)); // Update the user in the global state

@@ -4,7 +4,7 @@ import Right from '@components/board/Right';
 import 'semantic-ui-css/semantic.min.css';
 import SideBar from '@components/SideBar';
 import StickyWrapper from '@components/tools/StickyWrapper';
-import CreatePost from '@components/CreatePost';
+import CreatePostModal from '@components/CreatePostModal';
 import PostFabButton from '@components/postFabButton';
 
 
@@ -23,7 +23,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
             {/* Hidden Content */}
             <PostFabButton />
-            <CreatePost />
+            <CreatePostModal />
 
             {/*Main Content*/}
             <main className="flex justify-center align-middle overflow-auto bg-custom-gray pt-20">

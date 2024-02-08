@@ -1,17 +1,15 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '@store/store';
-import FloatingActionButton from '@components/buttons/FAB';
-import { toggleCreatePostModal } from '@store/slices/menuSlice';
+import { PostButton } from '@components/buttons/PostButton';
 
 const  postFabButton= () => {
     const { isCompactMode, isVisible, activeTab } = useSelector((state: RootState) => state.menu);
-    const dispatch = useDispatch();
     return (
         <div>
             {isCompactMode && !isVisible && (
                 <div>
-                    <FloatingActionButton onClick={() => dispatch(toggleCreatePostModal())} />
+                    <PostButton isFAB={true} />
                 </div>
             )}
         </div>

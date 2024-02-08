@@ -48,7 +48,7 @@ const WelcomePage = () => {
         try {
             console.log('Logging in...');
             console.log('Logging in', email, password);
-            await login(username, password);
+            await login(email, password);
             navigate('/home');
         } catch (error) {
             console.error('Login/Signup failed:', error);

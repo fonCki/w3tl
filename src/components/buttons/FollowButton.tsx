@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { User } from '@models/user/user';
 import { ServiceFactory } from '@services/serviceFactory';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
+import { setHasNewFollowing } from '@store/slices/notificationsSlice';
 
 interface FollowButtonProps {
     user: User;
+    blackAndWhite?: boolean;
 }
 
-const FollowButton: React.FC<FollowButtonProps> = ({ user }) => {
+const FollowButton: React.FC<FollowButtonProps> = ({ user, blackAndWhite = false }) => {
     const [isFollowing, setIsFollowing] = useState(false);
     const userRelationService = ServiceFactory.getUserRelationsService();
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
+    const dispatch = useDispatch();
+
 
     useEffect(() => {
         const checkIfFollowing = async () => {
@@ -27,24 +31,31 @@ const FollowButton: React.FC<FollowButtonProps> = ({ user }) => {
         };
 
         checkIfFollowing();
-    }, [currentUser, user.id, userRelationService]);
+    }, [currentUser, user.id,]);
 
     const handleFollow = async () => {
         setIsFollowing(true);
         await userRelationService.followUser(currentUser!.id, user.id);
+        dispatch(setHasNewFollowing(true)); // Update the Redux state
     };
 
     const handleUnfollow = async () => {
         setIsFollowing(false);
         await userRelationService.unfollowUser(currentUser!.id, user.id);
+        dispatch(setHasNewFollowing(true)); // Update the Redux state
     };
 
     const buttonStyle = "bg-button-blue hover:bg-primary-dark text-white font-bold py-2 px-4 rounded-full disabled:opacity-50 w-18 sm:w-32 text-sm sm:text-base";
-
+    const blackAndWhiteStyle = "ui button inverted bg-blue";
+    {/*<button className="ui button inverted bg-blue" style={{ borderRadius: '9999px' }*/}
+    {/*}>Follow</button>*/}
     return (
         <div>
             {!isFollowing ? (
-                <button className={buttonStyle} onClick={handleFollow}>Follow</button>
+                <button className={`${blackAndWhite ? blackAndWhiteStyle : buttonStyle}`}
+                        style={{ borderRadius: '9999px' }}
+                        onClick={handleFollow}
+                >Follow</button>
             ) : (
                 <button
                     className={`${buttonStyle} bg-secondary hover:bg-red-400`}

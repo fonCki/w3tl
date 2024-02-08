@@ -28,9 +28,7 @@ const TweetInputFeedHeader: React.FC = () => {
     return (
         <div className="p-4">
             <div className="flex items-center align-middle space-x-4 ">
-                <div className="w-16 h-16">
-                    {currentUser && <Img userDetails={currentUser} size="large" />}
-                </div>
+                    {currentUser && <Img userDetails={currentUser} size="micro" />}
                 <textarea
                     className="flex-1 border border-gray-300 rounded-lg p-2 resize-none"
                     placeholder="Post your reply"

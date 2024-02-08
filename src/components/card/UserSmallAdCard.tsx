@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import SpecialContent from '@components/feed/SpecialContent';
 import formatNumber  from '@utils/formatNumber';
 import { User } from '@models/user/user';
+import FollowButton from '@components/buttons/FollowButton';
 
 
 interface UserSmallAdCardProps {
@@ -33,20 +34,20 @@ const UserSmallAdCard: React.FC<UserSmallAdCardProps> = ({
     };
 
     return (
-        <Card className="max-w-sm rounded overflow-hidden shadow-lg" onClick={handleCardClick}>
-            <div className="relative w-full h-45">
+        <Card className="max-w-sm rounded overflow-hidden shadow-lg">
+            <div className="relative w-full h-52 ">
                 <Image
                     src={user.avatar || getDefaultAvatarImage(user.username)}
-                    className="w-full"
+                    className="w-full h-52 object-cover object-center"
                     alt={`${user.username}'s avatar`}
+                    onClick={handleCardClick}
                 />
                 <div
                     className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-0 hover:bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 ease-in-out">
-                    <button className="ui button inverted bg-blue" style={{ borderRadius: '9999px' }
-                    }>Follow</button>
+                    <FollowButton user={user} blackAndWhite={true} />
                 </div>
             </div>
-            <Card.Content className="px-6 py-4">
+            <Card.Content className="px-6 py-4 cursor-pointer" onClick={handleCardClick}>
                 <Card.Header className="font-bold text-xl mb-2">
                     {user.name}
                     {/*space blank*/}&nbsp;

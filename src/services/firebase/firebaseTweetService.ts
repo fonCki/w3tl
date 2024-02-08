@@ -3,6 +3,7 @@ import { db } from '@services/firebase/config/firebaseConfig';
 import {
     collection,
     query as firebaseQuery,
+    orderBy,
     where,
     getDocs,
     doc,
@@ -15,6 +16,7 @@ import { firebaseUserService } from '@services/firebase/firebaseUserService';
 
 import { types } from 'sass';
 import Error = types.Error;
+import { UserRelations } from '@models/user/userRelations';
 
 export class firebaseTweetService implements ITweetService {
     private userService: firebaseUserService;
@@ -22,6 +24,7 @@ export class firebaseTweetService implements ITweetService {
     constructor() {
         this.userService = new firebaseUserService();
     }
+
 
     async getTweetsByUserId(userId: string): Promise<Tweet[]> {
         const tweetsRef = collection(db, 'tweets');
@@ -40,8 +43,10 @@ export class firebaseTweetService implements ITweetService {
 
     async getAllTweets(): Promise<Tweet[]> {
         const tweetsRef = collection(db, 'tweets');
-        const querySnapshot = await getDocs(tweetsRef);
-        return querySnapshot.docs.map(doc => doc.data() as Tweet);
+        // Create a query against the collection, ordering by createdAt descending
+        const q = firebaseQuery(tweetsRef, orderBy('createdAt', 'desc'));
+        const querySnapshot = await getDocs(q);
+        return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }) as Tweet);
     }
 
     async searchTweets(query: string): Promise<Tweet[]> {
@@ -80,11 +85,32 @@ export class firebaseTweetService implements ITweetService {
         return [...tweetsWithImage, ...tweetsWithVideo];
     }
 
-    // ... other methods related to user interaction with tweets (likes, retweets, comments, etc.) ...
+    async  getAllTweetsThatUserHighlights(userId: string): Promise<Tweet[]> {
+        const userRelationsRef = doc(db, 'userRelations', userId);
+        const userDoc = await getDoc(userRelationsRef);
 
-    // You'll need to implement these methods based on how you're storing this data in Firestore.
-    // For example, if you have fields in each tweet document for likes and retweets,
-    // you can query those fields to implement the methods below.
+
+        if (!userDoc.exists()) {
+            console.log('No such document!');
+            return [];
+        }
+
+        const userRelations = userDoc.data() as UserRelations;
+        const highlightedTweetIds = userRelations.highlightedTweetIds;
+        console.log('highlightedTweetIds', highlightedTweetIds);
+
+        const allHighlightedTweets: Tweet[] = [];
+
+        for (const tweetId of highlightedTweetIds) {
+            const tweet = await this.getTweetById(tweetId);
+            if (tweet) {
+                allHighlightedTweets.push(tweet);
+            }
+        }
+
+
+        return allHighlightedTweets;
+    }
 
     async isTweetLikedByUser(tweetId: string, userId: string): Promise<boolean> {
         // Implementation depends on your database schema
@@ -105,10 +131,6 @@ export class firebaseTweetService implements ITweetService {
     }
 
     getAllTweetsThatUserComments(userId: string): Promise<any[]> {
-        return Promise.resolve([]);
-    }
-
-    getAllTweetsThatUserHighlights(userId: string): Promise<any[]> {
         return Promise.resolve([]);
     }
 

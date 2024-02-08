@@ -33,6 +33,7 @@
       "@actions/*": ["src/actions/*"],
       "@interfaces/*": ["src/interfaces/*"],
       "@context/*": ["src/context/*"],
+      "@assets/*": ["src/assets/*"],
     }
   },
   "include": [

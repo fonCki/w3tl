@@ -7,6 +7,7 @@ export const ReduxStateDisplay: React.FC = () => {
     const menuState = useSelector((state: RootState) => state.menu);
     const loadingState = useSelector((state: RootState) => state.loading);
     const searchState = useSelector((state: RootState) => state.search);
+    const notificationsState = useSelector((state: RootState) => state.notifications);
 
     const [isDragging, setIsDragging] = useState(false);
     const [position, setPosition] = useState({ x: 0, y: 100 });
@@ -53,6 +54,7 @@ export const ReduxStateDisplay: React.FC = () => {
             {/*<pre>Menu Statine: {JSON.stringify(menuState, null, 2)}</pre>*/}
             {/*<pre>Loading State: {JSON.stringify(loadingState, null, 2)}</pre>*/}
             {/*<pre>Search State: {JSON.stringify(searchState, null, 2)}</pre>*/}
+            {/*<pre>Notifications State: {JSON.stringify(notificationsState, null, 2)}</pre>*/}
             {/* Display other states here if needed */}
         </div>
     );

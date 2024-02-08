@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Divider, Label } from 'semantic-ui-react';
 import Img from '@components/tools/image/Img';
 import { MAX_TWEET_LENGTH } from '@constants/constants';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
 import FirebaseTweetActionService from '@services/firebase/firebaseTweetActionService';
+import { setNewTweet} from '@store/slices/notificationsSlice';
 
 
 interface TweetInputProps {
@@ -15,6 +16,7 @@ const TweetInput: React.FC<TweetInputProps> = ({ onTweetPost }) => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
     const tweetActionService = new FirebaseTweetActionService();
+    const dispatch = useDispatch();
 
     const handlePostChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setPostContent(event.target.value);
@@ -32,6 +34,7 @@ const TweetInput: React.FC<TweetInputProps> = ({ onTweetPost }) => {
 
             if (result.success) {
                 console.log('Tweet posted successfully:', result.tweetId);
+                dispatch(setNewTweet(true));
                 onTweetPost(true, 'Tweet posted successfully');
             } else {
                 console.error('Error posting tweet:', result.error);
@@ -61,24 +64,20 @@ const TweetInput: React.FC<TweetInputProps> = ({ onTweetPost }) => {
 
         <div className="p-4">
             <div className="flex items-start  space-x-4 ">
-
-                <div className="w-16 h-16">
-                    {currentUser && <Img userDetails={currentUser} size="large" />}
-                </div>
+                    <Img userDetails={currentUser} size="small" />
                 <textarea
                     className="flex-1 border border-gray-300 rounded-lg p-2 resize-none"
-
                     placeholder="What is happening?"
                     value={postContent}
                     onChange={handlePostChange}
                     maxLength={MAX_TWEET_LENGTH}
-                    style={{ fontSize: '18px', border: 'none', outline: 'none', height: '100px', }}
+                    style={{ fontSize: '18px', border: 'none', outline: 'none', height: '100px' }}
                 ></textarea>
             </div>
             <Divider />
             {hasReachedMaxCharacters && (
                 <div className="flex justify-center">
-                    <Label color="red">
+                <Label color="red">
                         You've reached the maximum character limit - less is more!
                     </Label>
                 </div>

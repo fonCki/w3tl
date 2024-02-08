@@ -8,8 +8,6 @@ interface UserActionsProps {
     user: User;
 }
 
-
-
 const UserActions: React.FC<UserActionsProps> = ({ user, isEditable }) => {
     return (
         <div className="flex justify-end items-center gap-1 w-full">

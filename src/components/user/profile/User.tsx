@@ -22,7 +22,7 @@ function handleClick() {
 const UserCard: React.FC<UserCardProps> = ({ user, isEditable = false }) => {
     return (
         <div className="relative p-2">
-            <UserBanner user={user} />
+            <UserBanner user={user} isEditable={isEditable} />
             <div className="border border-t-0 border-2 border-gray-200 rounded-sm ">
             <div className="absolute top-52 left-6 sm:top-40">
                 <UserProfileImage user={user} isEditable={isEditable} />

@@ -75,12 +75,18 @@ export class firebaseAuthService implements IAuthService {
         });
     }
 
-    async authenticate(username: string, password: string): Promise<{ success: boolean; user?: User; token?: string; error?: string }> {
+    async authenticate(email: string, password: string): Promise<{ success: boolean; user?: User; token?: string; error?: string }> {
+        console.log('authenticate');
         try {
-            const userCredential = await signInWithEmailAndPassword(auth, username, password);
+            console.log('username', email);
+            console.log('password', password);
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const firebaseUser = userCredential.user;
+            console.log('firebaseUser', firebaseUser);
             if (firebaseUser) {
+                console.log('firebaseUser', firebaseUser);
                 const token = await firebaseUser.getIdToken();
+                console.log('token', token);
                 const userDocRef = doc(db, 'users', firebaseUser.uid);
                 const userDoc = await getDoc(userDocRef);
                 if (userDoc.exists()) {

@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { HOME_MENU_ROUTE, HOME_ROUTE, menuItems } from '@constants/routesConfig';
 
 interface MenuState {
   isCompactMode: boolean;

@@ -6,10 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
 import TweetInput from '@components/feed/TweetInput';
 
-const CreatePost = () => {
+const CreatePostModal = () => {
     const [postContent, setPostContent] = useState('');
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const currentUser = useSelector((state: RootState) => state.auth.currentUser);
 
 
     const dispatch = useDispatch();
@@ -68,4 +67,4 @@ const CreatePost = () => {
     );
 };
 
-export default CreatePost;
+export default CreatePostModal;

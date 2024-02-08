@@ -4,7 +4,7 @@ import { RootState } from '@store/store';
 import { setVisible, setCompactMode, setActiveTab, toggleCreatePostModal } from '@store/slices/menuSlice';
 import { handleToggleWithDelay } from '@utils/menuToggle';
 import { menuItems, RouteItem } from '@constants/routesConfig';
-import { PostButton } from '@components/buttons/postButton';
+import { PostButton } from '@components/buttons/PostButton';
 import { useLocation } from 'react-router-dom';
 import { useNavigationActions } from '@hooks/useNavigationActions';
 import { FaPencilAlt } from 'react-icons/fa';

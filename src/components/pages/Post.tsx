@@ -17,18 +17,13 @@ const Post: React.FC = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
-        // Validate and parse id to an integer
-        if (!id || !/^\d+$/.test(id)) {
-            //TODO navigate to 404.tsx page
-            console.error("Invalid or missing id");
-            return;
-        }
 
         // Fetch the tweet by ID
         const fetchTweet = async () => {
             try {
                 const fetchedTweet = await tweetService.getTweetById(id);
                 if (fetchedTweet) {
+                    console.log('Fetched tweet:', fetchedTweet);
                     setTweet(fetchedTweet);
                 }
             } catch (error) {

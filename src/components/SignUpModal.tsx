@@ -36,6 +36,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onSignUpSucc
     const authService = ServiceFactory.getAuthService();
 
     const handleUsernameChange = (newUsername:string) => {
+        setErrorMessage(``)
         setUsername(newUsername.toLowerCase());  // Update local state
         setUsernameAndCheck(newUsername.toLowerCase()); // Update hook state
     };

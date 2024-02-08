@@ -5,6 +5,8 @@ import auth from '@store/slices/authSlice';
 import menuReducer from '@store/slices/menuSlice';
 import loadingReducer from '@store/slices/loadingSlice';
 import searchReducer from '@store/slices/searchSlice';
+import notificationsSlice from '@store/slices/notificationsSlice';
+
 // import other reducers
 
 const rootReducer = combineReducers({
@@ -12,6 +14,7 @@ const rootReducer = combineReducers({
     menu: menuReducer,
     loading: loadingReducer,
     search: searchReducer,
+    notifications: notificationsSlice,
     // other reducers
 });
 

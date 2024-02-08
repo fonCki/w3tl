@@ -6,28 +6,47 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
 import FeedContainer from '@components/feed/FeedContainer';
 import { setLoading as setDbLoading } from '@store/slices/loadingSlice';
+import { resetHasNewFollower, resetHasNewFollowing } from '@store/slices/notificationsSlice';
 
 const Follow = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [activeTab, setActiveTab] = useState('Followers');
     const userRelationService = ServiceFactory.getUserRelationsService();
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
+    const { hasNewFollower, hasNewFollowing } = useSelector((state: RootState) => state.notifications);
     const dispatch = useDispatch();
 
     useEffect(() => {
         const fetchUsers = async () => {
-            // dispatch(setDbLoading(true));
+            dispatch(setDbLoading(true));
             if (activeTab === 'Followers') {
                 const fetchedFollowers = await userRelationService.getFollowersAsUser(currentUser!.id);
                 setUsers(fetchedFollowers);
+                dispatch(resetHasNewFollower());
             } else if (activeTab === 'Following') {
                 const fetchedFollowing = await userRelationService.getFollowingAsUser(currentUser!.id);
                 setUsers(fetchedFollowing);
+                dispatch(resetHasNewFollowing());
             }
-            // dispatch(setDbLoading(false));
+            dispatch(setDbLoading(false));
         };
         fetchUsers();
-    }, [activeTab, userRelationService, currentUser]);
+    }, [activeTab]);
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            if (hasNewFollower && activeTab === 'Followers') {
+                const fetchedFollowers = await userRelationService.getFollowersAsUser(currentUser!.id);
+                setUsers(fetchedFollowers);
+                dispatch(resetHasNewFollower());
+            } else if (hasNewFollowing && activeTab === 'Following') {
+                const fetchedFollowing = await userRelationService.getFollowingAsUser(currentUser!.id);
+                setUsers(fetchedFollowing);
+                dispatch(resetHasNewFollowing());
+            }
+        };
+        fetchUsers();
+    }, [hasNewFollower, hasNewFollowing]);
 
     const handleTabClick = (tabName: string) => {
         setActiveTab(tabName);

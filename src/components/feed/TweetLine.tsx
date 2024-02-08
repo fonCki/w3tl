@@ -8,6 +8,9 @@ import SpecialContent from '@components/feed/SpecialContent';
 import { useNavigate } from 'react-router-dom';
 import Img from '@components/tools/image/Img';
 import { useState } from 'react';
+import { ServiceFactory } from '@services/serviceFactory';
+import { useSelector } from 'react-redux';
+import { RootState } from '@store/store';
 
 
 interface TweetLineProps {
@@ -20,16 +23,6 @@ const TweetLine: React.FC<TweetLineProps> = ({ tweet, highlightQuery }) => {
     const navigate = useNavigate();
     const [showActions, setShowActions] = useState(false);
 
-    // Handle the click events for icons
-    const handleHighlightClick = () => {
-        console.log('Highlight');
-        // Implement your highlight functionality
-    };
-
-    const handleShareClick = () => {
-        console.log('Share');
-        // Implement your share functionality
-    };
 
     // ... state and functions ...
     return (
@@ -41,7 +34,7 @@ const TweetLine: React.FC<TweetLineProps> = ({ tweet, highlightQuery }) => {
             <div className="bg-white flex justify-between align-middle w-full p-4 rounded-lg shadow hover:bg-gray-100 ">
                 <Feed.Label onClick={()=>navigate(`/user/${tweet.user.username}`)} className="cursor-pointer">
                     <div className="w-16 h-16" >
-                        <Img userDetails={tweet.user} size="large" />
+                        <Img userDetails={tweet.user} size="small" />
                     </div>
                 </Feed.Label>
                 <Feed.Content className=" pr-4 pl-4 w-full">
@@ -49,7 +42,6 @@ const TweetLine: React.FC<TweetLineProps> = ({ tweet, highlightQuery }) => {
                         <PostHeader tweetOrReply={tweet} />
                     </div>
                     <div>
-
                         <div className="cursor-pointer" onClick={()=>navigate(`/post/${tweet.id}`)}>
                     <Feed.Extra className="text-lg w-full mb-4 mt-2 text-justify">
                         <SpecialContent content={tweet.content} highlightQuery={highlightQuery} />
@@ -60,10 +52,6 @@ const TweetLine: React.FC<TweetLineProps> = ({ tweet, highlightQuery }) => {
                         </div>
                     <TweetMeta
                         tweet={tweet}
-                        onLike={handleLikeClick}
-                        onRetweet={handleLikeClick}
-                        onComment={handleLikeClick}
-                        onHighlight={handleLikeClick}
                     />
 
                 </Feed.Content>
@@ -71,14 +59,6 @@ const TweetLine: React.FC<TweetLineProps> = ({ tweet, highlightQuery }) => {
                     {showActions && (
                         <div className="w-full h-full flex-1 justify-between items-center ">
                             <TweetDropdown />
-                        {/*<div >*/}
-                        {/*    <button onClick={handleHighlightClick} className="hover:text-blue-500 transition-colors">*/}
-                        {/*        <AiOutlineHighlight />*/}
-                        {/*    </button>*/}
-                        {/*    <button onClick={handleShareClick} className="hover:text-blue-500 transition-colors">*/}
-                        {/*        <AiOutlineShareAlt />*/}
-                        {/*    </button>*/}
-                        {/*</div>*/}
                         </div>
                     )}
                 </div>
@@ -86,11 +66,5 @@ const TweetLine: React.FC<TweetLineProps> = ({ tweet, highlightQuery }) => {
         </Feed.Event>
     );
 };
-
-
-//create handle click to console log
-const handleLikeClick = () => {
-    console.log('Like');
-}
 
 export default TweetLine;

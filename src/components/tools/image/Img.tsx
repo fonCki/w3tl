@@ -1,41 +1,37 @@
 import React from 'react';
 import { Image } from 'semantic-ui-react';
-import { User } from '@models/user/user'; // Adjust the import path as necessary
+import { User } from '@models/user/user';
 import { getDefaultAvatarImage } from '@constants/constants';
 
 interface ImgProps {
     userDetails: User | null;
-    size?: 'mini' | 'tiny' | 'small' | 'medium' | 'large' | 'big' | 'huge' | 'massive' | number;
+    size?: 'micro' | 'tiny' | 'small' | 'medium' | 'large' | 'huge'; // Size options
 }
 
-const Img: React.FC<ImgProps> = ({ userDetails, size = "medium" }) => {
-    let avatarSrc;
-    let altText;
+const Img: React.FC<ImgProps> = ({ userDetails, size = "tiny" }) => {
+    const avatarSrc = userDetails?.avatar || getDefaultAvatarImage(userDetails?.username || 'default');
+    const altText = userDetails ? `${userDetails.username}'s avatar` : 'Default user avatar';
 
-    if (userDetails) {
-        // If avatar is not set, use the default avatar image
-        avatarSrc = userDetails.avatar || getDefaultAvatarImage(userDetails.username);
-        altText = `${userDetails.username}'s avatar`;
-    } else {
-        // If userDetails is null, use a generic default avatar image
-        avatarSrc = getDefaultAvatarImage('default');
-        altText = 'Default user avatar';
-    }
+    // Define CSS classes based on the 'size' prop to control the div size
+    const sizeClasses = {
+        micro: 'w-10 h-10', // 40x40 pixels
+        tiny: 'w-14 h-14', // 48x48 pixels
+        small: 'w-16 h-16', // 64x64 pixels
+        medium: 'w-24 h-24', // 96x96 pixels
+        large: 'w-32 h-32', // 128x128 pixels
+        huge: 'w-48 h-48', // 192x192 pixels
+    }[size];
 
-    const isSizeNumeric = typeof size === 'number';
-
+    // Using Tailwind CSS for styling
     return (
-        <div className="avatar-container" style={{ width: isSizeNumeric ? size * 2.1 : undefined }}>
+        <div className={`relative rounded-full overflow-hidden ${sizeClasses}`}>
             <Image
-                className="w-full h-full object-cover object-center"
                 src={avatarSrc}
                 alt={altText}
-                avatar
-                size={isSizeNumeric ? undefined : size}
-                style={isSizeNumeric ? { fontSize: size } : undefined}
+                className="absolute w-full h-full object-cover rounded-full"
             />
         </div>
     );
-}
+};
 
 export default Img;

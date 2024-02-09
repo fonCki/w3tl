@@ -7,6 +7,7 @@ import { RootState } from '@store/store';
 import FeedContainer from '@components/feed/FeedContainer';
 import { setLoading as setDbLoading } from '@store/slices/loadingSlice';
 import { resetHasNewFollower, resetHasNewFollowing } from '@store/slices/notificationsSlice';
+import TweetLinePlaceHolder from '@components/feed/TweetLinePlaceHolder';
 
 const Follow = () => {
     const [users, setUsers] = useState<User[]>([]);
@@ -14,11 +15,12 @@ const Follow = () => {
     const userRelationService = ServiceFactory.getUserRelationsService();
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
     const { hasNewFollower, hasNewFollowing } = useSelector((state: RootState) => state.notifications);
+    const [isLoading, setIsLoading] = useState(true); // Track loading state
     const dispatch = useDispatch();
 
     useEffect(() => {
         const fetchUsers = async () => {
-            dispatch(setDbLoading(true));
+            setIsLoading(true);
             if (activeTab === 'Followers') {
                 const fetchedFollowers = await userRelationService.getFollowersAsUser(currentUser!.id);
                 setUsers(fetchedFollowers);
@@ -28,7 +30,7 @@ const Follow = () => {
                 setUsers(fetchedFollowing);
                 dispatch(resetHasNewFollowing());
             }
-            dispatch(setDbLoading(false));
+            setIsLoading(false);
         };
         fetchUsers();
     }, [activeTab]);
@@ -53,7 +55,9 @@ const Follow = () => {
     };
 
     return (
-        <div>
+        <>
+            {/* Final Content - Visible only when isLoading is false */}
+
             <FeedContainer decoration={true}>
                 <ul className="flex cursor-pointer justify-around">
                     <li
@@ -78,10 +82,15 @@ const Follow = () => {
                     </li>
                 </ul>
             </FeedContainer>
-            <div>
+        {/* Placeholder Content - Visible only when isLoading is true */}
+            <div style={isLoading ? { display: 'block' } : { display: 'none' }}>
+                {Array.from({ length: Math.floor(Math.random() * 5) + 1 }).map((_, index) =>
+                        <TweetLinePlaceHolder key={index} /> )}
+            </div>
+            <div style={isLoading ? { display: 'none' } : { display: 'block' }}>
                 {users.map(user => <UserLine key={user.id} user={user} />)}
             </div>
-        </div>
+        </>
     );
 };
 

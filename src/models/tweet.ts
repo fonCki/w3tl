@@ -1,7 +1,7 @@
 import { User } from '@models/user/user';
 export interface Tweet {
     id: string;
-    user: User;
+    userId: User['id'];
     content: string;
     image?: string;
     video?: string;

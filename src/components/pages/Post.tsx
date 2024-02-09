@@ -8,20 +8,23 @@ import { Reply } from '@models/reply';
 import { defaultTweet } from '@models/defaults';
 import ReplyInput from '@components/feed/reply/ReplyInput';
 import { ServiceFactory } from '@services/serviceFactory';
+import { setLoading as setDbLoading } from '@store/slices/loadingSlice';
+import { useDispatch } from 'react-redux';
 
 const Post: React.FC = () => {
     const { id } = useParams<{ id?: string }>();
     const [tweet, setTweet] = useState<Tweet>(defaultTweet);
     const [replies, setReplies] = useState<Reply[]>([]);
     const tweetService = ServiceFactory.getTweetService();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         window.scrollTo(0, 0);
-
         // Fetch the tweet by ID
         const fetchTweet = async () => {
+            dispatch(setDbLoading(true));
             try {
-                const fetchedTweet = await tweetService.getTweetById(id);
+                const fetchedTweet = await tweetService.getTweetById(id!);
                 if (fetchedTweet) {
                     console.log('Fetched tweet:', fetchedTweet);
                     setTweet(fetchedTweet);
@@ -29,20 +32,22 @@ const Post: React.FC = () => {
             } catch (error) {
                 console.error('Error fetching tweet:', error);
             }
+            dispatch(setDbLoading(false));
         };
 
         // Fetch replies for the tweet
         const fetchReplies = async () => {
+            dispatch(setDbLoading(true));
             try {
-                const fetchedReplies = await tweetService.getAllRepliesByTweetId(id);
+                const fetchedReplies = await tweetService.getAllRepliesByTweetId(id!);
                 setReplies(fetchedReplies);
             } catch (error) {
                 console.error('Error fetching replies:', error);
             }
         };
-
         fetchTweet();
         fetchReplies();
+        dispatch(setDbLoading(false));
     }, [id]); // Dependency on id
 
     return (

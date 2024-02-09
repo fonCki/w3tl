@@ -112,9 +112,14 @@ export class firebaseTweetService implements ITweetService {
         return allHighlightedTweets;
     }
 
-    async isTweetLikedByUser(tweetId: string, userId: string): Promise<boolean> {
-        // Implementation depends on your database schema
-        throw new Error('Method not implemented.');
+    async isTweetLikedByUser(userId: string, tweetId: string): Promise<boolean> {
+        const userRelationsRef = doc(db, 'userRelations', userId);
+        const docSnap = await getDoc(userRelationsRef);
+        if (docSnap.exists()) {
+            const userRelations = docSnap.data();
+            return userRelations.likedTweetIds && userRelations.likedTweetIds.includes(tweetId);
+        }
+        return false;
     }
 
     async isTweetRetweetedByUser(tweetId: string, userId: string): Promise<boolean> {
@@ -134,9 +139,29 @@ export class firebaseTweetService implements ITweetService {
         return Promise.resolve([]);
     }
 
-    getAllTweetsThatUserLikes(userId: string): Promise<any[]> {
-        return Promise.resolve([]);
+    async getAllTweetsThatUserLikes(userId: string): Promise<Tweet[]> {
+        const userRelationsRef = doc(db, 'userRelations', userId);
+        const userDoc = await getDoc(userRelationsRef);
+        if (!userDoc.exists()) {
+            console.log('No such document for user relations!');
+            return [];
+        }
+
+        const userRelations = userDoc.data() as UserRelations;
+        const likedTweetIds = userRelations.likedTweetIds;
+        console.log('likedTweetIds', likedTweetIds);
+
+        const likedTweets: Tweet[] = [];
+        for (const tweetId of likedTweetIds) {
+            const tweet = await this.getTweetById(tweetId);
+            if (tweet) {
+                likedTweets.push(tweet);
+            }
+        }
+
+        return likedTweets;
     }
+
 
     getAllTweetsThatUserRetweets(userId: string): Promise<any[]> {
         return Promise.resolve([]);
@@ -158,5 +183,24 @@ export class firebaseTweetService implements ITweetService {
         return Promise.resolve(false);
     }
 
-    // ... other methods ...
+    async getTweetLikesCount(tweetId: string): Promise<number> {
+        const tweetRef = doc(db, 'tweets', tweetId);
+        const docSnap = await getDoc(tweetRef);
+        if (docSnap.exists()) {
+            const tweet = docSnap.data() as Tweet;
+            return tweet.likes;
+        }
+        return 0;
+    }
+
+
+    async isTweetHighlightedByUser(userId: string, tweetId: string): Promise<boolean> {
+        const userRelationsRef = doc(db, 'userRelations', userId);
+        const docSnap = await getDoc(userRelationsRef);
+        if (docSnap.exists()) {
+            const userRelations = docSnap.data();
+            return userRelations.highlightedTweetIds && userRelations.highlightedTweetIds.includes(tweetId);
+        }
+        return false;
+    }
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface SpecialContentProps {
     content: string;
@@ -17,6 +18,25 @@ const SpecialContent: React.FC<SpecialContentProps> = ({
                                                        }) => {
 
     const MAX_LINES_CONTENT = 2;
+    const navigate = useNavigate();
+
+    function handleNavigateToHashtag() {
+        return (e: React.MouseEvent<HTMLSpanElement>) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const hashtag = e.currentTarget.innerText.substring(1);
+            navigate(`/search/${hashtag}`);
+        };
+    }
+    function handleNavigateToUser() {
+        return (e: React.MouseEvent<HTMLSpanElement>) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const username = e.currentTarget.innerText.substring(1);
+            navigate(`/user/${username}`);
+        };
+    }
+
     const parseContent = (text: string) => {
         if (!text) return null;
 
@@ -43,9 +63,17 @@ const SpecialContent: React.FC<SpecialContentProps> = ({
             if (textStyle === 'bold') spanStyle.fontWeight = 'bold';
 
             if (part.startsWith('#')) {
-                return <span key={index} style={spanStyle} className="text-blue cursor-pointer hover:underline">{part}</span>;
+                return <span key={index}
+                             style={spanStyle}
+                             className="text-blue cursor-pointer hover:underline"
+                             onClick={handleNavigateToHashtag()}
+                >{part}</span>;
             } else if (part.startsWith('@')) {
-                return <span key={index} style={spanStyle} className="text-blue cursor-pointer hover:underline">{part}</span>;
+                return <span key={index}
+                             style={spanStyle}
+                             className="text-blue cursor-pointer hover:underline"
+                             onClick={handleNavigateToUser()}
+                >{part}</span>;
             }
             return <span key={index} style={spanStyle}>{part}</span>;
         });

@@ -3,6 +3,8 @@ import FeedContainer from '@components/feed/FeedContainer';
 import TweetLine from '@components/feed/TweetLine';
 import { Tweet } from '@models/tweet';
 import { ServiceFactory } from '@services/serviceFactory';
+import { setLoading as setDbLoading } from '@store/slices/loadingSlice';
+import { useDispatch } from 'react-redux';
 interface PostsTabProps {
     userId: string;
 }
@@ -11,10 +13,11 @@ interface PostsTabProps {
 const PostsTab: React.FC<PostsTabProps> = ({ userId }) => {
     const [posts, setPosts] = useState<Tweet[]>([]);
     const tweetService = ServiceFactory.getTweetService();
-
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const fetchPosts = async () => {
+            dispatch(setDbLoading(true));
             try {
                 const posts = await tweetService.getTweetsByUserId(userId)
                 if (posts) {
@@ -23,6 +26,7 @@ const PostsTab: React.FC<PostsTabProps> = ({ userId }) => {
             } catch (error) {
                 console.error(error);
             }
+            dispatch(setDbLoading(false));
         };
         fetchPosts();
     }, [userId]);

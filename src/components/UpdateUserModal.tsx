@@ -32,6 +32,7 @@ const UpdateUserModal: React.FC<UpdateUserModalProps> = ({ isOpen, onClose, user
     const { setUsernameAndCheck, isUsernameValid, isCheckingUsername } = useUsernameCheck();
     const [isOriginalUsername, setIsOriginalUsername] = useState(true);
     const userProfileService = ServiceFactory.getUserProfileService();
+    const userServices = ServiceFactory.getUserService();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -55,11 +56,15 @@ const UpdateUserModal: React.FC<UpdateUserModalProps> = ({ isOpen, onClose, user
         }
         setLoading(true); // Start loading
         try {
-            const updatedUser = { ...user, username, name, lastname, bio, location, website };
+            const userUpdate: User | undefined = await userServices.getUserById(user.id)
+            if (!userUpdate) {
+                throw new Error('User not found');
+            }
+            const updatedUser = { ...userUpdate, username, name, lastname, bio, location, website };
             console.log('Updating user:', updatedUser);
             const result = await userProfileService.updateProfile(updatedUser);
             if (result.success) {
-                dispatch(setCurrentUser(updatedUser)); // Update the user in the global state
+                dispatch(setCurrentUser(updatedUser!)); // Update the user in the global state
                 navigate(`/user/${updatedUser.username}`);
                 onClose(); // Close the modal after successful update
             } else {

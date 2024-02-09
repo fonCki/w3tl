@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
 import FirebaseTweetActionService from '@services/firebase/firebaseTweetActionService';
 import { setNewTweet} from '@store/slices/notificationsSlice';
+import { Tweet } from '@models/tweet';
 
 
 interface TweetInputProps {
@@ -28,7 +29,16 @@ const TweetInput: React.FC<TweetInputProps> = ({ onTweetPost }) => {
             return;
         }
         try {
-            const result = await tweetActionService.postTweet(postContent, {
+            //create a new tweet
+            const newTweet= {
+                content: postContent,
+                userId: currentUser.id,
+                createdAt: new Date().toISOString(),
+                likes: 0,
+                retweets: 0,
+                comments: 0,
+            }
+            const result = await tweetActionService.postTweet(newTweet, {
                 // Add any additional data here, like images or videos
             });
 

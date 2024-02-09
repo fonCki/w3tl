@@ -15,6 +15,7 @@ const TweetMeta: React.FC<TweetMetaProps> = ({ tweet }) => {
     const [isRetweeted, setIsRetweeted] = useState(false);
     const [isCommented, setIsCommented] = useState(false);
     const [isHighlighted, setIsHighlighted] = useState(false);
+    const tweetService = ServiceFactory.getTweetService();
     const tweetActionService = ServiceFactory.getTweetActionService();
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
     const dispatch = useDispatch();
@@ -22,13 +23,16 @@ const TweetMeta: React.FC<TweetMetaProps> = ({ tweet }) => {
     const [likes, setLikes] = useState(tweet.likes); // Manage likes with state
 
 
+    useEffect(() => {
+
+    }, []);
 
     useEffect(() => {
         async function fetchData() {
-            setIsLiked(await tweetActionService.isTweetLikedByUser(currentUser?.id!, tweet.id));
+            setIsLiked(await tweetService.isTweetLikedByUser(currentUser?.id!, tweet.id));
             console.log("liked", isLiked);
             dispatch(resetNewLike());
-            const likes = await tweetActionService.getTweetLikesCount(tweet.id);
+            const likes = await tweetService.getTweetLikesCount(tweet.id);
             setLikes(likes);
             console.log("likes", tweet.id, likes);
         }
@@ -37,7 +41,7 @@ const TweetMeta: React.FC<TweetMetaProps> = ({ tweet }) => {
 
     useEffect(() => {
         async function fetchData() {
-            setIsHighlighted(await tweetActionService.isTweetHighlightedByUser(currentUser?.id!, tweet.id));
+            setIsHighlighted(await tweetService.isTweetHighlightedByUser(currentUser?.id!, tweet.id));
             console.log("highlighted", isHighlighted);
             dispatch(resetNewHighlight());
         }

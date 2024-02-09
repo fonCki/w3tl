@@ -3,6 +3,8 @@ import FeedContainer from '@components/feed/FeedContainer';
 import TweetLine from '@components/feed/TweetLine';
 import { Tweet } from '@models/tweet';
 import { ServiceFactory } from '@services/serviceFactory';
+import { setLoading as setDbLoading } from '@store/slices/loadingSlice';
+import { useDispatch } from 'react-redux';
 interface LikesTabProps {
     userId: string;
 }
@@ -11,9 +13,11 @@ interface LikesTabProps {
 const LikedTab: React.FC<LikesTabProps> = ({ userId }) => {
     const [likes, setLikes] = useState<Tweet[]>([]);
     const tweetService = ServiceFactory.getTweetService();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const fetchLikes = async () => {
+            dispatch(setDbLoading(true));
             try {
                 const likes = await tweetService.getAllTweetsThatUserLikes(userId);
                 if (likes) {
@@ -22,6 +26,7 @@ const LikedTab: React.FC<LikesTabProps> = ({ userId }) => {
             } catch (error) {
                 console.error(error);
             }
+            dispatch(setDbLoading(false));
         };
 
         fetchLikes(); // Move this line here to call the function

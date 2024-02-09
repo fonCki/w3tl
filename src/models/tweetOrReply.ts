@@ -2,8 +2,9 @@ import { Tweet } from '@models/tweet';
 import { Reply } from '@models/reply';
 
 type TweetOrReply = {
-    user: Tweet['user'] | Reply['user']; // Assuming User type is the same in both
+    userId: Tweet['userId'] | Reply['userId'];
     createdAt: Tweet['createdAt'] | Reply['createdAt'];
-}
+    // Add other common properties here if necessary
+};
 
 export type { TweetOrReply };

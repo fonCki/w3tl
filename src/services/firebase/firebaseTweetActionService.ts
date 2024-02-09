@@ -13,11 +13,14 @@ import {
 } from 'firebase/firestore';
 import { ITweetActionService } from '@interfaces/ITweetsActionService';
 import { Tweet } from '@models/tweet';
-import store, { RootState } from '@store/store';
 import { UserRelations } from '@models/user/userRelations';
+import { useSelector } from 'react-redux';
+import { RootState } from '@store/store';
+import { ServiceFactory } from '@services/serviceFactory';
 
 export class FirebaseTweetActionService implements ITweetActionService {
 
+    // Method to ensure that the user relations document exists
     private async ensureUserRelationsDocExists(userId: string): Promise<void> {
         const userRelationsRef = doc(db, 'userRelations', userId);
         const docSnapshot = await getDoc(userRelationsRef);
@@ -37,27 +40,20 @@ export class FirebaseTweetActionService implements ITweetActionService {
             await setDoc(userRelationsRef, newUserRelations);
         }
     }
-    async isTweetLikedByUser(userId: string, tweetId: string): Promise<boolean> {
-        const userRelationsRef = doc(db, 'userRelations', userId);
-        const docSnap = await getDoc(userRelationsRef);
-        if (docSnap.exists()) {
-            const userRelations = docSnap.data();
-            return userRelations.likedTweetIds && userRelations.likedTweetIds.includes(tweetId);
+    async postTweet(newTweet:any, additionalData: any = {}): Promise<{ success: boolean; tweetId?: string; error?: string }> {
+        try {
+            // First, add the document without the ID
+            const tweetRef = await addDoc(collection(db, 'tweets'), newTweet);
+            // Then, update the document to include its ID
+            await updateDoc(tweetRef, { id: tweetRef.id });
+            return { success: true, tweetId: tweetRef.id };
+        } catch (error: any) {
+            return { success: false, error: error.message };
         }
-        return false;
-    }
-
-    async getTweetLikesCount(tweetId: string): Promise<number> {
-        const tweetRef = doc(db, 'tweets', tweetId);
-        const docSnap = await getDoc(tweetRef);
-        if (docSnap.exists()) {
-            const tweet = docSnap.data() as Tweet;
-            return tweet.likes;
-        }
-        return 0;
     }
 
     async likeTweet(userId: string, tweetId: string): Promise<{ success: boolean; error?: string }> {
+        const tweetService = ServiceFactory.getTweetService();
         try {
             await this.ensureUserRelationsDocExists(userId);
         } catch (error: any) {
@@ -65,9 +61,9 @@ export class FirebaseTweetActionService implements ITweetActionService {
         }
         const batch = writeBatch(db);
         try {
-            console.log('likeTweet');
+
             const tweetRef = doc(db, 'tweets', tweetId);
-            const userRelationsRef = doc(db, 'userRelations', userId!);
+            const userRelationsRef = doc(db, 'userRelations', userId);
 
             // Get current state of the tweet
             const tweetSnap = await getDoc(tweetRef);
@@ -78,7 +74,7 @@ export class FirebaseTweetActionService implements ITweetActionService {
             console.log('tweet', tweet);
 
             // Check if the user already liked the tweet
-            const isLiked = await this.isTweetLikedByUser(userId, tweetId);
+            const isLiked = await tweetService.isTweetLikedByUser(userId, tweetId);
             console.log('isLiked', isLiked);
             const newLikesCount = isLiked ? tweet.likes - 1 : tweet.likes + 1;
             console.log('newLikesCount', newLikesCount);
@@ -92,7 +88,6 @@ export class FirebaseTweetActionService implements ITweetActionService {
             } else {
                 batch.update(userRelationsRef, { likedTweetIds: arrayUnion(tweetId) });
             }
-
             // Commit the batch
             await batch.commit();
             return { success: true };
@@ -102,60 +97,34 @@ export class FirebaseTweetActionService implements ITweetActionService {
         }
     }
 
-    isTweetRetweetedByUser(userId: string, tweetId: string): Promise<boolean> {
-        throw new Error('Method not implemented.');
-    }
-    isTweetCommentedByUser(userId: string, tweetId: string): Promise<boolean> {
-        throw new Error('Method not implemented.');
-    }
-    async isTweetHighlightedByUser(userId: string, tweetId: string): Promise<boolean> {
-        const userRelationsRef = doc(db, 'userRelations', userId);
-        const docSnap = await getDoc(userRelationsRef);
-        if (docSnap.exists()) {
-            const userRelations = docSnap.data();
-            return userRelations.highlightedTweetIds && userRelations.highlightedTweetIds.includes(tweetId);
-        }
-        return false;
-    }
-    async  postTweet(content: string, additionalData: any = {}): Promise<{ success: boolean; tweetId?: string; error?: string }> {
-        try {
-            const currentUser = store.getState().auth.currentUser;
-            if (!currentUser) {
-                throw new Error('No authenticated user found');
-            }
-            const newTweet = {
-                user: currentUser,
-                content,
-                ...additionalData, // includes image, video, etc.
-                likes: 0,
-                retweets: 0,
-                comments: 0,
-                createdAt: new Date().toISOString()
-            };
-
-            // First, add the document without the ID
-            const tweetRef = await addDoc(collection(db, 'tweets'), newTweet);
-
-            // Then, update the document to include its ID
-            await updateDoc(tweetRef, { id: tweetRef.id });
-
-            return { success: true, tweetId: tweetRef.id };
-        } catch (error: any) {
-            return { success: false, error: error.message };
-        }
-    }
 
     async retweet(tweetId: string): Promise<{ success: boolean; error?: string }> {
         // Similar to likeTweet, implement retweet logic based on your data model
         throw new Error('Method not implemented.');
     }
 
-    async commentOnTweet(tweetId: string, comment: string): Promise<{ success: boolean; error?: string }> {
-        // Implement commenting logic, possibly involving a separate 'comments' collection in Firestore
-        throw new Error('Method not implemented.');
+    async commentOnTweet(comment:any): Promise<{ success: boolean; replyId?: string; error?: string }> {
+        try {
+            // Create a reference to the 'replies' subcollection under the specific tweet
+            const repliesRef = await addDoc(collection(db, 'comments', comment.tweetId), comment);
+            await updateDoc(repliesRef, { id: repliesRef.id });
+            //update the tweet in th field comment +1
+            const tweetRef = doc(db, 'tweets', comment.tweetId);
+            const docSnap = await getDoc(tweetRef);
+            if (docSnap.exists()) {
+                const tweet = docSnap.data() as Tweet;
+                const newCommentsCount = tweet.comments + 1;
+                await updateDoc(tweetRef, { comments: newCommentsCount });
+            }
+
+            return { success: true, replyId: repliesRef.id };
+        } catch (error: any) {
+            console.error('Error posting comment:', error);
+            return { success: false, error: error.message };
+        }
     }
 
-    async deleteTweet( tweetId: string): Promise<{ success: boolean; error?: string }> {
+    async deleteTweet(tweetId: string): Promise<{ success: boolean; error?: string }> {
         try {
             const tweetRef = doc(db, 'tweets', tweetId);
             await deleteDoc(tweetRef);
@@ -166,12 +135,14 @@ export class FirebaseTweetActionService implements ITweetActionService {
     }
 
     async highlightTweet(userId: string, tweetId: string): Promise<{ success: boolean; error?: string }> {
+        const tweetService = ServiceFactory.getTweetService();
+
         const batch = writeBatch(db);
         try {
             const userRelationsRef = doc(db, 'userRelations', userId);
 
             // Check if the user already highlighted the tweet
-            const isHighlighted = await this.isTweetHighlightedByUser(userId, tweetId);
+            const isHighlighted = await tweetService.isTweetHighlightedByUser(userId, tweetId);
 
             // Update user's highlighted tweets list
             if (isHighlighted) {
@@ -179,7 +150,6 @@ export class FirebaseTweetActionService implements ITweetActionService {
             } else {
                 batch.update(userRelationsRef, { highlightedTweetIds: arrayUnion(tweetId) });
             }
-
             // Commit the batch
             await batch.commit();
             return { success: true };

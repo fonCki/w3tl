@@ -4,10 +4,13 @@ import { User } from '@models/user/user';
 import { useSelector } from 'react-redux';
 import { RootState } from '@store/store';
 
+interface EditButtonProps {
+    user: User;
+}
 
-const EditButton = () => {
+const EditButton: React.FC<EditButtonProps> = ({ user }) => {
     const [open, setOpen] = useState(false);
-    const user = useSelector((state: RootState) => state.auth.currentUser);
+
 
     const handleEdit = () => {
         setOpen(true);

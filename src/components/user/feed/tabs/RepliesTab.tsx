@@ -7,6 +7,8 @@ import { Reply } from '@models/reply';
 import { Divider } from 'semantic-ui-react';
 import FeedSpacer from '@components/feed/FeedSpacer';
 import { ServiceFactory } from '@services/serviceFactory';
+import { setLoading as setDbLoading } from '@store/slices/loadingSlice';
+import { useDispatch } from 'react-redux';
 
 interface RepliesTabProps {
     userId: string;
@@ -17,9 +19,11 @@ const RepliesTab: React.FC<RepliesTabProps> = ({ userId }) => {
     const [parentTweets, setParentTweets] = useState<Map<string, Tweet>>(new Map());
     const [groupedReplies, setGroupedReplies] = useState<Map<string, Reply[]>>(new Map());
     const tweetService = ServiceFactory.getTweetService();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const fetchReplies = async () => {
+            dispatch(setDbLoading(true));
             try {
                 const replies = await tweetService.getTweetsByUserId(userId);
                 if (replies) {
@@ -28,6 +32,7 @@ const RepliesTab: React.FC<RepliesTabProps> = ({ userId }) => {
             } catch (error) {
                 console.error(error);
             }
+            dispatch(setDbLoading(false));
         };
 
         fetchReplies();
@@ -49,6 +54,7 @@ const RepliesTab: React.FC<RepliesTabProps> = ({ userId }) => {
 
         // Fetch parent tweets
         const fetchParentTweets = async () => {
+            dispatch(setDbLoading(true));
             const parentTweets: Map<string, Tweet> = new Map();
             for (const parentTweetId of Array.from(tempGroupedReplies.keys())) {
                 try {
@@ -61,6 +67,7 @@ const RepliesTab: React.FC<RepliesTabProps> = ({ userId }) => {
                 }
             }
             setParentTweets(parentTweets);
+            dispatch(setDbLoading(false));
         };
 
         fetchParentTweets();

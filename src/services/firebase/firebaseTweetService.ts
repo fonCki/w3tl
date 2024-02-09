@@ -28,7 +28,7 @@ export class firebaseTweetService implements ITweetService {
 
     async getTweetsByUserId(userId: string): Promise<Tweet[]> {
         const tweetsRef = collection(db, 'tweets');
-        const q = firebaseQuery(tweetsRef, where('user.id', '==', userId));
+        const q = firebaseQuery(tweetsRef, where('userId', '==', userId));
         const querySnapshot = await getDocs(q);
         return querySnapshot.docs.map(doc => doc.data() as Tweet);
     }
@@ -50,19 +50,24 @@ export class firebaseTweetService implements ITweetService {
     }
 
     async searchTweets(query: string): Promise<Tweet[]> {
-        // Implement a basic text search (limited capabilities)
         const tweetsRef = collection(db, 'tweets');
-        const q = firebaseQuery(tweetsRef, where('content', '>=', query), where('content', '<=', query + '\uf8ff'));
-        const querySnapshot = await getDocs(q);
-        return querySnapshot.docs.map(doc => doc.data() as Tweet);
+        const querySnapshot = await getDocs(tweetsRef);
+        const allTweets = querySnapshot.docs.map(doc => doc.data() as Tweet);
+        // Filter tweets based on the query string
+        const filteredTweets = allTweets.filter(tweet => tweet.content.toLowerCase().includes(query.toLowerCase()));
+        return filteredTweets;
     }
+
 
     async searchTweetsWithLimit(query: string, limitNumber: number): Promise<Tweet[]> {
         const tweetsRef = collection(db, 'tweets');
-        const q = firebaseQuery(tweetsRef, where('content', '>=', query), where('content', '<=', query + '\uf8ff'), limit(limitNumber));
-        const querySnapshot = await getDocs(q);
-        return querySnapshot.docs.map(doc => doc.data() as Tweet);
+        const querySnapshot = await getDocs(tweetsRef);
+        const allTweets = querySnapshot.docs.map(doc => doc.data() as Tweet);
+        // Filter tweets based on the query string, then apply the limit
+        const filteredTweets = allTweets.filter(tweet => tweet.content.toLowerCase().includes(query.toLowerCase())).slice(0, limitNumber);
+        return filteredTweets;
     }
+
 
     async getTweetById(tweetId: string): Promise<Tweet | null> {
         const tweetDocRef = doc(db, 'tweets', tweetId);
@@ -176,10 +181,6 @@ export class firebaseTweetService implements ITweetService {
     }
 
     isTweetCommentedByUser(tweetId: string, userId: string): Promise<boolean> {
-        return Promise.resolve(false);
-    }
-
-    isTweetHighlightedByUser(tweetId: string, userId: string): Promise<boolean> {
         return Promise.resolve(false);
     }
 

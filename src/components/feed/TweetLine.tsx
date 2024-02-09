@@ -33,6 +33,7 @@ const TweetLine: React.FC<TweetLineProps> = ({ tweet, highlightQuery }) => {
         const fetchUserData = async () => {
             try {
                 const userData = await userServices.getUserById(tweet.userId);
+                console.log(tweet.userId, "tweet.userId")
                 setUser(userData!);
                 console.log('User data fetched:', userData);
             } catch (error) {
@@ -74,7 +75,7 @@ const TweetLine: React.FC<TweetLineProps> = ({ tweet, highlightQuery }) => {
                 >
                     <div
                         className="bg-white flex justify-between align-middle w-full p-4 rounded-lg shadow hover:bg-gray-100 ">
-                        <Feed.Label onClick={() => navigate(`/user/${user}`)} className="cursor-pointer">
+                        <Feed.Label onClick={() => navigate(`/user/${user.username}`)} className="cursor-pointer">
                             <div className="w-16 h-16">
                                 <Img userDetails={user} size="small" onLoaded={handlePostHeaderLoaded} />
                             </div>

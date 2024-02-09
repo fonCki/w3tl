@@ -7,6 +7,19 @@ import { User } from '@models/user/user';
 
 
 export class firebaseUserProfileService implements IUserProfileService {
+
+    async updateProfile(user: User): Promise<{ success: boolean; user?: User; error?: any }> {
+        try {
+            const userDocRef = doc(db, 'users', user.id);
+            console.log("userRef",userDocRef);
+            console.log("user",user);
+            await updateDoc(userDocRef, {...user});
+            return { success: true, user };
+        } catch (error: any) {
+            return { success: false, error: error.message };
+        }
+    }
+
     async updateProfilePicture(userId: string, file: File): Promise<{ success: boolean; downloadURL?: string; error?: any; }> {
         const storage = getStorage();
         const storagePath = `profilePictures/${userId}/${file.name}`;
@@ -45,18 +58,6 @@ export class firebaseUserProfileService implements IUserProfileService {
         }
     }
 
-
-    async updateProfile(user: User): Promise<{ success: boolean; user?: User; error?: any }> {
-        try {
-            const userDocRef = doc(db, 'users', user.id);
-            console.log("userRef",userDocRef);
-            console.log("user",user);
-            await updateDoc(userDocRef, {...user});
-            return { success: true, user };
-        } catch (error: any) {
-            return { success: false, error: error.message };
-        }
-    }
     async deleteProfile(userId: string): Promise<{ success: boolean; error?: any }> {
         try {
             // Delete from Firestore

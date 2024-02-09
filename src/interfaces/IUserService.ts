@@ -6,9 +6,6 @@ export interface IUserService {
     getUserByUsername(username: string): Promise<User | undefined>;
     userExists(username: string): Promise<boolean>;
     getAllUsers(): Promise<User[]>;
-    searchUsers(query: string): Promise<User[]>;
-    searchUsersWithLimit(query: string, limit: number): Promise<User[]>;
-    getFollowers(username: string): Promise<User[]>;
-    getFollowing(username: string): Promise<User[]>;
+    searchUsers(query: string, limit: number): Promise<User[]>;
     getTreandingUsers(top: number): Promise<User[]>;
 }

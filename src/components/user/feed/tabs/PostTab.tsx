@@ -20,6 +20,7 @@ const PostsTab: React.FC<PostsTabProps> = ({ userId }) => {
             dispatch(setDbLoading(true));
             try {
                 const posts = await tweetService.getTweetsByUserId(userId)
+                console.log('Posts:', posts);
                 if (posts) {
                     setPosts(posts);
                 }

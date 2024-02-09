@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ServiceFactory } from '@services/serviceFactory';
 
 interface SpecialContentProps {
     content: string;
@@ -14,11 +15,18 @@ const SpecialContent: React.FC<SpecialContentProps> = ({
                                                            textStyle = 'normal',
                                                            textSize = 16,
                                                            limitThreeLines = false,
-                                                           highlightQuery = ''
+                                                           highlightQuery = '',
                                                        }) => {
-
     const MAX_LINES_CONTENT = 2;
     const navigate = useNavigate();
+    const userServices = ServiceFactory.getUserService();
+    const [userCheck, setUserCheck] = useState<Record<string, boolean>>({});
+
+    const checkUserExists = async (username: string) => {
+        if (userCheck[username] !== undefined) return; // Skip if already checked
+        const user = await userServices.getUserByUsername(username);
+        setUserCheck(prev => ({ ...prev, [username]: !!user }));
+    };
 
     function handleNavigateToHashtag() {
         return (e: React.MouseEvent<HTMLSpanElement>) => {
@@ -28,6 +36,7 @@ const SpecialContent: React.FC<SpecialContentProps> = ({
             navigate(`/search/${hashtag}`);
         };
     }
+
     function handleNavigateToUser() {
         return (e: React.MouseEvent<HTMLSpanElement>) => {
             e.preventDefault();
@@ -69,11 +78,20 @@ const SpecialContent: React.FC<SpecialContentProps> = ({
                              onClick={handleNavigateToHashtag()}
                 >{part}</span>;
             } else if (part.startsWith('@')) {
-                return <span key={index}
-                             style={spanStyle}
-                             className="text-blue cursor-pointer hover:underline"
-                             onClick={handleNavigateToUser()}
-                >{part}</span>;
+                const username = part.substring(1);
+                if (userCheck[username] === undefined) {
+                    checkUserExists(username); // Trigger check without waiting
+                }
+                let isUser = userCheck[username];
+                if (isUser) {
+                    return <span key={index}
+                                 style={spanStyle}
+                                 className="text-blue cursor-pointer hover:underline"
+                                 onClick={handleNavigateToUser()}
+                    >{part}</span>;
+                } else {
+                    return <span key={index} style={spanStyle}>{part}</span>;
+                }
             }
             return <span key={index} style={spanStyle}>{part}</span>;
         });
@@ -83,7 +101,7 @@ const SpecialContent: React.FC<SpecialContentProps> = ({
     if (limitThreeLines) {
         baseStyle.display = '-webkit-box';
         baseStyle.WebkitBoxOrient = 'vertical';
-        baseStyle.WebkitLineClamp = MAX_LINES_CONTENT;
+        baseStyle.WebkitLineClamp = 3; // Adjusted to use the actual prop value
         baseStyle.overflow = 'hidden';
         baseStyle.textOverflow = 'ellipsis';
     }
@@ -94,6 +112,5 @@ const SpecialContent: React.FC<SpecialContentProps> = ({
         </div>
     );
 };
-
 
 export default SpecialContent;

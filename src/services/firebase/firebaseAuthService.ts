@@ -39,17 +39,16 @@ export class firebaseAuthService implements IAuthService {
                 createdAt: new Date().toISOString(),
                 followersCount: 0,
                 followingCount: 0,
-                "avatar": "https://lh3.googleusercontent.com/a/ACg8ocKhjPCUUYR4SLVcVW5V4yZpSYVYba9MxKEsGP3U5AubmHA=s96-c",
-                bio: "Culinary enthusiast and food blogger, Tech enthusiast and VR innovator",
-                location: "Tandil, Argentina",
-                website: "https://alfonso.ridao.ar",
-                background: "https://i0.wp.com/9to5mac.com/wp-content/uploads/sites/6/2021/09/Apple-TV.png?w=1500&quality=82&strip=all&ssl=1",
-                pub: '',
-            }
+                bio: '',
+                location: '',
+                website: '',
+                avatar: '',
+                background: '',
+
+            };
             // Save user details to Firestore
             const userDocRef = doc(db, 'users', firebaseUser.uid);
             await setDoc(userDocRef, newUser);
-
             return { success: true, newUser };
         } catch (error: any) {
             return { success: false, error: error.message };
@@ -75,7 +74,12 @@ export class firebaseAuthService implements IAuthService {
         });
     }
 
-    async authenticate(email: string, password: string): Promise<{ success: boolean; user?: User; token?: string; error?: string }> {
+    async authenticate(email: string, password: string): Promise<{
+        success: boolean;
+        user?: User;
+        token?: string;
+        error?: string
+    }> {
         console.log('authenticate');
         try {
             console.log('username', email);

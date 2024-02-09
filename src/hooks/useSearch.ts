@@ -16,12 +16,10 @@ export const useSearch = () => {
     const userService = ServiceFactory.getUserService();
     const tweetService = ServiceFactory.getTweetService();
 
-
-
     useEffect(() => {
         if (searchQuery.length > 0) {
             const fetchResults = async () => {
-                const users = await userService.searchUsersWithLimit(searchQuery,LIMIT);
+                const users = await userService.searchUsers(searchQuery,LIMIT);
                 const tweets = await tweetService.searchTweetsWithLimit(searchQuery,LIMIT);
 
                 // Transform users and tweets to DataItem format with explicit types

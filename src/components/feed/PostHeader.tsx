@@ -17,7 +17,7 @@ const PostHeader: React.FC<TweetSummaryProps> = ({ tweetOrReply, user }) => {
 
     const navigate = useNavigate();
     return (
-        <div onClick={()=>navigate(`/user/${user}`)} className="cursor-pointer">
+        <div onClick={()=>navigate(`/user/${user.username}`)} className="cursor-pointer">
         <Feed.Summary>
             <span className="font-bold mr-2 text-xl">{user.name + ' ' + user.lastname}</span>
             {user.verified && <Icon name="check circle" className="text-blue ml-1" />}

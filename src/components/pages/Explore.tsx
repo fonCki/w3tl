@@ -12,31 +12,15 @@ import { Divider } from 'semantic-ui-react';
 import { RootState } from '@store/store';
 import TweetLinePlaceHolder from '@components/feed/TweetLinePlaceHolder';
 import UserSmallAdCardPlaceholder from '@components/UserSmallAdCardPlaceholder';
+import TrendingBoard from '@components/board/TrendingBoard';
 
 const Explore = () => {
     const title = routes.find(route => route.label === 'Explore')?.label;
     const [trends, setTrends] = useState<User[]>([]);
     const userService = ServiceFactory.getUserService();
     const { hasNewFollowing } = useSelector((state: RootState) => state.notifications);
-    const [isLoading, setIsLoading] = useState(true); // Track loading state
+    const [isLoading, setIsLoading] = useState(true);
     const dispatch = useDispatch();
-
-
-    useEffect(() => {
-        const fetchTrendsUsers = async () => {
-            try {
-                const trends = await userService.getTreandingUsers(9);
-                if (trends) {
-                    setTrends(trends);
-                }
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        fetchTrendsUsers();
-    }, []);
 
     useEffect(() => {
         const fetchTrendsUsers = async () => {
@@ -52,44 +36,39 @@ const Explore = () => {
                 setIsLoading(false);
             }
         };
+
         fetchTrendsUsers();
     }, [hasNewFollowing]);
-
 
     return (
         <div>
             <FeedTitle title={title} showUser={false} />
             <Divider />
-            <FeedTitle title="Trending" showUser={false} />
-
-            {/* Placeholder Content - Visible only when isLoading is true */}
-            <div style={isLoading ? { display: 'block' } : { display: 'none' }}>
-                <FeedContainer>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
-                        {Array.from({ length: 3 }).map((_, index) =>
-                            <div key={index} className="flex flex-col">
-                            <UserSmallAdCardPlaceholder key={index} />
-                            </div>)}
-                    </div>
-                </FeedContainer>
-            </div>
-
-            {/* Placeholder Content - Visible only when isLoading is true */}
-            <div style={isLoading ? { display: 'none' } : { display: 'block' }}>
-                <FeedContainer>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
-                        {trends.map((user) => (
-                            <div key={user.id} className="flex flex-col">
-                                <UserSmallAdCard user={user} showWebsite={false} showJoined={false}
-                                                 showFollowers={false} />
-                            </div>
-                        ))}
-                    </div>
-                </FeedContainer>
-            </div>
             <FeedTitle title="Popular" showUser={false} />
+
+            {isLoading ? (
+                <div className="flex space-x-4 overflow-x-auto py-4 scrollbar-hide">
+                    {Array.from({ length: 3 }, (_, index) => (
+                        <div key={index} className="min-w-[30%]">
+                            <UserSmallAdCardPlaceholder />
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <div className="flex space-x-4 overflow-x-auto py-4 scrollbar-hide">
+                    {trends.map((user) => (
+                        <div key={user.userId} className="min-w-[32%]">
+                            <UserSmallAdCard user={user} showWebsite={false} showJoined={false} showFollowers={false} />
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            <FeedTitle title="Trending" showUser={false} />
+            <TrendingBoard />
         </div>
     );
 };
 
 export default Explore;
+

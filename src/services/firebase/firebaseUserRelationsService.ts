@@ -6,6 +6,7 @@ import { IUserRelations } from '@interfaces/IUserRelations';
 import { UserRelations } from '@models/user/userRelations';
 import { User } from '@models/user/user';
 import { ServiceFactory } from '@services/serviceFactory';
+import { increment } from 'firebase/firestore';
 
 export class firebaseUserRelationsService implements IUserRelations {
 
@@ -15,7 +16,7 @@ export class firebaseUserRelationsService implements IUserRelations {
         if (!docSnapshot.exists()) {
             // Initialize empty user relations
             const newUserRelations: UserRelations = {
-                id: userId,
+                userId: userId,
                 followers: [],
                 following: [],
                 blockedUsers: [],
@@ -84,14 +85,45 @@ export class firebaseUserRelationsService implements IUserRelations {
             resolve({ following: response.following.includes(followingId) });
         });
     }
+    private async incrementFollowerFollowingCount(userId: string, field: 'followersCount' | 'followingCount'): Promise<{ success: boolean; error?: any }> {
+        console.log('Incrementing', field, 'for', userId);
+        try {
+            console.log('Incrementing', field, 'for', userId);
+            const userDocRef = doc(db, 'users', userId);
+            console.log('Incrementing', field, 'for', userId);
+            await updateDoc(userDocRef, {
+                [field]: increment(1),
+            });
+            return { success: true };
+        } catch (error: any) {
+            return { success: false, error: error.message };
+        }
+    }
+
+    private async decrementFollowerFollowingCount(userId: string, field: 'followersCount' | 'followingCount'): Promise<{ success: boolean; error?: any }> {
+        try {
+            const userDocRef = doc(db, 'users', userId);
+            await updateDoc(userDocRef, {
+                [field]: increment(-1),
+            });
+            return { success: true };
+        } catch (error: any) {
+            return { success: false, error: error.message };
+        }
+    }
+
     async followUser(myId: string, followUserId: string): Promise<{ success: boolean; error?: any }> {
         console.log('Updating following for', myId);
         const response = await this.updateRelations(myId, 'following', followUserId, true);
-        console.log('response', response);
         if (response.success) {
             console.log('Updating followers for', followUserId);
             await this.updateRelations(followUserId, 'followers', myId, true);
-            console.log('Updated followers for', followUserId);
+            console.log('second update done');
+            await this.incrementFollowerFollowingCount(followUserId, 'followersCount');
+            console.log('third update done')
+            await this.incrementFollowerFollowingCount(myId, 'followingCount');
+            console.log('fourth update done')
+            console.log('Updated followers and following counts');
         }
         return response;
     }
@@ -100,6 +132,9 @@ export class firebaseUserRelationsService implements IUserRelations {
         const response = await this.updateRelations(myId, 'following', unfollowUserId, false);
         if (response.success) {
             await this.updateRelations(unfollowUserId, 'followers', myId, false);
+            await this.decrementFollowerFollowingCount(unfollowUserId, 'followersCount');
+            await this.decrementFollowerFollowingCount(myId, 'followingCount');
+            console.log('Updated followers and following counts after unfollowing');
         }
         return response;
     }

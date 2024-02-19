@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Image, Placeholder } from 'semantic-ui-react';
 import { User } from '@models/user/user';
-import { getDefaultAvatarImage } from '@constants/constants';
+import { getDefaultAvatarImage, LOCAL_DEFAULT_AVATAR_IMAGE } from '@constants/constants';
 
 interface ImgProps {
     userDetails: User | null;
@@ -26,20 +26,27 @@ const Img: React.FC<ImgProps> = ({ userDetails, size = "tiny", onLoaded }) => {
 
     const handleImageLoaded = () => {
         setIsLoading(false);
-        onLoaded();
-    }
+        // Check if onLoaded is a function before calling it
+        if (typeof onLoaded === 'function') {
+            onLoaded();
+        }
+    };
 
     return (
         <div className={`relative rounded-full overflow-hidden ${sizeClasses}`}>
             {isLoading && (
-                <Placeholder className={`absolute inset-0 rounded-full ${sizeClasses}`}>
-                    <Placeholder.Image />
-                </Placeholder>
+                <Image
+                    src={LOCAL_DEFAULT_AVATAR_IMAGE}
+                    alt="Loading..."
+                    className="absolute w-full h-full object-cover rounded-full"
+                    style={isLoading ? {display: 'inline'} : {display: 'none'} }
+                />
             )}
             <Image
                 src={avatarSrc}
                 alt={altText}
-                className={`absolute w-full h-full object-cover rounded-full ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+                className={`absolute w-full h-full object-cover rounded-full`}
+                style={isLoading ? {display: 'none'} : {display: 'inline'} }
                 onLoad={handleImageLoaded}
             />
         </div>

@@ -1,5 +1,5 @@
 export interface User {
-    id: string;                 // Unique identifier for the user
+    userId: string;                 // Unique identifier for the user
     username: string;           // Username for the user
     name: string;               // User's name
     lastname: string;          // User's last name, optional

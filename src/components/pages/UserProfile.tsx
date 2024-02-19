@@ -55,7 +55,7 @@ const UserProfile = () => {
         return null; // Or a loading spinner
     }
 
-    const isViewingOwnProfile = (currentUser && user.id === currentUser.id) || undefined;
+    const isViewingOwnProfile = (currentUser && user.userId === currentUser.userId) || undefined;
 
 
     return (
@@ -63,7 +63,7 @@ const UserProfile = () => {
             <FeedContainer>
                 <UserCard user={user} isEditable={isViewingOwnProfile} />
             </FeedContainer>
-            <UserProfileSelection userId={user.id} />
+            <UserProfileSelection userId={user.userId} />
         </div>
     );
 };

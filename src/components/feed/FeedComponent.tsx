@@ -6,36 +6,47 @@ import FeedContainer from './FeedContainer';
 import { ServiceFactory } from '@services/serviceFactory';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
-import { resetNewRetweet } from '@store/slices/notificationsSlice';
+import { resetNewRetweet, resetNewTweet } from '@store/slices/notificationsSlice';
+import TweetLinePlaceHolder from '@components/feed/TweetLinePlaceHolder';
 
 const FeedComponent = () => {
     const [tweets, setTweets] = useState<Tweet[]>([]);
     const tweetService = ServiceFactory.getTweetService();
     const { newTweet } = useSelector((state: RootState) => state.notifications);
     const dispatch = useDispatch();
-
+    const [isLoading, setIsLoading] = useState(true); // Track loading state
 
 
     useEffect(() => {
-        const fetchTweets = async () => {
-            const tweets = await tweetService.getAllTweets();
-            dispatch(resetNewRetweet());
-            setTweets(tweets);
+            const fetchTweets = async () => {
+                const tweets = await tweetService.getAllTweets();
+                dispatch(resetNewTweet());
+                setTweets(tweets);
+            };
+            fetchTweets();
+            setIsLoading(false);
         }
-        fetchTweets();
-    }
-    , [newTweet]);
+        , [newTweet]);
 
     return (
-        <Feed>
-            {tweets.map((tweet) => (
-                <React.Fragment key={tweet.id}>
-                    <FeedContainer>
-                        <TweetLine tweet={tweet} />
-                    </FeedContainer>
-                </React.Fragment>
-            ))}
-        </Feed>
+        <>
+            <div style={isLoading ? { display: 'block' } : { display: 'none' }}>
+                {Array.from({ length: Math.floor(Math.random() * 5) + 1 }).map((_, index) =>
+                    <TweetLinePlaceHolder key={index} />)}
+            </div>
+
+            <div style={isLoading ? { display: 'none' } : { display: 'block' }}>
+            <Feed>
+                {tweets.map((tweet) => (
+                    <React.Fragment key={tweet.postId}>
+                        <FeedContainer>
+                            <TweetLine tweet={tweet} />
+                        </FeedContainer>
+                    </React.Fragment>
+                ))}
+            </Feed>
+            </div>
+        </>
     );
 
 };

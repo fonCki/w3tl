@@ -10,7 +10,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({ tweet }) => {
     const navigate = useNavigate();
 
     const navigateToPost = () => {
-        navigate(`/post/${tweet.id}`);
+        navigate(`/post/${tweet.postId}`);
     };
 
     return (

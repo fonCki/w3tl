@@ -2,4 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes dotFlashing {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+}
 
+.dot-flashing-1 {
+    animation: dotFlashing 1s infinite;
+}
+
+.dot-flashing-2 {
+    animation: dotFlashing 1s infinite;
+    animation-delay: 0.2s;
+}
+
+.dot-flashing-3 {
+    animation: dotFlashing 1s infinite;
+    animation-delay: 0.4s;
+}
+
+
+.scrollbar-hide {
+    --webkit-scrollbar {
+        display: none;
+    }
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+}

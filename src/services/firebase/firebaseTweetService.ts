@@ -2,6 +2,7 @@
 import { db } from '@services/firebase/config/firebaseConfig';
 import {
     collection,
+    collectionGroup,
     query as firebaseQuery,
     orderBy,
     where,
@@ -13,10 +14,11 @@ import {
 import { ITweetService } from '@interfaces/ITweetService';
 import { Tweet } from '@models/tweet';
 import { firebaseUserService } from '@services/firebase/firebaseUserService';
-
-import { types } from 'sass';
-import Error = types.Error;
 import { UserRelations } from '@models/user/userRelations';
+import user from '@components/user/profile/User';
+
+
+
 
 export class firebaseTweetService implements ITweetService {
     private userService: firebaseUserService;
@@ -38,7 +40,7 @@ export class firebaseTweetService implements ITweetService {
         if (!user) {
             throw new Error('User not found');
         }
-        return this.getTweetsByUserId(user.id);
+        return this.getTweetsByUserId(user.userId);
     }
 
     async getAllTweets(): Promise<Tweet[]> {
@@ -46,7 +48,7 @@ export class firebaseTweetService implements ITweetService {
         // Create a query against the collection, ordering by createdAt descending
         const q = firebaseQuery(tweetsRef, orderBy('createdAt', 'desc'));
         const querySnapshot = await getDocs(q);
-        return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }) as Tweet);
+        return querySnapshot.docs.map(doc => ({ userId: doc.id, ...doc.data() }) as Tweet);
     }
 
     async searchTweets(query: string): Promise<Tweet[]> {
@@ -69,9 +71,12 @@ export class firebaseTweetService implements ITweetService {
     }
 
 
-    async getTweetById(tweetId: string): Promise<Tweet | null> {
-        const tweetDocRef = doc(db, 'tweets', tweetId);
+    async getTweetById(postId: string): Promise<Tweet | null> {
+        console.log('postId', postId);
+        const tweetDocRef = doc(db, 'tweets', postId);
+        console.log('tweetDocRef', tweetDocRef);
         const tweetDoc = await getDoc(tweetDocRef);
+        console.log('tweetDoc', tweetDoc);
         if (tweetDoc.exists()) {
             return tweetDoc.data() as Tweet;
         }
@@ -127,21 +132,40 @@ export class firebaseTweetService implements ITweetService {
         return false;
     }
 
-    async isTweetRetweetedByUser(tweetId: string, userId: string): Promise<boolean> {
+    async isTweetRetweetedByUser(userId: string, tweetId: string): Promise<boolean> {
         // Implementation depends on your database schema
         throw new Error('Method not implemented.');
     }
 
-    getAllRepliesByTweetId(tweetId: string): Promise<any[]> {
-        return Promise.resolve([]);
+    async isTweetCommentedByUser(userId: string, tweetId: string): Promise<boolean> {
+        try {
+            const commentsCollectionRef = collection(db, 'tweets', tweetId, 'comments');
+            const querySnapshot = await getDocs(firebaseQuery(commentsCollectionRef, where('userId', '==', userId)));
+
+            console.log(`Querying comments for tweetId: ${tweetId}, userId: ${userId}`);
+            console.log(`Found ${querySnapshot.docs.length} comments by the user.`);
+
+            querySnapshot.docs.forEach(doc => {
+                console.log(doc.id, " => ", doc.data());
+            });
+
+            return !querySnapshot.empty;
+        } catch (error: any) {
+            console.error('Error checking if user commented on tweet:', error);
+            throw new Error(error.message);
+        }
     }
 
-    getAllRepliesByUserId(userId: string): Promise<any[]> {
-        return Promise.resolve([]);
-    }
 
-    getAllTweetsThatUserComments(userId: string): Promise<any[]> {
-        return Promise.resolve([]);
+
+    async isTweetHighlightedByUser(userId: string, tweetId: string): Promise<boolean> {
+        const userRelationsRef = doc(db, 'userRelations', userId);
+        const docSnap = await getDoc(userRelationsRef);
+        if (docSnap.exists()) {
+            const userRelations = docSnap.data();
+            return userRelations.highlightedTweetIds && userRelations.highlightedTweetIds.includes(tweetId);
+        }
+        return false;
     }
 
     async getAllTweetsThatUserLikes(userId: string): Promise<Tweet[]> {
@@ -168,21 +192,6 @@ export class firebaseTweetService implements ITweetService {
     }
 
 
-    getAllTweetsThatUserRetweets(userId: string): Promise<any[]> {
-        return Promise.resolve([]);
-    }
-
-    getHowManyRepliesByTweetId(tweetId: string): Promise<number> {
-        return Promise.resolve(0);
-    }
-
-    getReplyById(replyId: string): Promise<any> {
-        return Promise.resolve(undefined);
-    }
-
-    isTweetCommentedByUser(tweetId: string, userId: string): Promise<boolean> {
-        return Promise.resolve(false);
-    }
 
     async getTweetLikesCount(tweetId: string): Promise<number> {
         const tweetRef = doc(db, 'tweets', tweetId);
@@ -195,13 +204,41 @@ export class firebaseTweetService implements ITweetService {
     }
 
 
-    async isTweetHighlightedByUser(userId: string, tweetId: string): Promise<boolean> {
-        const userRelationsRef = doc(db, 'userRelations', userId);
-        const docSnap = await getDoc(userRelationsRef);
-        if (docSnap.exists()) {
-            const userRelations = docSnap.data();
-            return userRelations.highlightedTweetIds && userRelations.highlightedTweetIds.includes(tweetId);
-        }
-        return false;
+    async getAllCommentsByTweetId(tweetId: string): Promise<any[]> {
+        const commentsRef = collection(db, 'tweets', tweetId, 'comments');
+        // Query comments sorted by the 'createdAt' field in ascending order
+        const q = firebaseQuery(commentsRef, orderBy('createdAt', 'asc'));
+        const querySnapshot = await getDocs(q);
+        return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     }
+
+
+    async getAllCommentsByUserId(userId: string): Promise<any[]> {
+        const commentsRef = collectionGroup(db, 'comments'); // Use collectionGroup to query across all 'comments' collections in the database
+        const q = firebaseQuery(commentsRef, where("userId", "==", userId));
+        const querySnapshot = await getDocs(q);
+        return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    }
+
+
+    getAllTweetsThatUserRetweets(userId: string): Promise<any[]> {
+        return Promise.resolve([]);
+    }
+
+    getCommentById(replyId: string): Promise<any> {
+        return Promise.resolve(undefined);
+    }
+
+    async getHowManyCommentsByTweetId(tweetId: string): Promise<number> {
+        const tweetRef = doc(db, 'tweets', tweetId);
+        const docSnap = await getDoc(tweetRef);
+        if (docSnap.exists()) {
+            const tweet = docSnap.data() as Tweet;
+            return tweet.comments;
+        }
+        return 0;
+    }
+
+
+
 }

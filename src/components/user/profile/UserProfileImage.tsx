@@ -24,10 +24,10 @@ const UserProfileImage: React.FC<{ user: User; isEditable: boolean }> = ({ user,
         const file = event.target.files?.[0];
         if (file) {
             dispatch(setUserLoading(true));
-            const result = await userProfileService.updateProfilePicture(user.id, file);
+            const result = await userProfileService.updateProfilePicture(user.userId, file);
             if (result.success && result.downloadURL) {
                 console.log('Profile picture updated successfully.');
-                const fetchedUser = await userService.getUserById(user.id);
+                const fetchedUser = await userService.getUserById(user.userId);
                 dispatch(setCurrentUser({ ...fetchedUser!, avatar: result.downloadURL })); // Update the avatar URL in the Redux store
                 setAvatarUrl(result.downloadURL); // Update the avatar URL in the component's state
                 dispatch(setUserLoading(false));

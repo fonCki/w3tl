@@ -50,11 +50,11 @@ export const ReduxStateDisplay: React.FC = () => {
             onMouseMove={onMouseMove}
         >
             <h3>Redux State Display</h3>
-            <pre>User State: {JSON.stringify(userState, null, 2)}</pre>
+            {/*<pre>User State: {JSON.stringify(userState, null, 2)}</pre>*/}
             {/*<pre>Menu Statine: {JSON.stringify(menuState, null, 2)}</pre>*/}
             {/*<pre>Loading State: {JSON.stringify(loadingState, null, 2)}</pre>*/}
             {/*<pre>Search State: {JSON.stringify(searchState, null, 2)}</pre>*/}
-            {/*<pre>Notifications State: {JSON.stringify(notificationsState, null, 2)}</pre>*/}
+            <pre>Notifications State: {JSON.stringify(notificationsState, null, 2)}</pre>
             {/* Display other states here if needed */}
         </div>
     );

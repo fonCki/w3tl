@@ -17,6 +17,7 @@ const TweetInput: React.FC<TweetInputProps> = ({ onTweetPost }) => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
     const tweetActionService = new FirebaseTweetActionService();
+    const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
 
     const handlePostChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -28,11 +29,12 @@ const TweetInput: React.FC<TweetInputProps> = ({ onTweetPost }) => {
             console.error('No user logged in');
             return;
         }
+        setIsLoading(true); // Start loading
         try {
             //create a new tweet
             const newTweet= {
                 content: postContent,
-                userId: currentUser.id,
+                userId: currentUser.userId,
                 createdAt: new Date().toISOString(),
                 likes: 0,
                 retweets: 0,
@@ -43,7 +45,7 @@ const TweetInput: React.FC<TweetInputProps> = ({ onTweetPost }) => {
             });
 
             if (result.success) {
-                console.log('Tweet posted successfully:', result.tweetId);
+                console.log('Tweet posted successfully:', result.postId);
                 dispatch(setNewTweet(true));
                 onTweetPost(true, 'Tweet posted successfully');
             } else {
@@ -55,7 +57,7 @@ const TweetInput: React.FC<TweetInputProps> = ({ onTweetPost }) => {
             //TODO
             onTweetPost(false, "error");
         }
-
+        setIsLoading(false); // End loading
         setPostContent(''); // Clear the input after submit
     };
 
@@ -74,7 +76,7 @@ const TweetInput: React.FC<TweetInputProps> = ({ onTweetPost }) => {
 
         <div className="p-4">
             <div className="flex items-start  space-x-4 ">
-                    <Img userDetails={currentUser} size="small" />
+                    <Img userDetails={currentUser} size="small" onLoaded={() => {}} />
                 <textarea
                     className="flex-1 border border-gray-300 rounded-lg p-2 resize-none"
                     placeholder="What is happening?"
@@ -118,12 +120,22 @@ const TweetInput: React.FC<TweetInputProps> = ({ onTweetPost }) => {
                     <span className="material-icons text-gray-700 text-xl">place</span>
                 </div>
                 <button
-                    className="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded-full disabled:opacity-50"
+                    className="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded-full disabled:opacity-50 flex items-center justify-center h-10"
                     onClick={handlePostSubmit}
-                    disabled={!postContent || postContent.length >= MAX_TWEET_LENGTH}
+                    disabled={!postContent || postContent.length >= MAX_TWEET_LENGTH || isLoading}
                 >
-                    Post
+                    {isLoading ? (
+                        <div className="flex space-x-1">
+                            <div className="h-2 w-2 bg-white rounded-full dot-flashing-1"></div>
+                            <div className="h-2 w-2 bg-white rounded-full dot-flashing-2"></div>
+                            <div className="h-2 w-2 bg-white rounded-full dot-flashing-3"></div>
+                        </div>
+                    ) : (
+                        <span className="h-4 flex items-center">Post</span> // Ensure the text occupies a similar vertical space as the dots
+                    )}
                 </button>
+
+
             </div>
         </div>
     );

@@ -1,27 +1,26 @@
 export interface ITweetService {
     // GET METHODS
     getAllTweets(): Promise<any[]>;
-    getTweetById(tweetId: string): Promise<any>;
+    getTweetById(postId: string): Promise<any>;
     getTweetsByUserId(userId: string): Promise<any[]>;
     getTweetsByUserNickname(userNickname: string): Promise<any[]>;
     getTweetsWithMedia(): Promise<any[]>;
     getAllTweetsThatUserLikes(userId: string): Promise<any[]>;
     getAllTweetsThatUserRetweets(userId: string): Promise<any[]>;
-    getAllTweetsThatUserComments(userId: string): Promise<any[]>;
     getAllTweetsThatUserHighlights(userId: string): Promise<any[]>;
+    getTweetLikesCount(tweetId: string): Promise<number>;
 
     searchTweets(query: string): Promise<any[]>;
     searchTweetsWithLimit(query: string, limit: number): Promise<any[]>;
 
-    isTweetLikedByUser(tweetId: string, userId: string): Promise<boolean>;
-    isTweetRetweetedByUser(tweetId: string, userId: string): Promise<boolean>;
-    isTweetCommentedByUser(tweetId: string, userId: string): Promise<boolean>;
-    isTweetHighlightedByUser(tweetId: string, userId: string): Promise<boolean>;
+    isTweetLikedByUser(userId: string, tweetId: string): Promise<boolean>;
+    isTweetRetweetedByUser(userId: string, tweetId: string): Promise<boolean>;
+    isTweetCommentedByUser(userId: string, tweetId: string): Promise<boolean>;
+    isTweetHighlightedByUser(userId: string, tweetId: string): Promise<boolean>;
 
-    getReplyById(replyId: string): Promise<any>;
-    getAllRepliesByTweetId(tweetId: string): Promise<any[]>;
-    getHowManyRepliesByTweetId(tweetId: string): Promise<number>;
-    getAllRepliesByUserId(userId: string): Promise<any[]>;
-    getTweetLikesCount(tweetId: string): Promise<number>;
+    getCommentById(replyId: string): Promise<any>;
+    getAllCommentsByTweetId(tweetId: string): Promise<any[]>;
+    getHowManyCommentsByTweetId(tweetId: string): Promise<number>;
+    getAllCommentsByUserId(userId: string): Promise<any[]>;
 }
 

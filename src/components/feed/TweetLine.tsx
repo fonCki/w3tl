@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import { ServiceFactory } from '@services/serviceFactory';
 import { defaultUser } from '@models/defaults';
 import TweetLinePlaceHolder from '@components/feed/TweetLinePlaceHolder';
+import { useScreenSize } from '@hooks/useScreenSize';
 
 
 interface TweetLineProps {
@@ -26,6 +27,16 @@ const TweetLine: React.FC<TweetLineProps> = ({ tweet, highlightQuery }) => {
     const [user, setUser] = useState(defaultUser); // Assuming you might want to use the fetched user data
     const userServices = ServiceFactory.getUserService();
     const [postHeaderLoading, setPostHeaderLoading] = useState(true);
+    // Screen size hook to determine device type
+    const { isMobile, isTablet } = useScreenSize();
+
+    // This combines the mobile and tablet checks into a single boolean for easier use
+    const isTouchDevice = isMobile || isTablet;
+
+    // Event handlers modified to be conditionally applied based on device type
+    const handleMouseEnter = () => !isTouchDevice && setShowActions(true);
+    const handleMouseLeave = () => !isTouchDevice && setShowActions(false);
+
 
 
 
@@ -34,6 +45,7 @@ const TweetLine: React.FC<TweetLineProps> = ({ tweet, highlightQuery }) => {
             try {
                 const userData = await userServices.getUserById(tweet.userId);
                 console.log(tweet.userId, "tweet.userId")
+                console.log(tweet.postId, "tweet.postId")
                 setUser(userData!);
                 console.log('User data fetched:', userData);
             } catch (error) {
@@ -59,52 +71,58 @@ const TweetLine: React.FC<TweetLineProps> = ({ tweet, highlightQuery }) => {
         }
     };
 
+    const handleclick = () => {
+        console.log("clicked")
+        console.log(tweet)
+        navigate(`/post/${tweet.postId}`);
+
+    }
+
     return (
         <>
             {/* Placeholder Content - Visible only when isLoading is true */}
             <div style={isLoading ? {display: 'block'} : {display: 'none'} }>
                 <TweetLinePlaceHolder />
             </div>
-
             {/* Final Content - Visible only when isLoading is false */}
             <div style={isLoading ? {display: 'none'} : {display: 'block'} }>
                 <Feed.Event
-                    onMouseEnter={() => setShowActions(true)}
-                    onMouseLeave={() => setShowActions(false)}
-                    className="relative hover:bg-gray-100" // Add relative positioning here
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                    className="relative hover:bg-gray-100"
                 >
                     <div
-                        className="bg-white flex justify-between align-middle w-full p-4 rounded-lg shadow hover:bg-gray-100 ">
-                        <Feed.Label onClick={() => navigate(`/user/${user.username}`)} className="cursor-pointer">
+                        className=" flex justify-between align-middle w-full p-4 rounded-lg ">
+                        <Feed.Label onClick={handleclick} className="cursor-pointer">
                             <div className="w-16 h-16">
                                 <Img userDetails={user} size="small" onLoaded={handlePostHeaderLoaded} />
                             </div>
                         </Feed.Label>
                         <Feed.Content className=" pr-4 pl-4 w-full">
-                            <div className="flex justify-between cursor-pointer">
+                            <div className="flex justify-between cursor-pointer ">
                                 <PostHeader tweetOrReply={tweet} user={user} />
                             </div>
                             <div>
-                                <div className="cursor-pointer" onClick={() => navigate(`/post/${tweet.id}`)}>
-                                    <Feed.Extra className="text-lg w-full mb-4 mt-2 text-justify">
+                                <div className="cursor-pointer" onClick={() => navigate(`/post/${tweet.postId}`)}>
+                                    <Feed.Extra className="text-lg w-full  mt-2 text-justify">
                                         <SpecialContent content={tweet.content} highlightQuery={highlightQuery} />
                                     </Feed.Extra>
                                     {tweet.image && <Media imageUrl={tweet.image} />}
                                     {tweet.video && <Media videoUrl={tweet.video} />}
                                 </div>
                             </div>
-                            <TweetMeta
-                                tweet={tweet}
-                            />
-
                         </Feed.Content>
                         <div className="min-w-8 ">
-                            {showActions && (
-                                <div className="w-full h-full flex-1 justify-between items-center ">
+                            {(showActions || isTouchDevice) && (
+                                <div className="w-full h-full flex-1 justify-between items-center">
                                     <TweetDropdown />
-                                </div>
-                            )}
+                                </div>)}
                         </div>
+                    </div>
+                    <div className=" md:px-16">
+                    <TweetMeta
+                        tweet={tweet}
+                    />
                     </div>
                 </Feed.Event>
             </div>

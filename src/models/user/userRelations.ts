@@ -1,11 +1,14 @@
+import { User } from '@models/user/user';
+import { BaseEntity } from '@models/base';
+
 export interface UserRelations {
-    id: string;                     // User's unique identifier
-    followers: string[];            // Array of user IDs who are followers
-    following: string[];            // Array of user IDs who the user is following
-    blockedUsers: string[];         // Array of user IDs who are blocked
-    mutedUsers: string[];           // Array of user IDs who are muted
-    reportedUsers: string[];        // Array of user IDs who are reported
-    likedTweetIds: string[];        // Array of tweet IDs that the user has liked
-    retweetedTweetIds: string[];    // Array of tweet IDs that the user has retweeted
-    highlightedTweetIds: string[];  // Array of tweet IDs that the user has highlighted
+    userId: string;                     // User's unique identifier
+    followers: User['userId'][];            // Array of user IDs who are followers
+    following: User['userId'][];            // Array of user IDs who the user is following
+    blockedUsers: User['userId'][];         // Array of user IDs who are blocked
+    mutedUsers: User['userId'][];           // Array of user IDs who are muted
+    reportedUsers: User['userId'][];         // Array of user IDs who are reported
+    likedTweetIds: BaseEntity['postId'][];       // Array of tweet IDs that the user has liked
+    retweetedTweetIds: BaseEntity['postId'][]; // Array of tweet IDs that the user has retweeted
+    highlightedTweetIds: BaseEntity['postId'][];  // Array of tweet IDs that the user has highlighted
 }

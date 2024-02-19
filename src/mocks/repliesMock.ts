@@ -1,8 +1,8 @@
-import { Reply } from '@models/reply';
+import { Comment } from '@models/comment';
 import usersMock from '@data/usersNewMock';
 import { defaultUser } from '@models/defaults';
 
-const repliesMock: Reply[] = [
+const repliesMock: Comment[] = [
     {
         "id": "101",
         "user": usersMock.find(u => u?.id === "3") || defaultUser,

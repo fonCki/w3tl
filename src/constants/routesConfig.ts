@@ -38,7 +38,7 @@ export const PROFILE_MENU_ROUTE = '/profile';
 export const PROFILE_FOLLOWERS = '/profile/followers';
 export const MORE_MENU_ROUTE = '/more';
 export const USER_PROFILE_ROUTE = '/user/:username';
-export const POST_ROUTE = '/post/:id';
+export const POST_ROUTE = '/post/:postId';
 export const PAGE_NOT_FOUND_ROUTE = '/404.tsx';
 export const SEARCH_ROUTE = '/search/:query';
 

@@ -25,7 +25,7 @@ const SpecialContent: React.FC<SpecialContentProps> = ({
     const checkUserExists = async (username: string) => {
         if (userCheck[username] !== undefined) return; // Skip if already checked
         const user = await userServices.getUserByUsername(username);
-        setUserCheck(prev => ({ ...prev, [username]: !!user }));
+        // setUserCheck(prev => ({ ...prev, [username]: !!user }));
     };
 
     function handleNavigateToHashtag() {
@@ -101,7 +101,7 @@ const SpecialContent: React.FC<SpecialContentProps> = ({
     if (limitThreeLines) {
         baseStyle.display = '-webkit-box';
         baseStyle.WebkitBoxOrient = 'vertical';
-        baseStyle.WebkitLineClamp = 3; // Adjusted to use the actual prop value
+        baseStyle.WebkitLineClamp = MAX_LINES_CONTENT;
         baseStyle.overflow = 'hidden';
         baseStyle.textOverflow = 'ellipsis';
     }

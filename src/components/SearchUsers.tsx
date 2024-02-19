@@ -32,7 +32,7 @@ const SearchUsers: React.FC<SearchUsersProps> = ({ query }) => {
                 <><FeedTitle title="People" showUser={false} /><FeedContainer>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
                         {users.map(user => (
-                            <div key={user.id} className="flex flex-col">
+                            <div key={user.userId} className="flex flex-col">
                                 <UserSmallAdCard user={user} showWebsite={false} showJoined={false}
                                                  showFollowers={false}
                                                  showLocation={false} />

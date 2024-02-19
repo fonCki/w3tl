@@ -16,7 +16,7 @@ const HeaderDropdown = () => {
         <Dropdown
             trigger={
                 <span className="inline-block p-2">
-                    <Img userDetails={currentUser} />
+                    <Img userDetails={currentUser} onLoaded={() => console.log('Avatar loaded')} />
             </span>
             }
             pointing="top right"
@@ -31,7 +31,7 @@ const HeaderDropdown = () => {
                     {/*<Image src={currentUser?.avatar} avatar />*/}
                     {/*<div className="avatar-container" style={{width: '2rem', height: '2rem'}}>*/}
 
-                    <Img userDetails={currentUser} size="micro" />
+                    <Img userDetails={currentUser} size="micro" onLoaded={() => console.log('Avatar loaded')} />
 
                     <span
                         className="ml-3 block text-xl font-bold truncate text-gray-900">@{currentUser?.username}</span>

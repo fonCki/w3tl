@@ -3,7 +3,7 @@ import FeedContainer from '@components/feed/FeedContainer';
 import TweetLine from '@components/feed/TweetLine';
 import ReplyLine from '@components/feed/reply/ReplyLine';
 import { Tweet } from '@models/tweet';
-import { Reply } from '@models/reply';
+import { Comment } from '@models/comment';
 import { Divider } from 'semantic-ui-react';
 import FeedSpacer from '@components/feed/FeedSpacer';
 import { ServiceFactory } from '@services/serviceFactory';
@@ -15,9 +15,9 @@ interface RepliesTabProps {
 }
 
 const RepliesTab: React.FC<RepliesTabProps> = ({ userId }) => {
-    const [replies, setReplies] = useState<Reply[]>([]);
+    const [replies, setReplies] = useState<Comment[]>([]);
     const [parentTweets, setParentTweets] = useState<Map<string, Tweet>>(new Map());
-    const [groupedReplies, setGroupedReplies] = useState<Map<string, Reply[]>>(new Map());
+    const [groupedReplies, setGroupedReplies] = useState<Map<string, Comment[]>>(new Map());
     const tweetService = ServiceFactory.getTweetService();
     const dispatch = useDispatch();
 
@@ -40,7 +40,7 @@ const RepliesTab: React.FC<RepliesTabProps> = ({ userId }) => {
 
     useEffect(() => {
         // Group replies by parent tweet ID (string)
-        const tempGroupedReplies: Map<string, Reply[]> = new Map();
+        const tempGroupedReplies: Map<string, Comment[]> = new Map();
         replies.forEach((reply) => {
             const parentId = reply.parentTweetId;
             if (parentId) {
@@ -81,7 +81,7 @@ const RepliesTab: React.FC<RepliesTabProps> = ({ userId }) => {
                         <TweetLine tweet={parentTweets.get(parentTweetId)!} />
                     </FeedContainer>
                     {groupedReplies.get(parentTweetId)?.map((reply) => (
-                        <FeedContainer key={reply.id} decoration={false}>
+                        <FeedContainer key={reply.postId} decoration={false}>
                             <ReplyLine reply={reply} />
                         </FeedContainer>
                     ))}

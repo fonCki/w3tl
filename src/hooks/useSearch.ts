@@ -24,14 +24,14 @@ export const useSearch = () => {
 
                 // Transform users and tweets to DataItem format with explicit types
                 const userResults: DataItem[] = users.map((user: User) => ({
-                    id: user.id,
+                    id: user.userId,
                     title: user.username,
                     category: 'user',
                     // other properties as needed
                 }));
 
                 const tweetResults: DataItem[] = tweets.map((tweet: Tweet) => ({
-                    id: tweet.id,
+                    id: tweet.userId,
                     title: tweet.content,
                     category: 'tweet',
                     // other properties as needed

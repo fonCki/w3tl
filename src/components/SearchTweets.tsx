@@ -31,7 +31,7 @@ const SearchTweets: React.FC<SearchTweetsProps> = ({ query }) => {
             {tweets.length > 0 &&
             <><FeedTitle title="Tweets" showUser={false} />
             {tweets.map(tweet => (
-                <FeedContainer key={tweet.id}>
+                <FeedContainer key={tweet.postId}>
                     <TweetLine tweet={tweet} highlightQuery={query} />
                 </FeedContainer>
             ))}

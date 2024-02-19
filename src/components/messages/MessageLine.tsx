@@ -16,7 +16,7 @@ export const MessageLine: React.FC<MessageLineProps> = ({ message, onMessageClic
     };
 
     // Resolve sender details
-    const senderDetails = getUserDetails(message.sender.id);
+    const senderDetails = getUserDetails(message.sender);
 
     // Function to truncate the content
     const truncateContent = (text: string, maxLength: number = 30) => {

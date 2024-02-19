@@ -14,8 +14,6 @@ import {
 import { ITweetActionService } from '@interfaces/ITweetsActionService';
 import { Tweet } from '@models/tweet';
 import { UserRelations } from '@models/user/userRelations';
-import { useSelector } from 'react-redux';
-import { RootState } from '@store/store';
 import { ServiceFactory } from '@services/serviceFactory';
 
 export class FirebaseTweetActionService implements ITweetActionService {
@@ -27,7 +25,7 @@ export class FirebaseTweetActionService implements ITweetActionService {
         if (!docSnapshot.exists()) {
             // Initialize empty user relations
             const newUserRelations: UserRelations = {
-                id: userId,
+                userId: userId,
                 followers: [],
                 following: [],
                 blockedUsers: [],
@@ -40,19 +38,19 @@ export class FirebaseTweetActionService implements ITweetActionService {
             await setDoc(userRelationsRef, newUserRelations);
         }
     }
-    async postTweet(newTweet:any, additionalData: any = {}): Promise<{ success: boolean; tweetId?: string; error?: string }> {
+    async postTweet(newTweet:any, additionalData: any = {}): Promise<{ success: boolean; postId?: string; error?: string }> {
         try {
             // First, add the document without the ID
             const tweetRef = await addDoc(collection(db, 'tweets'), newTweet);
             // Then, update the document to include its ID
-            await updateDoc(tweetRef, { id: tweetRef.id });
-            return { success: true, tweetId: tweetRef.id };
+            await updateDoc(tweetRef, { postId: tweetRef.id });
+            return { success: true, postId: tweetRef.id };
         } catch (error: any) {
             return { success: false, error: error.message };
         }
     }
 
-    async likeTweet(userId: string, tweetId: string): Promise<{ success: boolean; error?: string }> {
+    async likeTweet(userId: string, postId: string): Promise<{ success: boolean; error?: string }> {
         const tweetService = ServiceFactory.getTweetService();
         try {
             await this.ensureUserRelationsDocExists(userId);
@@ -62,7 +60,7 @@ export class FirebaseTweetActionService implements ITweetActionService {
         const batch = writeBatch(db);
         try {
 
-            const tweetRef = doc(db, 'tweets', tweetId);
+            const tweetRef = doc(db, 'tweets', postId);
             const userRelationsRef = doc(db, 'userRelations', userId);
 
             // Get current state of the tweet
@@ -74,7 +72,7 @@ export class FirebaseTweetActionService implements ITweetActionService {
             console.log('tweet', tweet);
 
             // Check if the user already liked the tweet
-            const isLiked = await tweetService.isTweetLikedByUser(userId, tweetId);
+            const isLiked = await tweetService.isTweetLikedByUser(userId, postId);
             console.log('isLiked', isLiked);
             const newLikesCount = isLiked ? tweet.likes - 1 : tweet.likes + 1;
             console.log('newLikesCount', newLikesCount);
@@ -84,9 +82,9 @@ export class FirebaseTweetActionService implements ITweetActionService {
 
             //Update user's liked tweets list
             if (isLiked) {
-                batch.update(userRelationsRef, { likedTweetIds: arrayRemove(tweetId) });
+                batch.update(userRelationsRef, { likedTweetIds: arrayRemove(postId) });
             } else {
-                batch.update(userRelationsRef, { likedTweetIds: arrayUnion(tweetId) });
+                batch.update(userRelationsRef, { likedTweetIds: arrayUnion(postId) });
             }
             // Commit the batch
             await batch.commit();
@@ -103,26 +101,34 @@ export class FirebaseTweetActionService implements ITweetActionService {
         throw new Error('Method not implemented.');
     }
 
-    async commentOnTweet(comment:any): Promise<{ success: boolean; replyId?: string; error?: string }> {
+    async commentOnTweet(comment: any): Promise<{ success: boolean; postId?: string; error?: string }> {
         try {
-            // Create a reference to the 'replies' subcollection under the specific tweet
-            const repliesRef = await addDoc(collection(db, 'comments', comment.tweetId), comment);
-            await updateDoc(repliesRef, { id: repliesRef.id });
-            //update the tweet in th field comment +1
-            const tweetRef = doc(db, 'tweets', comment.tweetId);
-            const docSnap = await getDoc(tweetRef);
-            if (docSnap.exists()) {
-                const tweet = docSnap.data() as Tweet;
-                const newCommentsCount = tweet.comments + 1;
+            // Ensure the path to the nested 'comments' collection correctly references the parent tweet
+            const commentsCollectionRef = collection(db, 'tweets', comment.parentTweetId, 'comments');
+
+            // Add the comment document to the 'comments' subcollection under the specific tweet
+            const commentDocRef = await addDoc(commentsCollectionRef, comment);
+
+            // Optionally, update the comment document with its ID if needed
+            // This step is not always necessary unless you specifically need the comment's ID stored within its document
+            await updateDoc(commentDocRef, { postId: commentDocRef.id });
+
+            // Update the parent tweet's comment count
+            const tweetRef = doc(db, 'tweets', comment.parentTweetId); // Ensure this uses parentTweetId for consistency
+            const tweetDocSnap = await getDoc(tweetRef);
+            if (tweetDocSnap.exists()) {
+                const tweet = tweetDocSnap.data();
+                const newCommentsCount = tweet.comments ? tweet.comments + 1 : 1; // Handle case where 'comments' might not exist yet
                 await updateDoc(tweetRef, { comments: newCommentsCount });
             }
 
-            return { success: true, replyId: repliesRef.id };
+            return { success: true, postId: commentDocRef.id };
         } catch (error: any) {
             console.error('Error posting comment:', error);
             return { success: false, error: error.message };
         }
     }
+
 
     async deleteTweet(tweetId: string): Promise<{ success: boolean; error?: string }> {
         try {

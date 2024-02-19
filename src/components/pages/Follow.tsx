@@ -8,6 +8,7 @@ import FeedContainer from '@components/feed/FeedContainer';
 import { setLoading as setDbLoading } from '@store/slices/loadingSlice';
 import { resetHasNewFollower, resetHasNewFollowing } from '@store/slices/notificationsSlice';
 import TweetLinePlaceHolder from '@components/feed/TweetLinePlaceHolder';
+import UserLinePlaceholder from '@components/UserLinePlaceholder';
 
 const Follow = () => {
     const [users, setUsers] = useState<User[]>([]);
@@ -22,11 +23,11 @@ const Follow = () => {
         const fetchUsers = async () => {
             setIsLoading(true);
             if (activeTab === 'Followers') {
-                const fetchedFollowers = await userRelationService.getFollowersAsUser(currentUser!.id);
+                const fetchedFollowers = await userRelationService.getFollowersAsUser(currentUser!.userId);
                 setUsers(fetchedFollowers);
                 dispatch(resetHasNewFollower());
             } else if (activeTab === 'Following') {
-                const fetchedFollowing = await userRelationService.getFollowingAsUser(currentUser!.id);
+                const fetchedFollowing = await userRelationService.getFollowingAsUser(currentUser!.userId);
                 setUsers(fetchedFollowing);
                 dispatch(resetHasNewFollowing());
             }
@@ -38,11 +39,11 @@ const Follow = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             if (hasNewFollower && activeTab === 'Followers') {
-                const fetchedFollowers = await userRelationService.getFollowersAsUser(currentUser!.id);
+                const fetchedFollowers = await userRelationService.getFollowersAsUser(currentUser!.userId);
                 setUsers(fetchedFollowers);
                 dispatch(resetHasNewFollower());
             } else if (hasNewFollowing && activeTab === 'Following') {
-                const fetchedFollowing = await userRelationService.getFollowingAsUser(currentUser!.id);
+                const fetchedFollowing = await userRelationService.getFollowingAsUser(currentUser!.userId);
                 setUsers(fetchedFollowing);
                 dispatch(resetHasNewFollowing());
             }
@@ -85,10 +86,10 @@ const Follow = () => {
         {/* Placeholder Content - Visible only when isLoading is true */}
             <div style={isLoading ? { display: 'block' } : { display: 'none' }}>
                 {Array.from({ length: Math.floor(Math.random() * 5) + 1 }).map((_, index) =>
-                        <TweetLinePlaceHolder key={index} /> )}
+                        <UserLinePlaceholder key={index} /> )}
             </div>
             <div style={isLoading ? { display: 'none' } : { display: 'block' }}>
-                {users.map(user => <UserLine key={user.id} user={user} />)}
+                {users.map(user => <UserLine key={user.userId} user={user} />)}
             </div>
         </>
     );

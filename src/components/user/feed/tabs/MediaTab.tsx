@@ -44,7 +44,7 @@ const MediaTab: React.FC<MediaTabProps> = ({ userId }) => {
         <FeedContainer>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 p-2">
                 {mediaTweets.map((tweet) => (
-                    <div key={tweet.id}>
+                    <div key={tweet.postId}>
                         {tweet.isValidImage && tweet.image && (
                             <Thumbnail tweet={tweet} />
                         )}

@@ -9,7 +9,7 @@ import { RootState } from '@store/store';
 
 const Bookmarks = () => {
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
-    const myId = currentUser?.id;
+    const myId = currentUser?.userId;
     const title = routes.find(route => route.label === 'Bookmarks')?.label;
     return (
         <div>

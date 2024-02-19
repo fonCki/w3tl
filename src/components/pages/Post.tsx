@@ -4,66 +4,97 @@ import FeedContainer from '@components/feed/FeedContainer';
 import TweetLine from '@components/feed/TweetLine';
 import ReplyLine from '@components/feed/reply/ReplyLine';
 import { Tweet } from '@models/tweet';
-import { Reply } from '@models/reply';
+import { Comment } from '@models/comment';
 import { defaultTweet } from '@models/defaults';
-import ReplyInput from '@components/feed/reply/ReplyInput';
 import { ServiceFactory } from '@services/serviceFactory';
 import { setLoading as setDbLoading } from '@store/slices/loadingSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import ReplyInput from '@components/feed/reply/ReplyInput';
+import { RootState } from '@store/store';
+import { resetNewComment } from '@store/slices/notificationsSlice';
+import TweetLinePlaceHolder from '@components/feed/TweetLinePlaceHolder';
 
 const Post: React.FC = () => {
-    const { id } = useParams<{ id?: string }>();
+    const { postId } = useParams<{ postId?: string }>();
     const [tweet, setTweet] = useState<Tweet>(defaultTweet);
-    const [replies, setReplies] = useState<Reply[]>([]);
+    const [replies, setReplies] = useState<Comment[]>([]);
+    const { newComment } = useSelector((state: RootState) => state.notifications);
     const tweetService = ServiceFactory.getTweetService();
+    const [isLoading, setIsLoading] = useState(true);
     const dispatch = useDispatch();
 
     useEffect(() => {
         window.scrollTo(0, 0);
         // Fetch the tweet by ID
         const fetchTweet = async () => {
-            dispatch(setDbLoading(true));
+            setIsLoading(true);
             try {
-                const fetchedTweet = await tweetService.getTweetById(id!);
+                console.log('Fetching tweet:', postId);
+                const fetchedTweet = await tweetService.getTweetById(postId!);
                 if (fetchedTweet) {
                     console.log('Fetched tweet:', fetchedTweet);
                     setTweet(fetchedTweet);
                 }
             } catch (error) {
                 console.error('Error fetching tweet:', error);
+            } finally {
+                setIsLoading(false);
             }
-            dispatch(setDbLoading(false));
         };
 
         // Fetch replies for the tweet
         const fetchReplies = async () => {
-            dispatch(setDbLoading(true));
+            setIsLoading(true);
             try {
-                const fetchedReplies = await tweetService.getAllRepliesByTweetId(id!);
+                const fetchedReplies = await tweetService.getAllCommentsByTweetId(postId!);
+                setReplies(fetchedReplies);
+            } catch (error) {
+                console.error('Error fetching replies:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchTweet();
+        fetchReplies();
+    }, [postId]); // Dependency on id
+
+    useEffect(() => {
+        // Fetch replies for the tweet
+        const fetchReplies = async () => {
+            try {
+                const fetchedReplies = await tweetService.getAllCommentsByTweetId(postId!);
+                dispatch(resetNewComment());
                 setReplies(fetchedReplies);
             } catch (error) {
                 console.error('Error fetching replies:', error);
             }
         };
-        fetchTweet();
         fetchReplies();
-        dispatch(setDbLoading(false));
-    }, [id]); // Dependency on id
+
+    }, [newComment]);
 
     return (
-        <div>
-            <FeedContainer>
-                <TweetLine tweet={tweet} />
-            </FeedContainer>
-            <FeedContainer>
-                <ReplyInput />
-            </FeedContainer>
-            {replies.map(reply => (
-                <FeedContainer key={reply.id}>
-                    <ReplyLine reply={reply} />
-                </FeedContainer>
-            ))}
-        </div>
+        <>
+            <div style={isLoading ? { display: 'block' } : { display: 'none' }}>
+                {Array.from({ length: Math.floor(Math.random() * 5) + 1 }).map((_, index) =>
+                    <TweetLinePlaceHolder key={index} />)}
+            </div>
+            <div style={isLoading ? { display: 'none' } : { display: 'block' }}>
+                <div>
+                    <FeedContainer>
+                        <TweetLine tweet={tweet!} />
+                    </FeedContainer>
+                    <FeedContainer>
+                        <ReplyInput tweetId={postId!} />
+                    </FeedContainer>
+                    {replies.map(reply => (
+                        <FeedContainer key={reply.postId} decoration={false}>
+                            <ReplyLine reply={reply} />
+                        </FeedContainer>
+                    ))}
+                </div>
+            </div>
+        </>
     );
 };
 

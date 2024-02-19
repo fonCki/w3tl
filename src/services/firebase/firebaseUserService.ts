@@ -62,9 +62,9 @@ export class firebaseUserService implements IUserService {
             for (const doc of querySnapshot.docs) {
                 const user = doc.data() as User;
                 // Check if we've already added this user based on their ID
-                if (!uniqueUserIds.has(user.id)) {
+                if (!uniqueUserIds.has(user.userId)) {
                     users.push(user);
-                    uniqueUserIds.add(user.id);
+                    uniqueUserIds.add(user.userId);
                 }
                 // Early exit if we've reached the limit
                 if (users.length >= limitCount) break;

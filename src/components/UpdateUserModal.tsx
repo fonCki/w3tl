@@ -56,7 +56,7 @@ const UpdateUserModal: React.FC<UpdateUserModalProps> = ({ isOpen, onClose, user
         }
         setLoading(true); // Start loading
         try {
-            const userUpdate: User | undefined = await userServices.getUserById(user.id)
+            const userUpdate: User | undefined = await userServices.getUserById(user.userId)
             if (!userUpdate) {
                 throw new Error('User not found');
             }

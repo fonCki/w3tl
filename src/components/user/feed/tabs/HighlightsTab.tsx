@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
 import { resetNewHighlight } from '@store/slices/notificationsSlice';
 import { setLoading as setDbLoading } from '@store/slices/loadingSlice';
+import TweetLinePlaceHolder from '@components/feed/TweetLinePlaceHolder';
+
 interface HighlightTabProps {
     userId: string;
 }
@@ -16,11 +18,11 @@ const HighlightsTab: React.FC<HighlightTabProps> = ({ userId }) => {
     const tweetService = ServiceFactory.getTweetService();
     const { newHighlight } = useSelector((state: RootState) => state.notifications);
     const dispatch = useDispatch();
+    const [isLoading, setIsLoading] = useState(true); // Track loading state
 
     useEffect(() => {
         const fetchHighs = async () => {
-            dispatch(setDbLoading(true));
-            console.log("fetching highs",newHighlight);
+            console.log('fetching highs', newHighlight);
             try {
                 const high = await tweetService.getAllTweetsThatUserHighlights(userId);
                 if (high) {
@@ -30,19 +32,25 @@ const HighlightsTab: React.FC<HighlightTabProps> = ({ userId }) => {
             } catch (error) {
                 console.error(error);
             }
-            dispatch(setDbLoading(false));
+            setIsLoading(false);
         };
         fetchHighs();
     }, [newHighlight]);
 
     return (
-        <div>
-            {high.map((post) => (
-                <FeedContainer key={post.id}>
-                    <TweetLine tweet={post} />
-                </FeedContainer>
-            ))}
-        </div>
+        <>
+            <div style={isLoading ? { display: 'block' } : { display: 'none' }}>
+                {Array.from({ length: Math.floor(Math.random() * 5) + 1 }).map((_, index) =>
+                    <TweetLinePlaceHolder key={index} />)}
+            </div>
+            <div style={isLoading ? { display: 'none' } : { display: 'block' }}>
+                {high.map((post) => (
+                    <FeedContainer key={post.postId}>
+                        <TweetLine tweet={post} />
+                    </FeedContainer>
+                ))}
+            </div>
+        </>
     );
 };
 

@@ -1,34 +1,63 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Divider, Label } from 'semantic-ui-react';
 import Img from '@components/tools/image/Img';
 import { MAX_COMMENT_LENGTH } from '@constants/constants';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
+import { ServiceFactory } from '@services/serviceFactory';
+import { setNewComment, setNewTweet } from '@store/slices/notificationsSlice';
 
-const TweetInputFeedHeader: React.FC = () => {
+interface ReplyInputProps {
+    tweetId: string; // Correctly defining the interface for props
+}
+
+// Correct functional component declaration
+const ReplyInput: React.FC<ReplyInputProps> = ({ tweetId }) => {
     const [postContent, setPostContent] = useState('');
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
-
+    // Assuming TweetActionService.commentOnTweet is correctly implemented elsewhere
+    const TweetActionService = ServiceFactory.getTweetActionService();
+    const dispatch = useDispatch();
 
     const handlePostChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setPostContent(event.target.value);
     };
 
-    const handlePostSubmit = () => {
-        console.log('Post content:', postContent);
-        // Here you would typically handle the post submission to your backend or state management
-        setPostContent(''); // Clear the input after submit
-    };
+    const handlePostSubmit = async () => {
+        if (!currentUser) {
+            console.error('No user logged in');
+            return;
+        }
+        const replyData = {
+            userId: currentUser.userId,
+            parentTweetId: tweetId,
+            content: postContent,
+            likes: 0,
+            createdAt: new Date().toISOString()// It's better to use Firestore's serverTimestamp for real apps
+        };
 
+        // Assuming TweetActionService.commentOnTweet method exists and returns a promise
+        try {
+            const result = await TweetActionService.commentOnTweet(replyData);
+            if (result.success) {
+                console.log('Comment posted successfully:', result);
+                setPostContent(''); // Clear the input after submit
+                dispatch(setNewComment(true));
 
+            } else {
+                console.error('Error posting comment:', result.error);
+            }
+        } catch (error) {
+            console.error('Error posting comment:', error);
+        }
+    }; // Fixed missing closing bracket
 
     const hasReachedMaxCharacters = postContent.length >= MAX_COMMENT_LENGTH;
-
 
     return (
         <div className="p-4">
             <div className="flex items-center align-middle space-x-4 ">
-                    {currentUser && <Img userDetails={currentUser} size="micro" />}
+                {currentUser && <Img userDetails={currentUser} size="micro" onLoaded={() => {}} />}
                 <textarea
                     className="flex-1 border border-gray-300 rounded-lg p-2 resize-none"
                     placeholder="Post your reply"
@@ -52,9 +81,8 @@ const TweetInputFeedHeader: React.FC = () => {
                     </Label>
                 </div>
             )}
-
         </div>
     );
-}
-export default TweetInputFeedHeader;
+};
 
+export default ReplyInput;

@@ -1,13 +1,10 @@
-import { User } from '@models/user/user';
-export interface Tweet {
-    id: string;
-    userId: User['id'];
-    content: string;
+// src/models/tweet.ts
+import { BaseEntity } from './base';
+
+export interface Tweet extends BaseEntity {
     image?: string;
     video?: string;
     thumbnail?: string | null;
-    likes: number;
     retweets: number;
     comments: number;
-    createdAt: Date;
 }

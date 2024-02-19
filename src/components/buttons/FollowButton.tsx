@@ -20,7 +20,7 @@ const FollowButton: React.FC<FollowButtonProps> = ({ user, blackAndWhite = false
     useEffect(() => {
         const checkIfFollowing = async () => {
             if (currentUser) {
-                const response = await userRelationService.amIFollowing(currentUser.id, user.id);
+                const response = await userRelationService.amIFollowing(currentUser.userId, user.userId);
                 if (!response.error) {
                     setIsFollowing(response.following);
                 } else {
@@ -31,17 +31,17 @@ const FollowButton: React.FC<FollowButtonProps> = ({ user, blackAndWhite = false
         };
 
         checkIfFollowing();
-    }, [currentUser, user.id,]);
+    }, [currentUser, user.userId,]);
 
     const handleFollow = async () => {
         setIsFollowing(true);
-        await userRelationService.followUser(currentUser!.id, user.id);
+        await userRelationService.followUser(currentUser!.userId, user.userId);
         dispatch(setHasNewFollowing(true)); // Update the Redux state
     };
 
     const handleUnfollow = async () => {
         setIsFollowing(false);
-        await userRelationService.unfollowUser(currentUser!.id, user.id);
+        await userRelationService.unfollowUser(currentUser!.userId, user.userId);
         dispatch(setHasNewFollowing(true)); // Update the Redux state
     };
 

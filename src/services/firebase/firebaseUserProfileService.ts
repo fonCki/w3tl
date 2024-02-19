@@ -10,7 +10,7 @@ export class firebaseUserProfileService implements IUserProfileService {
 
     async updateProfile(user: User): Promise<{ success: boolean; user?: User; error?: any }> {
         try {
-            const userDocRef = doc(db, 'users', user.id);
+            const userDocRef = doc(db, 'users', user.userId);
             console.log("userRef",userDocRef);
             console.log("user",user);
             await updateDoc(userDocRef, {...user});

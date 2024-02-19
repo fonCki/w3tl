@@ -9,9 +9,12 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { IAuthService } from '@interfaces/IAuthService';
 import { User } from '@models/user/user';
 import { sendPasswordResetEmail } from 'firebase/auth';
+import { random } from 'lodash';
 
 
 export class firebaseAuthService implements IAuthService {
+    //TODO: Remove this
+    private RandomBoolean: boolean = random(0, 1) === 1;
     async sendPasswordResetEmail(email: string): Promise<void> {
         try {
             await sendPasswordResetEmail(auth, email);
@@ -30,9 +33,9 @@ export class firebaseAuthService implements IAuthService {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const firebaseUser = userCredential.user;
             const newUser: User = {
-                id: firebaseUser.uid,
+                userId: firebaseUser.uid,
                 username,
-                verified: false,
+                verified: this.RandomBoolean,
                 email,
                 name,
                 lastname,

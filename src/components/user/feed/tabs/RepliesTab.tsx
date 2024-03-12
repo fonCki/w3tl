@@ -25,7 +25,8 @@ const RepliesTab: React.FC<RepliesTabProps> = ({ userId }) => {
         const fetchReplies = async () => {
             dispatch(setDbLoading(true));
             try {
-                const replies = await tweetService.getTweetsByUserId(userId);
+                const replies = await tweetService.getAllTweetsThatUserComments(userId);
+                console.log('replies', replies);
                 if (replies) {
                     setReplies(replies);
                 }

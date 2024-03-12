@@ -1,22 +1,26 @@
 import React from 'react';
 import { List, Image } from 'semantic-ui-react';
 import { Message } from '@models/message';
-import usersMock from '@data/Json/usersMocktest.json'; // Import the mock user data
 import { formatDistanceToNow } from 'date-fns';
+import {defaultUser} from '@models/defaults';
+
 
 interface MessageLineProps {
     message: Message;
     onMessageClick: () => void;
 }
 
+const senderDetails = defaultUser;
+
+
 export const MessageLine: React.FC<MessageLineProps> = ({ message, onMessageClick }) => {
     // Function to find user details based on user ID
-    const getUserDetails = (username: number) => {
-        return usersMock.find(user => user.id === username);
-    };
+    // const getUserDetails = (username: number) => {
+    //     return usersMock.find(user => user.id === username);
+    // };
 
     // Resolve sender details
-    const senderDetails = getUserDetails(message.sender);
+    // const senderDetails = getUserDetails(message.sender);
 
     // Function to truncate the content
     const truncateContent = (text: string, maxLength: number = 30) => {

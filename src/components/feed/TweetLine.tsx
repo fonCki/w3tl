@@ -107,8 +107,8 @@ const TweetLine: React.FC<TweetLineProps> = ({ tweet, highlightQuery }) => {
                                     <Feed.Extra className="text-lg w-full  mt-2 text-justify">
                                         <SpecialContent content={tweet.content} highlightQuery={highlightQuery} />
                                     </Feed.Extra>
-                                    {tweet.image && <Media imageUrl={tweet.image} />}
-                                    {tweet.video && <Media videoUrl={tweet.video} />}
+                                    {tweet.mediaType && <Media imageUrl={tweet.mediaUrl} />}
+                                    {/*{tweet.video && <Media videoUrl={tweet.video} />}*/}
                                 </div>
                             </div>
                         </Feed.Content>

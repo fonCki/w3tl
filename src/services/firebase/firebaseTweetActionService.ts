@@ -15,6 +15,7 @@ import { ITweetActionService } from '@interfaces/ITweetsActionService';
 import { Tweet } from '@models/tweet';
 import { UserRelations } from '@models/user/userRelations';
 import { ServiceFactory } from '@services/serviceFactory';
+import { getDownloadURL, getStorage, ref as storageRef, uploadBytesResumable } from 'firebase/storage';
 
 export class FirebaseTweetActionService implements ITweetActionService {
 
@@ -122,6 +123,13 @@ export class FirebaseTweetActionService implements ITweetActionService {
                 await updateDoc(tweetRef, { comments: newCommentsCount });
             }
 
+            const userCommentsRef = collection(db, 'userComments');
+            await addDoc(userCommentsRef, {
+                userId: comment.userId,
+                parentTweetId: comment.parentTweetId,
+                commentId: commentDocRef.id, // Assuming commentDocRef is the reference to the newly added comment
+            });
+
             return { success: true, postId: commentDocRef.id };
         } catch (error: any) {
             console.error('Error posting comment:', error);
@@ -161,6 +169,21 @@ export class FirebaseTweetActionService implements ITweetActionService {
             return { success: true };
         } catch (error: any) {
             console.error('Error highlighting tweet:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async uploadMedia(file: File): Promise<{ success: boolean; downloadURL?: string; error?: string }> {
+        const storage = getStorage();
+        const storagePath = `media/${file.name}`;
+        const imageRef = storageRef(storage, storagePath);
+
+        try {
+            const uploadTaskSnapshot = await uploadBytesResumable(imageRef, file);
+            const downloadURL = await getDownloadURL(uploadTaskSnapshot.ref);
+            return { success: true, downloadURL };
+        } catch (error: any) {
+            console.error('Error uploading media:', error);
             return { success: false, error: error.message };
         }
     }

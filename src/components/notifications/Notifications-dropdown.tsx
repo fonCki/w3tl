@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Dropdown, List } from 'semantic-ui-react';
-import { NotificationLine } from '@components/notifications/Notification-line';
 import { Notification } from '@models/notification';
 import { HeaderButton } from '@components/buttons/HeaderButton';
 import { notificationService } from '@services/notificationService'; // Import the service
@@ -10,14 +9,14 @@ const NotificationsDropdown: React.FC = () => {
 
     useEffect(() => {
         const fetchedNotifications = notificationService.getNotificationsByusername(10      );
-        setNotifications(fetchedNotifications);
+        // setNotifications(fetchedNotifications);
     }, []);
 
     const handleNotificationClick = (id: number) => {
         console.log('Notification clicked:', id);
-        setNotifications(notifications.map(notification =>
-            notification.id === id ? { ...notification, read: true } : notification,
-        ));
+        // setNotifications(notifications.map(notification =>
+        //     // notification.id === id ? { ...notification, read: true } : notification,
+        // ));
     };
 
     const unreadCount = notifications.filter(n => !n.read).length;
@@ -45,15 +44,15 @@ const NotificationsDropdown: React.FC = () => {
                     <h3 className="text-lg font-semibold text-gray-900">Notifications</h3>
                 </div>
                 <div style={{ overflowX: 'auto' }}>
-                    <List relaxed divided>
-                        {notifications.map(notification => (
-                            <NotificationLine
-                                key={notification.id}
-                                notification={notification}
-                                onNotificationClick={() => handleNotificationClick(notification.id)}
-                            />
-                        ))}
-                    </List>
+                    {/*<List relaxed divided>*/}
+                    {/*    {notifications.map(notification => (*/}
+                    {/*        // <NotificationLine*/}
+                    {/*        //     key={notification.id}*/}
+                    {/*        //     notification={notification}*/}
+                    {/*        //     // onNotificationClick={() => handleNotificationClick(notification.id)}*/}
+                    {/*        // />*/}
+                    {/*    ))}*/}
+                    {/*</List>*/}
                 </div>
             </Dropdown.Menu>
         </Dropdown>

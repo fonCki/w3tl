@@ -13,7 +13,7 @@ const TrendingBoard: React.FC = () => {
 
     useEffect(() => {
         const fetchedTrends = trendService.getLastFiveTrends();
-        const mappedTrends = fetchedTrends.map(trend => ({
+        const mappedTrends = fetchedTrends.map((trend: { category: string; hashtag: string; tweetsCount: string; }) => ({
             category: trend.category,
             topic: trend.hashtag,
             posts: trend.tweetsCount

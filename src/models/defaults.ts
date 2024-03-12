@@ -69,8 +69,8 @@ export const defaultTweet: Tweet = {
     userId: defaultUser.userId,
     content: '',
     likes: 0,
-    image: '',
-    video: '',
+    mediaUrl: '',
+    mediaType: '',
     retweets: 0,
     comments: 0,
     createdAt: new Date().toISOString()

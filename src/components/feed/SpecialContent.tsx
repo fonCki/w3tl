@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ServiceFactory } from '@services/serviceFactory';
 
@@ -67,7 +67,7 @@ const SpecialContent: React.FC<SpecialContentProps> = ({
                 }
             }
 
-            let spanStyle: React.CSSProperties = { fontSize: textSize };
+            const spanStyle: React.CSSProperties = { fontSize: textSize };
             if (textStyle === 'italic') spanStyle.fontStyle = 'italic';
             if (textStyle === 'bold') spanStyle.fontWeight = 'bold';
 
@@ -82,7 +82,7 @@ const SpecialContent: React.FC<SpecialContentProps> = ({
                 if (userCheck[username] === undefined) {
                     checkUserExists(username); // Trigger check without waiting
                 }
-                let isUser = userCheck[username];
+                const isUser = userCheck[username];
                 if (isUser) {
                     return <span key={index}
                                  style={spanStyle}

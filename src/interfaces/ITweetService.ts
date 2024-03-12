@@ -8,6 +8,7 @@ export interface ITweetService {
     getAllTweetsThatUserLikes(userId: string): Promise<any[]>;
     getAllTweetsThatUserRetweets(userId: string): Promise<any[]>;
     getAllTweetsThatUserHighlights(userId: string): Promise<any[]>;
+    getAllTweetsThatUserComments(userId: string): Promise<any[]>;
     getTweetLikesCount(tweetId: string): Promise<number>;
 
     searchTweets(query: string): Promise<any[]>;

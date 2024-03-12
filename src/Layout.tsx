@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode } from 'react';
 import Header from '@components/header/Header';
 import Right from '@components/board/Right';
 import 'semantic-ui-css/semantic.min.css';

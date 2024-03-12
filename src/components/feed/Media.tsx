@@ -12,7 +12,7 @@ const Media: React.FC<MediaProps> = ({ imageUrl, videoUrl }) => {
 
     if (videoUrl) {
         const getEmbedVideoUrl = (url: string) => {
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#&?]*).*/;
             const match = url.match(regExp);
 
             if (match && match[2].length === 11) {

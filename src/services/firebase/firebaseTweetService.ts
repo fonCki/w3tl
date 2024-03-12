@@ -122,6 +122,36 @@ export class firebaseTweetService implements ITweetService {
         return allHighlightedTweets;
     }
 
+    async getAllTweetsThatUserComments(userId: string): Promise<any[]> {
+        // Use collectionGroup to query all comments across tweets made by the user
+        const commentsRef = collectionGroup(db, 'userComments');
+        const commentsQuery = firebaseQuery(commentsRef, where('userId', '==', userId));
+        const commentSnapshots = await getDocs(commentsQuery);
+        console.log(`Found ${commentSnapshots.docs.length} comments by the user.`);
+
+        // Extract unique parentTweetIds from comments
+        const uniqueTweetIds = new Set<string>();
+        commentSnapshots.forEach(doc => {
+            const commentData = doc.data();
+            uniqueTweetIds.add(commentData.parentTweetId);
+        });
+
+        // Fetch each unique tweet
+        const tweetsPromises = Array.from(uniqueTweetIds).map(async (tweetId) => {
+            const tweetRef = doc(db, 'tweets', tweetId);
+            const tweetDoc = await getDoc(tweetRef);
+            return tweetDoc.exists() ? tweetDoc.data() : null;
+        });
+
+        // Resolve all tweet fetch promises
+        const tweets = await Promise.all(tweetsPromises);
+
+        // Filter out any null values (in case some tweets weren't found)
+        return tweets.filter(tweet => tweet !== null);
+    }
+
+
+
     async isTweetLikedByUser(userId: string, tweetId: string): Promise<boolean> {
         const userRelationsRef = doc(db, 'userRelations', userId);
         const docSnap = await getDoc(userRelationsRef);
@@ -238,7 +268,5 @@ export class firebaseTweetService implements ITweetService {
         }
         return 0;
     }
-
-
 
 }

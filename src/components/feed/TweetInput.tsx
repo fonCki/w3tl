@@ -12,9 +12,12 @@ import { Tweet } from '@models/tweet';
 interface TweetInputProps {
     onTweetPost: (success: boolean, message?: string) => void;
 }
+
 const TweetInput: React.FC<TweetInputProps> = ({ onTweetPost }) => {
     const [postContent, setPostContent] = useState('');
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [mediaUrl, setMediaUrl] = useState<string | null>(null);
+    const [mediaType, setMediaType] = useState<string | null>(null); // 'image' or 'video'
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
     const tweetActionService = new FirebaseTweetActionService();
     const [isLoading, setIsLoading] = useState(false);
@@ -24,48 +27,71 @@ const TweetInput: React.FC<TweetInputProps> = ({ onTweetPost }) => {
         setPostContent(event.target.value);
     };
 
+    const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files[0]) {
+            const file = event.target.files[0];
+            const fileType = file.type.split('/')[0]; // 'image' or 'video'
+            setSelectedFile(file);
+
+            setIsLoading(true);
+
+            try {
+                const uploadResult = await tweetActionService.uploadMedia(file);
+                if (uploadResult.success) {
+                    setMediaUrl(uploadResult.downloadURL!);
+                    setMediaType(fileType);
+                } else {
+                    onTweetPost(false, 'Error uploading media');
+                }
+            } catch (error) {
+                onTweetPost(false, 'Error uploading media');
+            } finally {
+                setIsLoading(false);
+            }
+        }
+    };
+
     const handlePostSubmit = async () => {
         if (!currentUser) {
             console.error('No user logged in');
             return;
         }
-        setIsLoading(true); // Start loading
+
+        setIsLoading(true);
+
         try {
-            //create a new tweet
-            const newTweet= {
+            const baseTweet = {
                 content: postContent,
                 userId: currentUser.userId,
                 createdAt: new Date().toISOString(),
                 likes: 0,
                 retweets: 0,
                 comments: 0,
-            }
-            const result = await tweetActionService.postTweet(newTweet, {
-                // Add any additional data here, like images or videos
-            });
+            };
+
+            // Only add mediaUrl and mediaType to the tweet if mediaUrl is not null or empty
+            const newTweet = {
+                ...baseTweet,
+                ...(mediaUrl && { mediaUrl, mediaType }), // This adds mediaUrl and mediaType only if mediaUrl is truthy
+            };
+
+
+            const result = await tweetActionService.postTweet(newTweet);
 
             if (result.success) {
-                console.log('Tweet posted successfully:', result.postId);
                 dispatch(setNewTweet(true));
                 onTweetPost(true, 'Tweet posted successfully');
+                setMediaUrl(null); // Reset media URL and type after successful post
+                setMediaType(null);
             } else {
-                console.error('Error posting tweet:', result.error);
-                onTweetPost(false, result.error);
+                onTweetPost(false, result.error || 'Error posting tweet');
             }
         } catch (error) {
-            console.error('Error posting tweet:', error);
-            //TODO
-            onTweetPost(false, "error");
-        }
-        setIsLoading(false); // End loading
-        setPostContent(''); // Clear the input after submit
-    };
-
-
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files && event.target.files[0]) {
-            setSelectedFile(event.target.files[0]);
-            // Here you might want to handle file upload or preview
+            onTweetPost(false, 'Error posting tweet');
+        } finally {
+            setIsLoading(false);
+            setPostContent('');
+            setSelectedFile(null);
         }
     };
 

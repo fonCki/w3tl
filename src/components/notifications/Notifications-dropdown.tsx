@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { Dropdown, List } from 'semantic-ui-react';
+import React, { useState } from 'react';
+import { Dropdown } from 'semantic-ui-react';
 import { Notification } from '@models/notification';
 import { HeaderButton } from '@components/buttons/HeaderButton';
-import { notificationService } from '@services/notificationService'; // Import the service
 
 const NotificationsDropdown: React.FC = () => {
     const [notifications, setNotifications] = useState<Notification[]>([]);
 
-    useEffect(() => {
-        const fetchedNotifications = notificationService.getNotificationsByusername(10      );
-        // setNotifications(fetchedNotifications);
-    }, []);
+    // useEffect(() => {
+    //     const fetchedNotifications = notificationService.getNotificationsByusername(10      );
+    //     // setNotifications(fetchedNotifications);
+    // }, []);
 
     const handleNotificationClick = (id: number) => {
         console.log('Notification clicked:', id);

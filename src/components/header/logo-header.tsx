@@ -25,7 +25,7 @@ export const Logo: React.FC<LogoProps> = ({ size = 'sm' }) => {
     return (
         <div className="cursor-pointer" onClick={() => navigate(`/home`)}>
             <h1 className={`${sizeClass} font-bold text-yellow`}>
-                W<span className="text-cyan-600 ">3</span>TL
+                W<span className="text-cyan-600 ">3</span>7L
             </h1>
         </div>
     );

@@ -33,7 +33,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({ tweet }) => {
                 }}
             >
                 <img
-                    src={tweet.image}
+                    src={tweet.mediaUrl}
                     alt="Tweet Media"
                     className="object-cover w-full h-full"
                     style={{

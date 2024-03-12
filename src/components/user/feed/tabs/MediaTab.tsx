@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import FeedContainer from '@components/feed/FeedContainer';
 import { validateImageUrl, validateVideoUrl } from '@utils/mediaValidator';
 import { Tweet as OriginalTweet } from '@models/tweet';
@@ -45,7 +45,7 @@ const MediaTab: React.FC<MediaTabProps> = ({ userId }) => {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 p-2">
                 {mediaTweets.map((tweet) => (
                     <div key={tweet.postId}>
-                        {tweet.isValidImage && tweet.image && (
+                        {tweet.isValidImage && tweet.mediaUrl && (
                             <Thumbnail tweet={tweet} />
                         )}
                         {/*TODO*/}

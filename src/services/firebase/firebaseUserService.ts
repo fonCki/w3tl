@@ -1,9 +1,9 @@
 // src/services/firebase/FirebaseUserService.ts
 import { db } from '@services/firebase/config/firebaseConfig';
-import { collection, query as firebaseQuery, where, getDocs, doc, getDoc, limit } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, limit, query as firebaseQuery, where } from 'firebase/firestore';
 import { IUserService } from '@interfaces/IUserService';
 import { User } from '@models/user/user';
-import usersMock from '@data/usersNewMock';
+
 
 export class firebaseUserService implements IUserService {
 

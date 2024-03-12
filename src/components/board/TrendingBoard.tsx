@@ -13,10 +13,10 @@ const TrendingBoard: React.FC = () => {
 
     useEffect(() => {
         const fetchedTrends = trendService.getLastFiveTrends();
-        const mappedTrends = fetchedTrends.map((trend: { category: string; hashtag: string; tweetsCount: string; }) => ({
-            category: trend.category,
-            topic: trend.hashtag,
-            posts: trend.tweetsCount
+        const mappedTrends = fetchedTrends.map(({ category, hashtag, tweetsCount }) => ({
+            category: category || 'General', // Default to 'General' if category is undefined
+            topic: hashtag,
+            posts: parseInt(String(tweetsCount), 10), // Assuming tweetsCount should be a number, parse it
         }));
         setTrends(mappedTrends);
     }, []);

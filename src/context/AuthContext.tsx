@@ -1,17 +1,20 @@
 // context/AuthContext.tsx
 import React, { createContext, useContext, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setCurrentUser, setAuthentication, setLoading } from '@store/slices/authSlice';
+import { setAuthentication, setCurrentUser, setLoading } from '@store/slices/authSlice';
 import { ServiceFactory } from '@services/serviceFactory';
 
 interface AuthContextType {
     login: (username: string, password: string) => Promise<void>;
     logout: () => void;
+    loginWithProvider: (provider: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
     login: async () => {},
     logout: () => {},
+    loginWithProvider: async (string) => {
+    },
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -37,7 +40,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const login = async (email: string, password: string) => {
         dispatch(setLoading(true)); // Start global loading
         try {
-            console.log('Logging', email, password);
             const result = await authService.authenticate(email, password);
             console.log('Result:', result);
             if (result.success) {
@@ -53,6 +55,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     };
 
+    const loginWithProvider = async (provider: string) => {
+        dispatch(setLoading(true));
+        try {
+            const result = await authService.authenticateWithProvider(provider);
+            console.log(provider, 'sign-in result:', result);
+            // Update user state and authentication status as necessary
+            dispatch(setCurrentUser(result.user!));
+            dispatch(setAuthentication(true));
+        } catch (error) {
+            // Handle error
+            console.error('Google sign-in error:', error);
+        } finally {
+            dispatch(setLoading(false));
+        }
+    };
+
     const logout = () => {
         setLoading(true); // Start global loading
         authService.logout();
@@ -62,7 +80,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     return (
-        <AuthContext.Provider value={{ login, logout }}>
+        <AuthContext.Provider value={{ login, logout, loginWithProvider }}>
             {children}
         </AuthContext.Provider>
     );

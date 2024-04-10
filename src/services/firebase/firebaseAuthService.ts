@@ -1,20 +1,33 @@
 import { auth, db } from '@services/firebase/config/firebaseConfig';
 import {
+    AuthProvider,
     createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut,
+    GithubAuthProvider,
+    GoogleAuthProvider,
     onAuthStateChanged,
+    sendPasswordResetEmail,
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    signOut,
+    User as FirebaseUser,
 } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { IAuthService } from '@interfaces/IAuthService';
 import { User } from '@models/user/user';
-import { sendPasswordResetEmail } from 'firebase/auth';
 import { random } from 'lodash';
 
+export type ResponseType = {
+    success: boolean;
+    user?: User;
+    token?: string;
+    error?: string;
+};
+
+type enumProvider = 'google' | 'github';
 
 export class firebaseAuthService implements IAuthService {
-    //TODO: Remove this
-    private RandomBoolean: boolean = random(0, 1) === 1;
+    private randomBoolean: boolean = random(0, 1) === 1;
+
     async sendPasswordResetEmail(email: string): Promise<void> {
         try {
             await sendPasswordResetEmail(auth, email);
@@ -24,35 +37,20 @@ export class firebaseAuthService implements IAuthService {
         }
     }
 
-    async createUser(username: string, name: string, lastname: string, email: string, password: string): Promise<{
-        success: boolean;
-        newUser?: User;
-        error?: string
-    }> {
+    async createUser(username: string, name: string, lastname: string, email: string, password: string): Promise<ResponseType> {
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            const firebaseUser = userCredential.user;
-            const newUser: User = {
-                userId: firebaseUser.uid,
+            const newUser = await this.createUserInFirestore(userCredential.user, {
                 username,
-                verified: this.RandomBoolean,
-                email,
                 name,
                 lastname,
-                createdAt: new Date().toISOString(),
-                followersCount: 0,
-                followingCount: 0,
-                bio: '',
-                location: '',
-                website: '',
-                avatar: '',
-                background: '',
-
+                verified: this.randomBoolean,
+            });
+            return {
+                success: true,
+                newUser,
+                token: await userCredential.user.getIdToken(),
             };
-            // Save user details to Firestore
-            const userDocRef = doc(db, 'users', firebaseUser.uid);
-            await setDoc(userDocRef, newUser);
-            return { success: true, newUser };
         } catch (error: any) {
             return { success: false, error: error.message };
         }
@@ -60,16 +58,10 @@ export class firebaseAuthService implements IAuthService {
 
     async getCurrentUser(): Promise<User | undefined> {
         return new Promise((resolve, reject) => {
-            onAuthStateChanged(auth, async (firebaseUser) => {
-                if (firebaseUser) {
-                    const userDocRef = doc(db, 'users', firebaseUser.uid);
-                    const userDoc = await getDoc(userDocRef);
-                    if (userDoc.exists()) {
-                        const userDetails = userDoc.data() as User;
-                        resolve(userDetails);
-                    } else {
-                        reject('User data not found.');
-                    }
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    const userDetails = await this.createUserInFirestore(user);
+                    resolve(userDetails);
                 } else {
                     resolve(undefined);
                 }
@@ -77,43 +69,78 @@ export class firebaseAuthService implements IAuthService {
         });
     }
 
-    async authenticate(email: string, password: string): Promise<{
-        success: boolean;
-        user?: User;
-        token?: string;
-        error?: string
-    }> {
-        console.log('authenticate');
+    async authenticate(email: string, password: string): Promise<ResponseType> {
         try {
-            console.log('username', email);
-            console.log('password', password);
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            const firebaseUser = userCredential.user;
-            console.log('firebaseUser', firebaseUser);
-            if (firebaseUser) {
-                console.log('firebaseUser', firebaseUser);
-                const token = await firebaseUser.getIdToken();
-                console.log('token', token);
-                const userDocRef = doc(db, 'users', firebaseUser.uid);
-                const userDoc = await getDoc(userDocRef);
-                if (userDoc.exists()) {
-                    const userDetails = userDoc.data() as User;
-                    return { success: true, user: userDetails, token };
-                }
-            }
-            return { success: false, error: 'User details not found.' };
+            const userDetails = await this.createUserInFirestore(userCredential.user);
+            const token = await userCredential.user.getIdToken();
+            return { success: true, user: userDetails, token };
         } catch (error: any) {
             return { success: false, error: error.message };
         }
     }
 
+    async authenticateWithProvider(provider: enumProvider): Promise<ResponseType> {
+        let authProvider: AuthProvider;
+        switch (provider) {
+            case 'google':
+                authProvider = new GoogleAuthProvider();
+                break;
+            case 'github':
+                authProvider = new GithubAuthProvider();
+                break;
+            default:
+                throw new Error('Invalid provider');
+        }
+        try {
+            const result = await signInWithPopup(auth, authProvider);
+            const userDetails = await this.createUserInFirestore(result.user);
+            const token = await result.user.getIdToken();
+            return { success: true, user: userDetails, token };
+        } catch (error: any) {
+            console.error('Error during sign-in with provider:', error);
+            return { success: false, error: error.message };
+        }
+    }
 
     isAuthenticated(): Promise<boolean> {
         return new Promise((resolve) => {
-            onAuthStateChanged(auth, (firebaseUser) => {
-                resolve(firebaseUser != null);
+            onAuthStateChanged(auth, (user) => {
+                resolve(!!user);
             });
         });
+    }
+
+    private async createUserInFirestore(firebaseUser: FirebaseUser, additionalData: Partial<User> = {}): Promise<User> {
+        const userRef = doc(db, 'users', firebaseUser.uid);
+        const userSnapshot = await getDoc(userRef);
+        let user: User;
+        console.log('User snapshot:', userSnapshot.exists());
+        console.log(firebaseUser);
+        if (!userSnapshot.exists()) {
+            user = {
+                userId: firebaseUser.uid,
+                username: additionalData.username || firebaseUser.email!.split('@')[0],
+                verified: firebaseUser.emailVerified,
+                email: firebaseUser.email!,
+                name: firebaseUser.displayName?.split(' ')[0] || '',
+                lastname: firebaseUser.displayName?.split(' ')[1] || '',
+                createdAt: new Date().toISOString(),
+                followersCount: 0,
+                followingCount: 0,
+                bio: '',
+                location: '',
+                website: '',
+                avatar: firebaseUser.photoURL || '',
+                background: '',
+                ...additionalData,
+            };
+            await setDoc(userRef, user);
+        } else {
+            user = userSnapshot.data() as User;
+        }
+        console.log('User:', user);
+        return user;
     }
 
     logout(): void {

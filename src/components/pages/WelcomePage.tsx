@@ -8,14 +8,7 @@ import { RootState } from '@store/store';
 import { setLoading } from '@store/slices/authSlice';
 import SignUpModal from '@components/SignUpModal';
 import { Form, Input } from 'semantic-ui-react';
-import {
-    validateEmail,
-    validateLastname,
-    validateName,
-    validatePassword,
-    validateUsername,
-} from '@utils/validationUtils';
-import { ServiceFactory } from '@services/serviceFactory';
+import { validateEmail, validatePassword } from '@utils/validationUtils';
 import ForgotPasswordModal from '@components/ForgotPasswordModal';
 
 const WelcomePage = () => {
@@ -24,7 +17,7 @@ const WelcomePage = () => {
     const [loginError, setLoginError] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] = useState(false);
-    const { login } = useAuth();
+    const { login, loginWithProvider } = useAuth();
     const navigate = useNavigate();
     const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
     const dispatch = useDispatch();
@@ -52,6 +45,20 @@ const WelcomePage = () => {
             navigate('/home');
         } catch (error) {
             console.error('Login/Signup failed:', error);
+            setLoginError('Failed to log in. Please check your credentials.');
+        } finally {
+            dispatch(setLoading(false));
+        }
+    };
+
+    const loginWithSocial = async (provider: string) => {
+        dispatch(setLoading(true));
+        try {
+            await loginWithProvider(provider);
+            console.log('Logged in with', provider);
+            navigate('/home');
+        } catch (error) {
+            console.error('Social login failed:', error);
             setLoginError('Failed to log in. Please check your credentials.');
         } finally {
             dispatch(setLoading(false));
@@ -112,7 +119,10 @@ const WelcomePage = () => {
                             <button
                                 type="button"
                                 className="mt-2 relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-github hover:bg-githubHover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-github"
-                                onClick={(e) => { e.preventDefault(); /* GitHub Login Logic Here */ }}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    loginWithSocial('github');
+                                }}
                             >
                                 <FaGithub className="h-6 w-6 mr-2" />
                                 Connect with GitHub
@@ -120,7 +130,10 @@ const WelcomePage = () => {
                             <button
                                 type="button"
                                 className="mt-2 relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-google hover:bg-googleHover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-google"
-                                onClick={(e) => { e.preventDefault(); /* Google Login Logic Here */ }}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    loginWithSocial('google');
+                                }}
                             >
                                 <FaGoogle className="h-6 w-6 mr-2" />
                                 Connect with Google

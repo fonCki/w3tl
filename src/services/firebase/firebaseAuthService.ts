@@ -15,13 +15,8 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { IAuthService } from '@interfaces/IAuthService';
 import { User } from '@models/user/user';
 import { random } from 'lodash';
+import { ResponseType } from '@models/responseType';
 
-export type ResponseType = {
-    success: boolean;
-    user?: User;
-    token?: string;
-    error?: string;
-};
 
 type enumProvider = 'google' | 'github';
 
@@ -48,7 +43,7 @@ export class firebaseAuthService implements IAuthService {
             });
             return {
                 success: true,
-                newUser,
+                user: newUser,
                 token: await userCredential.user.getIdToken(),
             };
         } catch (error: any) {

@@ -15,6 +15,8 @@ const UserBanner: React.FC<{ user: User; isEditable: boolean }> = ({ user, isEdi
     const userProfileService = ServiceFactory.getUserProfileService();
     const userService = ServiceFactory.getUserService();
     const dispatch = useDispatch();
+    const token = useSelector((state: RootState) => state.auth.token);
+
 
 
     const handleEditClick = () => {
@@ -25,12 +27,12 @@ const UserBanner: React.FC<{ user: User; isEditable: boolean }> = ({ user, isEdi
         const file = event.target.files?.[0];
         if (file) {
             dispatch(setBannerLoading(true));
-            const result = await userProfileService.updateProfileBanner(user.userId, file);
+            const result = await userProfileService.updateProfileBanner(user.userId, file, token!);
             if (result.success && result.downloadURL) { // Now properly typed and checked
                 console.log('Banner updated successfully.');
                 setBannerUrl(result.downloadURL); // Update state with the new URL
                 //fetch the last version of the user from the DB
-                const fetchedUser = await userService.getUserById(user.userId);
+                const fetchedUser = await userService.getUserById(user.userId, token!);
                 dispatch(setCurrentUser({ ...fetchedUser!, background: result.downloadURL })); // Update the user in the global state
                 dispatch(setBannerLoading(false));
             } else {

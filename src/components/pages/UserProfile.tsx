@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store'; // Adjust import path
 
 
-
 const UserProfile = () => {
     const { username } = useParams<{ username?: string }>();
     const [user, setUser] = useState<User | null>(null);
@@ -18,7 +17,7 @@ const UserProfile = () => {
     const userService = ServiceFactory.getUserService();
     const dispatch = useDispatch();
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
-
+    const token = useSelector((state: RootState) => state.auth.token);
 
 
     useEffect(() => {
@@ -30,10 +29,17 @@ const UserProfile = () => {
                 navigate('/404');
                 return;
             }
-
             try {
-                const fetchedUser = await userService.getUserByUsername(username);
+                const fetchedUser = await userService.getUserByUsername(username, token!);
                 if (!fetchedUser) {
+                    const fetchedUser = await userService.getUserByUsername(currentUser!.username, token!);
+                    if (!fetchedUser) {
+                        console.error('User not found');
+                        navigate('/404');
+                    } else {
+                        console.log('User found:', fetchedUser);
+                        setUser(fetchedUser);
+                    }
                     console.error('User not found');
                     navigate('/404');
                 } else {
@@ -41,15 +47,26 @@ const UserProfile = () => {
                     setUser(fetchedUser);
                 }
             } catch (error) {
-                console.error(error);
-                navigate('/404');
+                try {
+                    const fetchedUser = await userService.getUserByUsername(currentUser!.username, token!);
+                    if (!fetchedUser) {
+                        console.error('User not found');
+                        navigate('/404');
+                    } else {
+                        console.log('User found:', fetchedUser);
+                        setUser(fetchedUser);
+                    }
+                } catch (error) {
+                    console.error('Error fetching user:', error);
+                    navigate('/404');
+                }
             } finally {
                 dispatch(setDbLoading(false));
             }
         }
 
         fetchUserDetails();
-    }, [username]);
+    }, [currentUser]);
 
     if (!user) {
         return null; // Or a loading spinner

@@ -1,12 +1,18 @@
 import { auth, db } from '@services/firebase/config/firebaseConfig';
-import { doc, deleteDoc, updateDoc } from 'firebase/firestore';
+import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { deleteUser } from 'firebase/auth';
 import { IUserProfileService } from '@interfaces/IUserProfileService';
-import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { getDownloadURL, getStorage, ref as storageRef, uploadBytesResumable } from 'firebase/storage';
+
 import { User } from '@models/user/user';
+import * as console from 'node:console';
 
 
 export class firebaseUserProfileService implements IUserProfileService {
+
+    createProfile(user: User): Promise<{ success: boolean; user?: User; error?: any }> {
+        return Promise.resolve({ success: false });
+    }
 
     async updateProfile(user: User): Promise<{ success: boolean; user?: User; error?: any }> {
         try {
@@ -75,4 +81,6 @@ export class firebaseUserProfileService implements IUserProfileService {
             return { success: false, error: error.message };
         }
     }
+
+
 }

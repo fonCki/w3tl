@@ -1,5 +1,3 @@
-import { IconType } from 'react-icons';
-
 export const DEFAULT_BACKGROUND_IMAGE: string = "https://source.unsplash.com/random/800x600";
 export const MAX_TWEET_LENGTH: number = 145;
 export const MAX_COMMENT_LENGTH: number = 145;
@@ -13,6 +11,8 @@ export const getDefaultAvatarImage = (username: string): string => {
 
 export const LOCAL_DEFAULT_BANNER_IMAGE: string = "../../src/assets/images/default-banner.png";
 export const LOCAL_DEFAULT_AVATAR_IMAGE: string = "../../src/assets/images/default-avatar.png";
+
+export const BACKEND_URL = 'http://localhost:5253/api';
 
 export const TOGGLE_DELAY_SECONDS = 5;  // Amount of seconds for the delay
 

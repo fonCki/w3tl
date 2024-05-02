@@ -1,7 +1,7 @@
 // context/AuthContext.tsx
 import React, { createContext, useContext, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setAuthentication, setCurrentUser, setLoading } from '@store/slices/authSlice';
+import { setAuthentication, setCurrentUser, setLoading, setUserToken } from '@store/slices/authSlice';
 import { ServiceFactory } from '@services/serviceFactory';
 
 interface AuthContextType {
@@ -25,9 +25,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const checkAuth = async () => {
             dispatch(setLoading(true));
             if (await authService.isAuthenticated()) {
+                //get the token and user data
                 const userData = await authService.getCurrentUser();
+                const token = await authService.getToken();
                 if (userData) {
                     dispatch(setCurrentUser(userData));
+                    dispatch(setUserToken(token));
                     dispatch(setAuthentication(true));
                 }
             }
@@ -44,6 +47,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             console.log('Result:', result);
             if (result.success) {
                 dispatch(setCurrentUser(result.user!));
+                dispatch(setUserToken(result.token!));
                 dispatch(setAuthentication(true));
             } else {
                 throw new Error(result.error || 'Authentication failed');
@@ -62,6 +66,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             console.log(provider, 'sign-in result:', result);
             // Update user state and authentication status as necessary
             dispatch(setCurrentUser(result.user!));
+            dispatch(setUserToken(result.token!));
             dispatch(setAuthentication(true));
         } catch (error) {
             // Handle error
@@ -75,6 +80,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setLoading(true); // Start global loading
         authService.logout();
         dispatch(setCurrentUser(null));
+        dispatch(setUserToken(null));
         dispatch(setAuthentication(false));
         dispatch(setLoading(false));
     };

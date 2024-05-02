@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Button, Form, Input, Message, Dimmer, Loader } from 'semantic-ui-react';
+import { Button, Dimmer, Form, Input, Loader, Message, Modal } from 'semantic-ui-react';
 import { User } from '@models/user/user';
 import useUsernameCheck from '@hooks/useUsernameCheck'; // Adjust this import path
 import { ERROR_MESSAGES } from '@constants/errorMessages';
-import {
-    validateLastname,
-    validateName,
-    validateUsername,
-} from '@utils/validationUtils'; // Adjust this import path
+import { validateLastname, validateName, validateUsername } from '@utils/validationUtils'; // Adjust this import path
 import { ServiceFactory } from '@services/serviceFactory';
 import { setCurrentUser } from '@store/slices/authSlice';
-import { useDispatch } from 'react-redux'; // Adjust this import path
+import { useDispatch, useSelector } from 'react-redux'; // Adjust this import path
 import { useNavigate } from 'react-router-dom';
+import { RootState } from '@store/store';
 
 interface UpdateUserModalProps {
     isOpen: boolean;
@@ -36,12 +33,17 @@ const UpdateUserModal: React.FC<UpdateUserModalProps> = ({ isOpen, onClose, user
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const authToken = useSelector((state: RootState) => state.auth.token);
+
 
     useEffect(() => {
         setIsOriginalUsername(username === user.username);
+
     }, [username, user.username]);
 
     const handleSubmit = async () => {
+
+
         const usernameError = validateUsername(username);
         const nameError = validateName(name);
         const lastnameError = validateLastname(lastname);
@@ -56,16 +58,17 @@ const UpdateUserModal: React.FC<UpdateUserModalProps> = ({ isOpen, onClose, user
         }
         setLoading(true); // Start loading
         try {
-            const userUpdate: User | undefined = await userServices.getUserById(user.userId)
+            const userUpdate: User | undefined = await userServices.getUserById(user.userId, authToken!);
             if (!userUpdate) {
                 throw new Error('User not found');
             }
             const updatedUser = { ...userUpdate, username, name, lastname, bio, location, website };
             console.log('Updating user:', updatedUser);
-            const result = await userProfileService.updateProfile(updatedUser);
+            const result = await userProfileService.updateProfile(updatedUser, authToken!);
+            console.log('Token:', authToken);
+            console.log('Result:', result);
             if (result.success) {
                 dispatch(setCurrentUser(updatedUser!)); // Update the user in the global state
-                navigate(`/user/${updatedUser.username}`);
                 onClose(); // Close the modal after successful update
             } else {
                 throw new Error(result.error);
@@ -118,25 +121,25 @@ const UpdateUserModal: React.FC<UpdateUserModalProps> = ({ isOpen, onClose, user
                     </Form.Field>
                     <Form.Field>
                         <label>Name</label>
-                        <Input placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
+                        <Input placeholder="Name" value={name} onChange={(e) => setName(e.target?.value)} />
                     </Form.Field>
                     <Form.Field>
                         <label>Lastname</label>
-                        <Input placeholder="Lastname" value={lastname} onChange={(e) => setLastname(e.target.value)} />
+                        <Input placeholder="Lastname" value={lastname} onChange={(e) => setLastname(e.target?.value)} />
                     </Form.Field>
                     <Form.Field>
                         <label>Bio</label>
-                        <textarea placeholder="Bio" value={bio} onChange={(e) => setBio(e.target.value)}
+                        <textarea placeholder="Bio" value={bio} onChange={(e) => setBio(e?.target?.value!)}
                                   style={{ resize: 'none', height: '20px' }} />
                     </Form.Field>
                     <Form.Field>
                         <label>Location</label>
-                        <Input placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} />
+                        <Input placeholder="Location" value={location} onChange={(e) => setLocation(e.target?.value)} />
                     </Form.Field>
                     <Form.Field>
                         <label>Website</label>
                         <Input placeholder="Website" type="url" value={website}
-                               onChange={(e) => setWebsite(e.target.value)} />
+                               onChange={(e) => setWebsite(e.target?.value)} />
                     </Form.Field>
                     {errorMessage && <Message negative>{errorMessage}</Message>}
                     <div className="flex justify-end space-x-4">

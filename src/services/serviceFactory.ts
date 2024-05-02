@@ -3,14 +3,14 @@ import { IUserService } from '@interfaces/IUserService';
 import { ITweetService } from '@interfaces/ITweetService';
 import { IAuthService } from '@interfaces/IAuthService';
 import { firebaseAuthService } from '@services/firebase/firebaseAuthService';
-import { firebaseUserService } from '@services/firebase/firebaseUserService';
 import { firebaseTweetService } from '@services/firebase/firebaseTweetService';
 import { IUserProfileService } from '@interfaces/IUserProfileService';
-import { firebaseUserProfileService } from '@services/firebase/firebaseUserProfileService';
 import { IUserRelations } from '@interfaces/IUserRelations';
 import { firebaseUserRelationsService } from '@services/firebase/firebaseUserRelationsService';
 import { ITweetActionService } from '@interfaces/ITweetsActionService';
-import firebaseTweetActionService from '@services/firebase/firebaseTweetActionService';
+import { OnionUserProfileService } from '@services/onion/onionUserProfileService';
+import { OnionUserService } from '@services/onion/onionUserService';
+import { OnionTweetActionService } from '@services/onion/onionTweetActionService';
 
 class ServiceFactory {
     private static authServiceInstance: IAuthService | null = null;
@@ -29,14 +29,14 @@ class ServiceFactory {
 
     static getTweetActionService(): ITweetActionService {
         if (!this.tweetActionServiceInstance) {
-            this.tweetActionServiceInstance = new firebaseTweetActionService();
+            this.tweetActionServiceInstance = new OnionTweetActionService();
         }
         return this.tweetActionServiceInstance;
     }
 
     static getUserService(): IUserService {
         if (!this.userServiceInstance) {
-            this.userServiceInstance = new firebaseUserService();
+            this.userServiceInstance = new OnionUserService();
         }
         return this.userServiceInstance;
     }
@@ -50,7 +50,7 @@ class ServiceFactory {
 
     static getUserProfileService(): IUserProfileService {
         if (!this.userProfileServiceInstance) {
-            this.userProfileServiceInstance = new firebaseUserProfileService();
+            this.userProfileServiceInstance = new OnionUserProfileService();
         }
         return this.userProfileServiceInstance;
     }

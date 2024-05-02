@@ -60,6 +60,7 @@ const WelcomePage = () => {
         } catch (error) {
             console.error('Social login failed:', error);
             setLoginError('Failed to log in. Please check your credentials.');
+            navigate('/');
         } finally {
             dispatch(setLoading(false));
         }

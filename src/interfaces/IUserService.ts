@@ -1,11 +1,15 @@
 import { User } from '@models/user/user';
 
 export interface IUserService {
-    //TODO handle errors
-    getUserById(username: string): Promise<User | undefined>;
-    getUserByUsername(username: string): Promise<User | undefined>;
-    userExists(username: string): Promise<boolean>;
-    getAllUsers(): Promise<User[]>;
-    searchUsers(query: string, limit?: number): Promise<User[]>;
-    getTreandingUsers(top: number): Promise<User[]>;
+    getUserById(uid: string, token: string): Promise<User | undefined>;
+
+    getUserByUsername(username: string, token: string): Promise<User | undefined>;
+
+    userExists(username: string, token: string): Promise<boolean>;
+
+    getAllUsers(token: string): Promise<User[]>;
+
+    searchUsers(query: string, token: string, limit?: number): Promise<User[]>;
+
+    getTrendingUsers(token: string, top: number): Promise<User[]>;
 }

@@ -14,4 +14,5 @@ export interface User {
     followingCount: number;     // Number of users this user is following
     background?: string;        // Background image URL, optional
     pub?: string;                // Public key or identifier for cryptographic purposes
+    token?: string;              // Authentication token
 }

@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Divider, Label } from 'semantic-ui-react';
 import Img from '@components/tools/image/Img';
 import { MAX_TWEET_LENGTH } from '@constants/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
-import FirebaseTweetActionService from '@services/firebase/firebaseTweetActionService';
-import { setNewTweet} from '@store/slices/notificationsSlice';
-import { Tweet } from '@models/tweet';
+import { setNewTweet } from '@store/slices/notificationsSlice';
+import { ServiceFactory } from '@services/serviceFactory';
 
 
 interface TweetInputProps {
@@ -19,7 +18,10 @@ const TweetInput: React.FC<TweetInputProps> = ({ onTweetPost }) => {
     const [mediaUrl, setMediaUrl] = useState<string | null>(null);
     const [mediaType, setMediaType] = useState<string | null>(null); // 'image' or 'video'
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
-    const tweetActionService = new FirebaseTweetActionService();
+    const token = useSelector((state: RootState) => state.auth.token);
+
+    const userService = ServiceFactory.getTweetActionService();
+
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
 
@@ -36,7 +38,7 @@ const TweetInput: React.FC<TweetInputProps> = ({ onTweetPost }) => {
             setIsLoading(true);
 
             try {
-                const uploadResult = await tweetActionService.uploadMedia(file);
+                const uploadResult = await userService.uploadMedia(file, token!);
                 if (uploadResult.success) {
                     setMediaUrl(uploadResult.downloadURL!);
                     setMediaType(fileType);
@@ -76,7 +78,7 @@ const TweetInput: React.FC<TweetInputProps> = ({ onTweetPost }) => {
             };
 
 
-            const result = await tweetActionService.postTweet(newTweet);
+            const result = await userService.postTweet(newTweet, token!);
 
             if (result.success) {
                 dispatch(setNewTweet(true));

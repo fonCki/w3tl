@@ -4,17 +4,18 @@ import 'semantic-ui-css/semantic.min.css';
 import AppRoutes from './routes/AppRoutes'; // Adjust the path as necessary
 import { Provider } from 'react-redux';
 import store from '@store/store';
-import 'primereact/resources/themes/saga-blue/theme.css';  //theme
+import 'primereact/resources/themes/saga-blue/theme.css'; //theme
 import 'primereact/resources/primereact.min.css';
 import ScrollToTop from '@components/tools/ScrollTop';
 import { AuthProvider } from './context/AuthContext';
-import { LoadingProvider } from './context/LoadingProvider'; // Import the loading provider
+import { LoadingProvider } from './context/LoadingProvider';
+import { ReduxStateDisplay } from '@components/tools/ReduxStateDisplay'; // Import the loading provider
 
 
 function App() {
     return (
         <Provider store={store}>
-            {/*<ReduxStateDisplay />*/}
+            <ReduxStateDisplay />
             <LoadingProvider>
             {/* Wrap your application layout with AuthProvider */}
             <AuthProvider>

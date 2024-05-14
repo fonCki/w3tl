@@ -17,6 +17,7 @@
     "@reduxjs/toolkit": "^2.0.1",
     "@types/fluent-ffmpeg": "^2.1.24",
     "@types/react-redux": "^7.1.33",
+    "crypto-browserify": "^3.12.0",
     "date-fns": "^3.0.6",
     "firebase": "^10.7.2",
     "gun": "^0.2020.1239",
@@ -37,7 +38,9 @@
     "redux-thunk": "^3.1.0",
     "sea": "^1.0.2",
     "semantic-ui-css": "^2.5.0",
-    "semantic-ui-react": "^2.1.5"
+    "semantic-ui-react": "^2.1.5",
+    "tweetnacl": "^1.0.3",
+    "tweetnacl-util": "^0.15.1"
   },
   "devDependencies": {
     "@codux-boards/react-semantic": "^1.0.4",

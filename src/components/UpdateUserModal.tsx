@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Button, Form, Input, Message, Dimmer, Loader } from 'semantic-ui-react';
+import { Button, Dimmer, Form, Input, Loader, Message, Modal } from 'semantic-ui-react';
 import { User } from '@models/user/user';
 import useUsernameCheck from '@hooks/useUsernameCheck'; // Adjust this import path
 import { ERROR_MESSAGES } from '@constants/errorMessages';
 import {
+    validateBio,
     validateLastname,
+    validateLocation,
     validateName,
     validateUsername,
 } from '@utils/validationUtils'; // Adjust this import path
@@ -45,8 +47,10 @@ const UpdateUserModal: React.FC<UpdateUserModalProps> = ({ isOpen, onClose, user
         const usernameError = validateUsername(username);
         const nameError = validateName(name);
         const lastnameError = validateLastname(lastname);
-        if (usernameError || nameError || lastnameError) {
-            setErrorMessage(usernameError || nameError || lastnameError);
+        const bioError = validateBio(bio!);
+        const locationError = validateLocation(location!);
+        if (usernameError || nameError || lastnameError || bioError || locationError) {
+            setErrorMessage(usernameError || nameError || lastnameError || bioError || locationError);
             return;
         }
 

@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store'; // Adjust import path
 
 
-
 const UserProfile = () => {
     const { username } = useParams<{ username?: string }>();
     const [user, setUser] = useState<User | null>(null);
@@ -49,7 +48,7 @@ const UserProfile = () => {
         }
 
         fetchUserDetails();
-    }, [username]);
+    }, [username, currentUser]);
 
     if (!user) {
         return null; // Or a loading spinner

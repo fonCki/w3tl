@@ -19,6 +19,18 @@ export const validateEmail = (email:string) => {
     return emailRegex.test(email) && email.length > 0 ? '' : ERROR_MESSAGES.emailInvalid;
 };
 
+export const validateLocation = (location: string) => {
+    return location?.length < 100 ? '' : ERROR_MESSAGES.locationTooLong;
+
+};
+
+export const validateBio = (bio: string) => {
+
+    return bio?.length < 500 ? '' : ERROR_MESSAGES.bioTooLong;
+};
+
 export const validatePassword = (password:string) => {
-    return password.length >= 6 ? '' : ERROR_MESSAGES.passwordTooShort;
+    if (password.length < 6) return ERROR_MESSAGES.passwordTooShort;
+    if (password.length > 128) return ERROR_MESSAGES.passwordTooLong;
+    return '';
 };

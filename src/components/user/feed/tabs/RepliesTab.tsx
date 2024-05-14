@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import FeedContainer from '@components/feed/FeedContainer';
 import TweetLine from '@components/feed/TweetLine';
 import ReplyLine from '@components/feed/reply/ReplyLine';
 import { Tweet } from '@models/tweet';
 import { Comment } from '@models/comment';
-import { Divider } from 'semantic-ui-react';
 import FeedSpacer from '@components/feed/FeedSpacer';
 import { ServiceFactory } from '@services/serviceFactory';
 import { setLoading as setDbLoading } from '@store/slices/loadingSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@store/store';
 
 interface RepliesTabProps {
     userId: string;
@@ -20,12 +20,13 @@ const RepliesTab: React.FC<RepliesTabProps> = ({ userId }) => {
     const [groupedReplies, setGroupedReplies] = useState<Map<string, Comment[]>>(new Map());
     const tweetService = ServiceFactory.getTweetService();
     const dispatch = useDispatch();
+    const token = useSelector((state: RootState) => state.auth.token);
 
     useEffect(() => {
         const fetchReplies = async () => {
             dispatch(setDbLoading(true));
             try {
-                const replies = await tweetService.getAllTweetsThatUserComments(userId);
+                const replies = await tweetService.getAllTweetsThatUserComments(userId, token!);
                 console.log('replies', replies);
                 if (replies) {
                     setReplies(replies);
@@ -59,7 +60,7 @@ const RepliesTab: React.FC<RepliesTabProps> = ({ userId }) => {
             const parentTweets: Map<string, Tweet> = new Map();
             for (const parentTweetId of Array.from(tempGroupedReplies.keys())) {
                 try {
-                    const parentTweet = await tweetService.getTweetById(parentTweetId);
+                    const parentTweet = await tweetService.getTweetById(parentTweetId, token!);
                     if (parentTweet) {
                         parentTweets.set(parentTweetId, parentTweet);
                     }

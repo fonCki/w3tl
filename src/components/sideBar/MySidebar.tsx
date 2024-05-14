@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sidebar, Menu, Icon } from 'semantic-ui-react';
+import { Icon, Menu, Sidebar } from 'semantic-ui-react';
 
 interface MySidebarProps {
     visible: boolean;
@@ -42,7 +42,6 @@ export const MySidebar: React.FC<MySidebarProps> = ({ visible, onClose }) => {
                     Followers
                 </Menu.Item>
         </div>
-            {/* Add more menu items as needed */}
         </Sidebar>
     );
 };

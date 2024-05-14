@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import FeedContainer from '@components/feed/FeedContainer';
 import TweetLine from '@components/feed/TweetLine';
@@ -7,7 +7,6 @@ import { Tweet } from '@models/tweet';
 import { Comment } from '@models/comment';
 import { defaultTweet } from '@models/defaults';
 import { ServiceFactory } from '@services/serviceFactory';
-import { setLoading as setDbLoading } from '@store/slices/loadingSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import ReplyInput from '@components/feed/reply/ReplyInput';
 import { RootState } from '@store/store';
@@ -22,6 +21,7 @@ const Post: React.FC = () => {
     const tweetService = ServiceFactory.getTweetService();
     const [isLoading, setIsLoading] = useState(true);
     const dispatch = useDispatch();
+    const token = useSelector((state: RootState) => state.auth.token);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -30,7 +30,7 @@ const Post: React.FC = () => {
             setIsLoading(true);
             try {
                 console.log('Fetching tweet:', postId);
-                const fetchedTweet = await tweetService.getTweetById(postId!);
+                const fetchedTweet = await tweetService.getTweetById(postId!, token!);
                 if (fetchedTweet) {
                     console.log('Fetched tweet:', fetchedTweet);
                     setTweet(fetchedTweet);
@@ -46,7 +46,7 @@ const Post: React.FC = () => {
         const fetchReplies = async () => {
             setIsLoading(true);
             try {
-                const fetchedReplies = await tweetService.getAllCommentsByTweetId(postId!);
+                const fetchedReplies = await tweetService.getAllCommentsByTweetId(postId!, token!);
                 setReplies(fetchedReplies);
             } catch (error) {
                 console.error('Error fetching replies:', error);
@@ -62,7 +62,7 @@ const Post: React.FC = () => {
         // Fetch replies for the tweet
         const fetchReplies = async () => {
             try {
-                const fetchedReplies = await tweetService.getAllCommentsByTweetId(postId!);
+                const fetchedReplies = await tweetService.getAllCommentsByTweetId(postId!, token!);
                 dispatch(resetNewComment());
                 setReplies(fetchedReplies);
             } catch (error) {

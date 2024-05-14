@@ -52,7 +52,6 @@ export class OnionUserProfileService implements IUserProfileService {
         } catch (error) {
             return { success: false, error };
         }
-
     }
 
     async updateProfileBanner(userId: string, file: File, token: string): Promise<{

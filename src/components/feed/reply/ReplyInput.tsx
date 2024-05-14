@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Divider, Label } from 'semantic-ui-react';
+import { Label } from 'semantic-ui-react';
 import Img from '@components/tools/image/Img';
 import { MAX_COMMENT_LENGTH } from '@constants/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
 import { ServiceFactory } from '@services/serviceFactory';
-import { setNewComment, setNewTweet } from '@store/slices/notificationsSlice';
+import { setNewComment } from '@store/slices/notificationsSlice';
 
 interface ReplyInputProps {
     tweetId: string; // Correctly defining the interface for props
@@ -18,6 +18,7 @@ const ReplyInput: React.FC<ReplyInputProps> = ({ tweetId }) => {
     // Assuming TweetActionService.commentOnTweet is correctly implemented elsewhere
     const TweetActionService = ServiceFactory.getTweetActionService();
     const dispatch = useDispatch();
+    const token = useSelector((state: RootState) => state.auth.token);
 
     const handlePostChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setPostContent(event.target.value);
@@ -38,7 +39,7 @@ const ReplyInput: React.FC<ReplyInputProps> = ({ tweetId }) => {
 
         // Assuming TweetActionService.commentOnTweet method exists and returns a promise
         try {
-            const result = await TweetActionService.commentOnTweet(replyData);
+            const result = await TweetActionService.commentOnTweet(replyData, token!);
             if (result.success) {
                 console.log('Comment posted successfully:', result);
                 setPostContent(''); // Clear the input after submit

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import UserCardComponent from '@components/card/UserSmallAdCard';
 import ReusableCard from '@components/board/ReusableCard';
 import { User } from '@models/user/user';
@@ -12,7 +12,7 @@ const WhoToFollow: React.FC = () => {
 
     useEffect(() => {
         const fetchUsers = async () => {
-            const fetchedUsers = await userService.getTreandingUsers(10)
+            const fetchedUsers = await userService.getTrendingUsers(10);
             setUsers(fetchedUsers);
         };
         fetchUsers();

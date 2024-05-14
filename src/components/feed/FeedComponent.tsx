@@ -6,7 +6,7 @@ import FeedContainer from './FeedContainer';
 import { ServiceFactory } from '@services/serviceFactory';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
-import { resetNewRetweet, resetNewTweet } from '@store/slices/notificationsSlice';
+import { resetNewTweet } from '@store/slices/notificationsSlice';
 import TweetLinePlaceHolder from '@components/feed/TweetLinePlaceHolder';
 
 const FeedComponent = () => {
@@ -17,16 +17,23 @@ const FeedComponent = () => {
     const [isLoading, setIsLoading] = useState(true); // Track loading state
 
 
+
     useEffect(() => {
-            const fetchTweets = async () => {
+        const fetchTweets = async () => {
+            try {
                 const tweets = await tweetService.getAllTweets();
                 dispatch(resetNewTweet());
                 setTweets(tweets);
-            };
-            fetchTweets();
-            setIsLoading(false);
-        }
-        , [newTweet]);
+            } catch (error) {
+                console.error('Error fetching tweets:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchTweets();
+    }, [newTweet]);
+
 
     return (
         <>
@@ -48,6 +55,7 @@ const FeedComponent = () => {
             </div>
         </>
     );
+
 
 };
 

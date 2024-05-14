@@ -3,14 +3,14 @@ import { IUserService } from '@interfaces/IUserService';
 import { ITweetService } from '@interfaces/ITweetService';
 import { IAuthService } from '@interfaces/IAuthService';
 import { firebaseAuthService } from '@services/firebase/firebaseAuthService';
-import { firebaseTweetService } from '@services/firebase/firebaseTweetService';
 import { IUserProfileService } from '@interfaces/IUserProfileService';
 import { IUserRelations } from '@interfaces/IUserRelations';
-import { firebaseUserRelationsService } from '@services/firebase/firebaseUserRelationsService';
 import { ITweetActionService } from '@interfaces/ITweetsActionService';
 import { OnionUserProfileService } from '@services/onion/onionUserProfileService';
 import { OnionUserService } from '@services/onion/onionUserService';
 import { OnionTweetActionService } from '@services/onion/onionTweetActionService';
+import { OnionTweetService } from '@services/onion/onionTweetService';
+import { OnionUserRelationsService } from '@services/onion/onionUserRelationsService';
 
 class ServiceFactory {
     private static authServiceInstance: IAuthService | null = null;
@@ -43,7 +43,7 @@ class ServiceFactory {
 
     static getTweetService(): ITweetService {
         if (!this.tweetServiceInstance) {
-            this.tweetServiceInstance = new firebaseTweetService();
+            this.tweetServiceInstance = new OnionTweetService();
         }
         return this.tweetServiceInstance;
     }
@@ -57,7 +57,7 @@ class ServiceFactory {
 
     static getUserRelationsService(): IUserRelations {
         if (!this.userRelationsServiceInstance) {
-            this.userRelationsServiceInstance = new firebaseUserRelationsService();
+            this.userRelationsServiceInstance = new OnionUserRelationsService();
         }
         return this.userRelationsServiceInstance;
     }

@@ -169,4 +169,3 @@ const TweetInput: React.FC<TweetInputProps> = ({ onTweetPost }) => {
     );
 }
 export default TweetInput;
-

@@ -38,9 +38,7 @@
     "redux-thunk": "^3.1.0",
     "sea": "^1.0.2",
     "semantic-ui-css": "^2.5.0",
-    "semantic-ui-react": "^2.1.5",
-    "tweetnacl": "^1.0.3",
-    "tweetnacl-util": "^0.15.1"
+    "semantic-ui-react": "^2.1.5"
   },
   "devDependencies": {
     "@codux-boards/react-semantic": "^1.0.4",

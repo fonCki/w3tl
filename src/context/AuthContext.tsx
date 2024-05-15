@@ -1,11 +1,11 @@
 // context/AuthContext.tsx
 import React, { createContext, useContext, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setAuthentication, setCurrentUser, setLoading } from '@store/slices/authSlice';
+import { clearState, setAuthentication, setCurrentUser, setLoading, setPrivateKey } from '@store/slices/authSlice';
 import { ServiceFactory } from '@services/serviceFactory';
 
 interface AuthContextType {
-    login: (username: string, password: string) => Promise<void>;
+    login: (email: string, password: string) => Promise<void>;
     logout: () => void;
     loginWithProvider: (provider: string) => Promise<void>;
 }
@@ -13,7 +13,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType>({
     login: async () => {},
     logout: () => {},
-    loginWithProvider: async (string) => {
+    loginWithProvider: async () => {
     },
 });
 
@@ -24,18 +24,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     useEffect(() => {
         const checkAuth = async () => {
             dispatch(setLoading(true));
-            if (await authService.isAuthenticated()) {
-                const userData = await authService.getCurrentUser();
-                if (userData) {
-                    dispatch(setCurrentUser(userData));
-                    dispatch(setAuthentication(true));
-                }
+            const result = await authService.getCurrentUser();
+            if (result.success && result.user) {
+                dispatch(setCurrentUser(result.user));
+                dispatch(setAuthentication(true));
+                dispatch(setPrivateKey(result.privateKey || null));
             }
             dispatch(setLoading(false));
         };
 
         checkAuth();
-    }, [dispatch, setLoading]);
+    }, [dispatch]);
 
     const login = async (email: string, password: string) => {
         dispatch(setLoading(true)); // Start global loading
@@ -45,6 +44,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             if (result.success) {
                 dispatch(setCurrentUser(result.user!));
                 dispatch(setAuthentication(true));
+                dispatch(setPrivateKey(result.privateKey || null));
             } else {
                 throw new Error(result.error || 'Authentication failed');
             }
@@ -61,21 +61,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             const result = await authService.authenticateWithProvider(provider);
             console.log(provider, 'sign-in result:', result);
             // Update user state and authentication status as necessary
-            dispatch(setCurrentUser(result.user!));
-            dispatch(setAuthentication(true));
+            if (result.success) {
+                dispatch(setCurrentUser(result.user!));
+                dispatch(setAuthentication(true));
+                dispatch(setPrivateKey(result.privateKey || null));
+            } else {
+                throw new Error(result.error || 'Authentication failed');
+            }
         } catch (error) {
             // Handle error
-            console.error('Google sign-in error:', error);
+            console.error('Provider sign-in error:', error);
+            throw error;
         } finally {
             dispatch(setLoading(false));
         }
     };
 
     const logout = () => {
-        setLoading(true); // Start global loading
+        dispatch(setLoading(true)); // Start global loading
         authService.logout();
-        dispatch(setCurrentUser(null));
-        dispatch(setAuthentication(false));
+        dispatch(clearState());
         dispatch(setLoading(false));
     };
 

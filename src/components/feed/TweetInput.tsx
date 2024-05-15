@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Divider, Label } from 'semantic-ui-react';
 import Img from '@components/tools/image/Img';
 import { MAX_TWEET_LENGTH } from '@constants/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
 import FirebaseTweetActionService from '@services/firebase/firebaseTweetActionService';
-import { setNewTweet} from '@store/slices/notificationsSlice';
-import { Tweet } from '@models/tweet';
-
+import { setNewTweet } from '@store/slices/notificationsSlice';
+import nacl from 'tweetnacl';
+import naclUtil from 'tweetnacl-util';
 
 interface TweetInputProps {
     onTweetPost: (success: boolean, message?: string) => void;
@@ -19,6 +19,7 @@ const TweetInput: React.FC<TweetInputProps> = ({ onTweetPost }) => {
     const [mediaUrl, setMediaUrl] = useState<string | null>(null);
     const [mediaType, setMediaType] = useState<string | null>(null); // 'image' or 'video'
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
+    const privateKey = useSelector((state: RootState) => state.auth.privateKey); // Get private key from state
     const tweetActionService = new FirebaseTweetActionService();
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
@@ -57,6 +58,11 @@ const TweetInput: React.FC<TweetInputProps> = ({ onTweetPost }) => {
             return;
         }
 
+        if (!privateKey) {
+            console.error('No private key available');
+            return;
+        }
+
         setIsLoading(true);
 
         try {
@@ -73,8 +79,15 @@ const TweetInput: React.FC<TweetInputProps> = ({ onTweetPost }) => {
             const newTweet = {
                 ...baseTweet,
                 ...(mediaUrl && { mediaUrl, mediaType }), // This adds mediaUrl and mediaType only if mediaUrl is truthy
+                signature: '', // Initialize the signature field
             };
 
+            // Serialize the tweet object and sign it
+            const tweetString = JSON.stringify(newTweet);
+            const messageUint8 = naclUtil.decodeUTF8(tweetString);
+            const keyUint8 = naclUtil.decodeBase64(privateKey);
+            const signatureUint8 = nacl.sign.detached(messageUint8, keyUint8);
+            newTweet.signature = naclUtil.encodeBase64(signatureUint8); // Add the signature to the tweet
 
             const result = await tweetActionService.postTweet(newTweet);
 
@@ -97,12 +110,11 @@ const TweetInput: React.FC<TweetInputProps> = ({ onTweetPost }) => {
 
     const hasReachedMaxCharacters = postContent.length >= MAX_TWEET_LENGTH;
 
-
     return (
-
         <div className="p-4">
             <div className="flex items-start  space-x-4 ">
-                    <Img userDetails={currentUser} size="small" onLoaded={() => {}} />
+                <Img userDetails={currentUser} size="small" onLoaded={() => {
+                }} />
                 <textarea
                     className="flex-1 border border-gray-300 rounded-lg p-2 resize-none"
                     placeholder="What is happening?"
@@ -115,9 +127,7 @@ const TweetInput: React.FC<TweetInputProps> = ({ onTweetPost }) => {
             <Divider />
             {hasReachedMaxCharacters && (
                 <div className="flex justify-center">
-                <Label color="red">
-                        You've reached the maximum character limit - less is more!
-                    </Label>
+                    <Label color="red">You've reached the maximum character limit - less is more!</Label>
                 </div>
             )}
             <div className="flex justify-between items-center mt-4">
@@ -160,11 +170,9 @@ const TweetInput: React.FC<TweetInputProps> = ({ onTweetPost }) => {
                         <span className="h-4 flex items-center">Post</span> // Ensure the text occupies a similar vertical space as the dots
                     )}
                 </button>
-
-
             </div>
         </div>
     );
-}
-export default TweetInput;
+};
 
+export default TweetInput;

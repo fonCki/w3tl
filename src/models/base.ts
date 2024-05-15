@@ -7,5 +7,6 @@ export interface BaseEntity {
     content: string;
     likes: number;
     createdAt: string;
+    signature: string;
 }
 

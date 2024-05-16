@@ -11,6 +11,8 @@ import { IUserRelations } from '@interfaces/IUserRelations';
 import { firebaseUserRelationsService } from '@services/firebase/firebaseUserRelationsService';
 import { ITweetActionService } from '@interfaces/ITweetsActionService';
 import firebaseTweetActionService from '@services/firebase/firebaseTweetActionService';
+import { IMLService } from '@interfaces/IMLService';
+import { MachineLearningService } from '@services/machineLearningService';
 
 class ServiceFactory {
     private static authServiceInstance: IAuthService | null = null;
@@ -19,6 +21,7 @@ class ServiceFactory {
     private static userProfileServiceInstance: IUserProfileService | null = null;
     private static userRelationsServiceInstance: IUserRelations | null = null;
     private static userServiceInstance: IUserService | null = null;
+    private static machineLearningServiceInstance: IMLService | null = null;
 
     static getAuthService(): IAuthService {
         if (!this.authServiceInstance) {
@@ -60,6 +63,13 @@ class ServiceFactory {
             this.userRelationsServiceInstance = new firebaseUserRelationsService();
         }
         return this.userRelationsServiceInstance;
+    }
+
+    static getMLService(): IMLService {
+        if (!this.machineLearningServiceInstance) {
+            this.machineLearningServiceInstance = new MachineLearningService();
+        }
+        return this.machineLearningServiceInstance;
     }
 }
 

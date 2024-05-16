@@ -1,15 +1,16 @@
 // src/services/firebase/FirebaseTweetActionService.ts
 import { db } from '@services/firebase/config/firebaseConfig';
 import {
-    doc,
     addDoc,
-    deleteDoc,
-    collection,
-    getDoc,
-    arrayUnion,
     arrayRemove,
+    arrayUnion,
+    collection,
+    deleteDoc,
+    doc,
+    getDoc,
+    setDoc,
+    updateDoc,
     writeBatch,
-    updateDoc, setDoc,
 } from 'firebase/firestore';
 import { ITweetActionService } from '@interfaces/ITweetsActionService';
 import { Tweet } from '@models/tweet';
@@ -17,29 +18,14 @@ import { UserRelations } from '@models/user/userRelations';
 import { ServiceFactory } from '@services/serviceFactory';
 import { getDownloadURL, getStorage, ref as storageRef, uploadBytesResumable } from 'firebase/storage';
 
+
 export class FirebaseTweetActionService implements ITweetActionService {
 
-    // Method to ensure that the user relations document exists
-    private async ensureUserRelationsDocExists(userId: string): Promise<void> {
-        const userRelationsRef = doc(db, 'userRelations', userId);
-        const docSnapshot = await getDoc(userRelationsRef);
-        if (!docSnapshot.exists()) {
-            // Initialize empty user relations
-            const newUserRelations: UserRelations = {
-                userId: userId,
-                followers: [],
-                following: [],
-                blockedUsers: [],
-                mutedUsers: [],
-                reportedUsers: [],
-                likedTweetIds: [],
-                retweetedTweetIds: [],
-                highlightedTweetIds: []
-            };
-            await setDoc(userRelationsRef, newUserRelations);
-        }
-    }
-    async postTweet(newTweet:any, additionalData: any = {}): Promise<{ success: boolean; postId?: string; error?: string }> {
+    async postTweet(newTweet: any, additionalData: any = {}): Promise<{
+        success: boolean;
+        postId?: string;
+        error?: string
+    }> {
         try {
             // First, add the document without the ID
             const tweetRef = await addDoc(collection(db, 'tweets'), newTweet);
@@ -49,6 +35,11 @@ export class FirebaseTweetActionService implements ITweetActionService {
         } catch (error: any) {
             return { success: false, error: error.message };
         }
+    }
+
+    checkProfanity(text: string): Promise<{ success: boolean; error?: string }> {
+        //TODO: Implement a profanity filter
+        return Promise.resolve({ success: false });
     }
 
     async likeTweet(userId: string, postId: string): Promise<{ success: boolean; error?: string }> {
@@ -187,6 +178,28 @@ export class FirebaseTweetActionService implements ITweetActionService {
             return { success: false, error: error.message };
         }
     }
+
+    // Method to ensure that the user relations document exists
+    private async ensureUserRelationsDocExists(userId: string): Promise<void> {
+        const userRelationsRef = doc(db, 'userRelations', userId);
+        const docSnapshot = await getDoc(userRelationsRef);
+        if (!docSnapshot.exists()) {
+            // Initialize empty user relations
+            const newUserRelations: UserRelations = {
+                userId: userId,
+                followers: [],
+                following: [],
+                blockedUsers: [],
+                mutedUsers: [],
+                reportedUsers: [],
+                likedTweetIds: [],
+                retweetedTweetIds: [],
+                highlightedTweetIds: [],
+            };
+            await setDoc(userRelationsRef, newUserRelations);
+        }
+    }
 }
 
 export default FirebaseTweetActionService;
+

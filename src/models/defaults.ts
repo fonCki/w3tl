@@ -1,4 +1,3 @@
-
 import { User } from '@models/user/user';
 import { LOCAL_DEFAULT_AVATAR_IMAGE } from '@constants/constants';
 import { Tweet } from '@models/tweet';
@@ -73,7 +72,8 @@ export const defaultTweet: Tweet = {
     mediaType: '',
     retweets: 0,
     comments: 0,
-    createdAt: new Date().toISOString()
+    createdAt: new Date().toISOString(),
+    signature: '',
 };
 //
 // export const defaultUserProfile: UserProfile = {

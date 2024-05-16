@@ -12,7 +12,7 @@ import { firebaseUserRelationsService } from '@services/firebase/firebaseUserRel
 import { ITweetActionService } from '@interfaces/ITweetsActionService';
 import firebaseTweetActionService from '@services/firebase/firebaseTweetActionService';
 import { IMLService } from '@interfaces/IMLService';
-import { MachineLearningService } from '@services/machineLearningService';
+import { PurgoMalumService } from '@services/purgoMalumService';
 
 class ServiceFactory {
     private static authServiceInstance: IAuthService | null = null;
@@ -67,7 +67,7 @@ class ServiceFactory {
 
     static getMLService(): IMLService {
         if (!this.machineLearningServiceInstance) {
-            this.machineLearningServiceInstance = new MachineLearningService();
+            this.machineLearningServiceInstance = new PurgoMalumService();
         }
         return this.machineLearningServiceInstance;
     }

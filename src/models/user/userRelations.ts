@@ -1,6 +1,9 @@
 import { User } from '@models/user/user';
-import { BaseEntity } from '@models/base';
+import { BaseEntity } from '@models/post/base';
 
+/**
+ * The UserRelations interface represents the relationship between a user and other users and tweets.
+ */
 export interface UserRelations {
     userId: string;                     // User's unique identifier
     followers: User['userId'][];            // Array of user IDs who are followers

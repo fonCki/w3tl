@@ -1,7 +1,18 @@
 import React, { ReactNode, useEffect, useState } from 'react';
-import { StickyContainer, Sticky } from 'react-sticky';
+import { Sticky, StickyContainer } from 'react-sticky';
 
 // Define a type for the Sticky child function argument
+/**
+ * Represents the properties of a sticky child component.
+ *
+ * @typedef {Object} StickyChildProps
+ * @property {React.CSSProperties} style - The style to apply to the sticky child component.
+ * @property {boolean} isSticky - Indicates whether the sticky child component is currently sticky.
+ * @property {boolean} wasSticky - Indicates whether the sticky child component was previously sticky.
+ * @property {number} distanceFromTop - The distance of the sticky child component from the top of the scrollable container.
+ * @property {number} distanceFromBottom - The distance of the sticky child component from the bottom of the scrollable container.
+ * @property {number} calculatedHeight - The calculated height of the sticky child component.
+ */
 type StickyChildProps = {
     style: React.CSSProperties;
     isSticky: boolean;
@@ -11,6 +22,14 @@ type StickyChildProps = {
     calculatedHeight: number;
 };
 
+/**
+ * Represents the props for the StickyWrapper component.
+ * @typedef {Object} StickyWrapperProps
+ * @property {'Basic' | 'Relative' | 'Stacked'} mode - The mode of the StickyWrapper component.
+ * @property {ReactNode} children - The children of the StickyWrapper component.
+ * @property {number} [topOffset] - The top offset of the StickyWrapper component.
+ * @property {number} [bottomOffset] - The bottom offset of the StickyWrapper component.
+ */
 type StickyWrapperProps = {
     mode: 'Basic' | 'Relative' | 'Stacked';
     children: ReactNode;
@@ -18,6 +37,16 @@ type StickyWrapperProps = {
     bottomOffset?: number;
 };
 
+/**
+ * Represents a sticky wrapper component in React.
+ * @typedef {import('react').ReactNode} ReactNode
+ * @typedef {import('react').FC} FC
+ * @typedef {Object} StickyWrapperProps
+ * @property {string} mode - The sticky mode ('Basic', 'Relative', or 'Stacked').
+ * @property {ReactNode} children - The child components to be wrapped and made sticky.
+ * @property {number} [topOffset=0] - The offset from the top in pixels when the component is sticky.
+ * @property {number} [bottomOffset=0] - The offset from the bottom in pixels when the component is sticky.
+ */
 const StickyWrapper: React.FC<StickyWrapperProps> = ({ mode, children, topOffset = 0, bottomOffset = 0 }) => {
     const [isScreenLargeEnough, setIsScreenLargeEnough] = useState(window.innerHeight > 650);
 

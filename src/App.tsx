@@ -7,31 +7,16 @@ import store from '@store/store';
 import 'primereact/resources/themes/saga-blue/theme.css'; //theme
 import 'primereact/resources/primereact.min.css';
 import ScrollToTop from '@components/tools/ScrollTop';
-import { AuthProvider } from './context/AuthContext';
-import { LoadingProvider } from './context/LoadingProvider';
+import { AuthProvider } from '@context/AuthContext';
+import { LoadingProvider } from '@context/LoadingProvider';
 
 
+/**
+ * Renders the main application component.
+ *
+ * @returns {React.Component} The main application component.
+ */
 function App() {
-
-
-    //console log
-    // const firebaseConfig = {
-    //     apiKey: import.meta.env.VITE_APP_API_KEY,
-    //     authDomain: import.meta.env.VITE_APP_AUTH_DOMAIN,
-    //     projectId: import.meta.env.VITE_APP_PROJECT_ID,
-    //     storageBucket: import.meta.env.VITE_APP_STORAGE_BUCKET,
-    //     messagingSenderId: import.meta.env.VITE_APP_MESSAGING_SENDER_ID,
-    //     appId: import.meta.env.VITE_APP_APP_ID,
-    //     measurementId: import.meta.env.VITE_APP_MEASUREMENT_ID
-    // };
-
-    console.log('firebaseConfig: ', import.meta.env.VITE_APP_API_KEY);
-    console.log('firebaseConfig: ', import.meta.env.VITE_APP_AUTH_DOMAIN);
-    console.log('firebaseConfig: ', import.meta.env.VITE_APP_PROJECT_ID);
-    console.log('firebaseConfig: ', import.meta.env.VITE_APP_STORAGE_BUCKET);
-    console.log('firebaseConfig: ', import.meta.env.VITE_APP_MESSAGING_SENDER_ID);
-    console.log('firebaseConfig: ', import.meta.env.VITE_APP_APP_ID);
-    console.log('firebaseConfig: ', import.meta.env.VITE_APP_MEASUREMENT_ID);
 
     return (
         <Provider store={store}>

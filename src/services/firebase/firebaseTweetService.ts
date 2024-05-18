@@ -3,23 +3,23 @@ import { db } from '@services/firebase/config/firebaseConfig';
 import {
     collection,
     collectionGroup,
-    query as firebaseQuery,
-    orderBy,
-    where,
-    getDocs,
     doc,
     getDoc,
-    limit
+    getDocs,
+    orderBy,
+    query as firebaseQuery,
+    where,
 } from 'firebase/firestore';
 import { ITweetService } from '@interfaces/ITweetService';
-import { Tweet } from '@models/tweet';
+import { Tweet } from '@models/post/tweet';
 import { firebaseUserService } from '@services/firebase/firebaseUserService';
 import { UserRelations } from '@models/user/userRelations';
-import user from '@components/user/profile/User';
 
 
-
-
+/**
+ * Represents a service for managing tweets in Firebase.
+ * @implements {ITweetService}
+ */
 export class firebaseTweetService implements ITweetService {
     private userService: firebaseUserService;
 
@@ -72,11 +72,8 @@ export class firebaseTweetService implements ITweetService {
 
 
     async getTweetById(postId: string): Promise<Tweet | null> {
-        console.log('postId', postId);
         const tweetDocRef = doc(db, 'tweets', postId);
-        console.log('tweetDocRef', tweetDocRef);
         const tweetDoc = await getDoc(tweetDocRef);
-        console.log('tweetDoc', tweetDoc);
         if (tweetDoc.exists()) {
             return tweetDoc.data() as Tweet;
         }
@@ -99,7 +96,6 @@ export class firebaseTweetService implements ITweetService {
         const userRelationsRef = doc(db, 'userRelations', userId);
         const userDoc = await getDoc(userRelationsRef);
 
-
         if (!userDoc.exists()) {
             console.log('No such document!');
             return [];
@@ -107,7 +103,6 @@ export class firebaseTweetService implements ITweetService {
 
         const userRelations = userDoc.data() as UserRelations;
         const highlightedTweetIds = userRelations.highlightedTweetIds;
-        console.log('highlightedTweetIds', highlightedTweetIds);
 
         const allHighlightedTweets: Tweet[] = [];
 
@@ -127,7 +122,6 @@ export class firebaseTweetService implements ITweetService {
         const commentsRef = collectionGroup(db, 'userComments');
         const commentsQuery = firebaseQuery(commentsRef, where('userId', '==', userId));
         const commentSnapshots = await getDocs(commentsQuery);
-        console.log(`Found ${commentSnapshots.docs.length} comments by the user.`);
 
         // Extract unique parentTweetIds from comments
         const uniqueTweetIds = new Set<string>();
@@ -153,31 +147,49 @@ export class firebaseTweetService implements ITweetService {
 
 
     async isTweetLikedByUser(userId: string, tweetId: string): Promise<boolean> {
-        const userRelationsRef = doc(db, 'userRelations', userId);
-        const docSnap = await getDoc(userRelationsRef);
-        if (docSnap.exists()) {
-            const userRelations = docSnap.data();
-            return userRelations.likedTweetIds && userRelations.likedTweetIds.includes(tweetId);
+        if (!userId || !tweetId) {
+            console.error('Invalid userId or tweetId:', userId, tweetId);
+            return false;
         }
+
+        try {
+            const userRelationsRef = doc(db, 'userRelations', userId);
+            const docSnap = await getDoc(userRelationsRef);
+            if (docSnap.exists()) {
+                const userRelations = docSnap.data();
+                return userRelations.likedTweetIds && userRelations.likedTweetIds.includes(tweetId);
+            }
+        } catch (error: any) {
+            console.error('Error checking if user liked tweet:', error);
+        }
+
         return false;
     }
 
+    // Check if a user has retweeted a specific tweet
     async isTweetRetweetedByUser(userId: string, tweetId: string): Promise<boolean> {
+        if (!userId || !tweetId) {
+            console.error('Invalid userId or tweetId:', userId, tweetId);
+            return false;
+        }
+
         // Implementation depends on your database schema
         throw new Error('Method not implemented.');
     }
 
+    // Check if a user has commented on a specific tweet
     async isTweetCommentedByUser(userId: string, tweetId: string): Promise<boolean> {
+        if (!userId || !tweetId) {
+            console.error('Invalid userId or tweetId:', userId, tweetId);
+            return false; // Return false early if the inputs are invalid.
+        }
+
         try {
             const commentsCollectionRef = collection(db, 'tweets', tweetId, 'comments');
+            if (!commentsCollectionRef) {
+                return false;
+            }
             const querySnapshot = await getDocs(firebaseQuery(commentsCollectionRef, where('userId', '==', userId)));
-
-            console.log(`Querying comments for tweetId: ${tweetId}, userId: ${userId}`);
-            console.log(`Found ${querySnapshot.docs.length} comments by the user.`);
-
-            querySnapshot.docs.forEach(doc => {
-                console.log(doc.id, " => ", doc.data());
-            });
 
             return !querySnapshot.empty;
         } catch (error: any) {
@@ -187,14 +199,24 @@ export class firebaseTweetService implements ITweetService {
     }
 
 
-
+    // Check if a user has highlighted a specific tweet
     async isTweetHighlightedByUser(userId: string, tweetId: string): Promise<boolean> {
-        const userRelationsRef = doc(db, 'userRelations', userId);
-        const docSnap = await getDoc(userRelationsRef);
-        if (docSnap.exists()) {
-            const userRelations = docSnap.data();
-            return userRelations.highlightedTweetIds && userRelations.highlightedTweetIds.includes(tweetId);
+        if (!userId || !tweetId) {
+            console.error('Invalid userId or tweetId:', userId, tweetId);
+            return false;
         }
+
+        try {
+            const userRelationsRef = doc(db, 'userRelations', userId);
+            const docSnap = await getDoc(userRelationsRef);
+            if (docSnap.exists()) {
+                const userRelations = docSnap.data();
+                return userRelations.highlightedTweetIds && userRelations.highlightedTweetIds.includes(tweetId);
+            }
+        } catch (error: any) {
+            console.error('Error checking if user highlighted tweet:', error);
+        }
+
         return false;
     }
 
@@ -202,13 +224,11 @@ export class firebaseTweetService implements ITweetService {
         const userRelationsRef = doc(db, 'userRelations', userId);
         const userDoc = await getDoc(userRelationsRef);
         if (!userDoc.exists()) {
-            console.log('No such document for user relations!');
             return [];
         }
 
         const userRelations = userDoc.data() as UserRelations;
         const likedTweetIds = userRelations.likedTweetIds;
-        console.log('likedTweetIds', likedTweetIds);
 
         const likedTweets: Tweet[] = [];
         for (const tweetId of likedTweetIds) {
@@ -220,8 +240,6 @@ export class firebaseTweetService implements ITweetService {
 
         return likedTweets;
     }
-
-
 
     async getTweetLikesCount(tweetId: string): Promise<number> {
         const tweetRef = doc(db, 'tweets', tweetId);

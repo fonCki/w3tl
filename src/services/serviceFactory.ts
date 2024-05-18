@@ -13,7 +13,12 @@ import { ITweetActionService } from '@interfaces/ITweetsActionService';
 import firebaseTweetActionService from '@services/firebase/firebaseTweetActionService';
 import { IMLService } from '@interfaces/IMLService';
 import { PurgoMalumService } from '@services/purgoMalumService';
+import { IMessageService } from '@interfaces/IMessageService';
+import { MessageService } from '@services/messageService';
 
+/**
+ * The ServiceFactory class is responsible for creating instances of various services used in the application.
+ */
 class ServiceFactory {
     private static authServiceInstance: IAuthService | null = null;
     private static tweetActionServiceInstance: ITweetActionService | null = null;
@@ -22,6 +27,7 @@ class ServiceFactory {
     private static userRelationsServiceInstance: IUserRelations | null = null;
     private static userServiceInstance: IUserService | null = null;
     private static machineLearningServiceInstance: IMLService | null = null;
+    private static messageServiceInstance: IMessageService | null = null;
 
     static getAuthService(): IAuthService {
         if (!this.authServiceInstance) {
@@ -70,6 +76,13 @@ class ServiceFactory {
             this.machineLearningServiceInstance = new PurgoMalumService();
         }
         return this.machineLearningServiceInstance;
+    }
+
+    static getMessageService(): IMessageService {
+        if (!this.messageServiceInstance) {
+            this.messageServiceInstance = new MessageService();
+        }
+        return this.messageServiceInstance;
     }
 }
 

@@ -1,3 +1,8 @@
+/**
+ * Array of profanity messages that can be used to address users who use inappropriate language.
+ *
+ * @type {string[]}
+ */
 export const PROFANITY_MESSAGES = [
     'Did your keyboard come with a filter? It might need one.',
     'Your words could make a sailor blush! Please tone it down.',

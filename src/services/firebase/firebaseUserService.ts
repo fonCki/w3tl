@@ -5,6 +5,10 @@ import { IUserService } from '@interfaces/IUserService';
 import { User } from '@models/user/user';
 
 
+/**
+ * A class that provides user-related operations using Firebase.
+ * @implements {IUserService}
+ */
 export class firebaseUserService implements IUserService {
 
     async getUserById(userId: string): Promise<User | undefined> {
@@ -77,7 +81,7 @@ export class firebaseUserService implements IUserService {
     }
 
 
-    async getTreandingUsers(top: number): Promise<User[]> {
+    async getTrendingUsers(top: number): Promise<User[]> {
         // This would require a specific structure or metric to determine "trending"
         // For simplicity, returning the first 'top' users
         const usersRef = collection(db, 'users');

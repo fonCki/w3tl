@@ -1,9 +1,24 @@
 import { Trend } from '@models/trend';
-import { Tweet } from '@models/tweet';
+import { Tweet } from '@models/post/tweet';
 
+/**
+ * Represents a mock data for trends.
+ * @typedef {Object} Trend
+ * @property {string} name - The name of the trend.
+ * @property {number} count - The count of the trend.
+ */
 let trendsMock: Trend[] = [];
+/**
+ * Mock data for tweets.
+ *
+ * @type {Tweet[]}
+ */
 let tweetsMock: Tweet[] = []; // Replace 'any' with your Tweet interface if available
 
+/**
+ * Provides methods for managing trends and related tweets.
+ * @namespace
+ */
 export const trendService = {
 
     setTrendsMock(trends: Trend[]) {
@@ -37,6 +52,11 @@ export const trendService = {
 };
 
 // Initialization of trendsMock moved outside the service definition
+/**
+ * Represents a mock object for trends data.
+ * This object provides methods for retrieving and updating trends information.
+ * @class
+ */
 trendsMock = [
     {
         id: "1",

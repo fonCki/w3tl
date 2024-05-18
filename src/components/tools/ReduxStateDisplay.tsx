@@ -2,6 +2,12 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@store/store'; // Adjust the import path as necessary
 
+/**
+ * ReduxStateDisplay is a React functional component that displays the current state of Redux store.
+ *
+ * @function ReduxStateDisplay
+ * @returns {React.Element} The Redux state display component.
+ */
 export const ReduxStateDisplay: React.FC = () => {
     const userState = useSelector((state: RootState) => state.auth);
     const menuState = useSelector((state: RootState) => state.menu);

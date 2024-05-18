@@ -1,5 +1,10 @@
 import { User } from '@models/user/user';
 
+/**
+ * Represents a message.
+ *
+ * @interface Message
+ */
 export interface Message {
     id: string;
     sender: User['userId']

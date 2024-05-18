@@ -1,11 +1,14 @@
 import { auth, db } from '@services/firebase/config/firebaseConfig';
-import { doc, deleteDoc, updateDoc } from 'firebase/firestore';
+import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { deleteUser } from 'firebase/auth';
 import { IUserProfileService } from '@interfaces/IUserProfileService';
-import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { getDownloadURL, getStorage, ref as storageRef, uploadBytesResumable } from 'firebase/storage';
 import { User } from '@models/user/user';
 
 
+/**
+ * A service class for handling user profile operations in Firebase Firestore.
+ */
 export class firebaseUserProfileService implements IUserProfileService {
 
     async updateProfile(user: User): Promise<{ success: boolean; user?: User; error?: any }> {

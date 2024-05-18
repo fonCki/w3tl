@@ -1,4 +1,6 @@
-
+/**
+ * Service interface for performing various actions on tweets.
+ */
 export interface ITweetActionService {
     postTweet(tweet:any, additionalData?: any): Promise<{ success: boolean; tweetId?: string; error?: string }>;
     likeTweet(userId:string, tweetId: string): Promise<{ success: boolean; error?: string }>;

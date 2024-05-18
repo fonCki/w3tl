@@ -1,5 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+/**
+ * Represents the state of a menu.
+ * @interface
+ */
 interface MenuState {
   isCompactMode: boolean;
   isVisible: boolean;
@@ -7,15 +11,31 @@ interface MenuState {
   isCreatePostModalOpen: boolean;
 }
 
+/**
+ * Represents the initial state of the menu.
+ *
+ * @typedef {Object} MenuState
+ * @property {boolean} isCompactMode - Indicates if the menu is in compact mode.
+ *                                    - Set to `false` for full mode, `true` for compact mode.
+ * @property {boolean} isVisible - Indicates if the menu is visible.
+ *                                - Set to `true` for visible, `false` for invisible.
+ * @property {string} activeTab - The currently active tab in the menu.
+ * @property {boolean} isCreatePostModalOpen - Indicates if the create post modal is open.
+ *                                            - Set to `false` for closed, `true` for open.
+ */
 const initialState: MenuState = {
   isCompactMode: false, // false for full mode, true for compact mode
   isVisible: true,      // true for visible, false for invisible
-  // activeTab: menuItems[0].label,
   activeTab: "Home",
   isCreatePostModalOpen: false,
-
 };
 
+/**
+ * Creates a Redux slice for the `menu` state.
+ *
+ * @name menuSlice
+ * @type {Slice}
+ */
 const menuSlice = createSlice({
   name: 'menu',
   initialState,
@@ -42,6 +62,5 @@ const menuSlice = createSlice({
   },
 });
 
-// Export the actions
 export const { toggleMode, toggleVisibility, setCompactMode, setVisible, setActiveTab, toggleCreatePostModal } = menuSlice.actions;
 export default menuSlice.reducer;

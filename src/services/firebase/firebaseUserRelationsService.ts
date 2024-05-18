@@ -1,13 +1,15 @@
 // src/services/firebase/firebaseUserRelationsService.ts
 
 import { db } from '@services/firebase/config/firebaseConfig';
-import { doc, getDoc, updateDoc, arrayUnion, arrayRemove, setDoc } from 'firebase/firestore';
+import { arrayRemove, arrayUnion, doc, getDoc, increment, setDoc, updateDoc } from 'firebase/firestore';
 import { IUserRelations } from '@interfaces/IUserRelations';
 import { UserRelations } from '@models/user/userRelations';
 import { User } from '@models/user/user';
 import { ServiceFactory } from '@services/serviceFactory';
-import { increment } from 'firebase/firestore';
 
+/**
+ * Service for managing user relations in Firebase.
+ */
 export class firebaseUserRelationsService implements IUserRelations {
 
     private async ensureUserRelationsDocExists(userId: string): Promise<void> {

@@ -1,11 +1,22 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Tweet } from '@models/tweet';
+import { Tweet } from '@models/post/tweet';
 
+/**
+ * Represents the properties required for rendering a thumbnail component.
+ */
 interface ThumbnailProps {
     tweet: Tweet;
 }
 
+/**
+ * Renders a thumbnail component for displaying a tweet media.
+ *
+ * @component
+ * @param {Object} props - The props object.
+ * @param {Object} props.tweet - The tweet containing the media to display.
+ * @returns {JSX.Element} - The generated React element.
+ */
 const Thumbnail: React.FC<ThumbnailProps> = ({ tweet }) => {
     const navigate = useNavigate();
 

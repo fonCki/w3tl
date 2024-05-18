@@ -1,18 +1,26 @@
 import 'isomorphic-fetch'; // This adds fetch as a global
 import { IMLService } from '@interfaces/IMLService';
-import { MACHINE_LEARNING_SERVICE_URL } from '@constants/constants';
 
 // Define an interface for the API response
+/**
+ * Represents the response of a profanity check operation.
+ *
+ * @interface
+ */
 interface ProfanityCheckResponse {
     success: boolean;
     message: string;
 }
 
+/**
+ * MachineLearningService is a class that provides machine learning services.
+ * @implements {IMLService}
+ */
 export class MachineLearningService implements IMLService {
     PROFANITY_SERVICE = 'MLService/checkProfanity';
 
     async checkProfanity(text: string): Promise<{ result: boolean; error?: string }> {
-        const url = `${MACHINE_LEARNING_SERVICE_URL}${this.PROFANITY_SERVICE}`;
+        const url = `${import.meta.env.VITE_MACHINE_LEARNING_SERVICE_URL}/${this.PROFANITY_SERVICE}`;
         const params = new URLSearchParams({ text });
 
         try {

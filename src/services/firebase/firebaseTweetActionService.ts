@@ -13,12 +13,15 @@ import {
     writeBatch,
 } from 'firebase/firestore';
 import { ITweetActionService } from '@interfaces/ITweetsActionService';
-import { Tweet } from '@models/tweet';
+import { Tweet } from '@models/post/tweet';
 import { UserRelations } from '@models/user/userRelations';
 import { ServiceFactory } from '@services/serviceFactory';
 import { getDownloadURL, getStorage, ref as storageRef, uploadBytesResumable } from 'firebase/storage';
 
 
+/**
+ * A class that implements the ITweetActionService interface for performing tweet actions with Firebase.
+ */
 export class FirebaseTweetActionService implements ITweetActionService {
 
     async postTweet(newTweet: any, additionalData: any = {}): Promise<{

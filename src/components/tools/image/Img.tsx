@@ -1,14 +1,28 @@
 import React, { useState } from 'react';
-import { Image, Placeholder } from 'semantic-ui-react';
+import { Image } from 'semantic-ui-react';
 import { User } from '@models/user/user';
 import { getDefaultAvatarImage, LOCAL_DEFAULT_AVATAR_IMAGE } from '@constants/constants';
 
+/**
+ * Represents the properties for an image component.
+ *
+ * @interface ImgProps
+ */
 interface ImgProps {
     userDetails: User | null;
     size?: 'micro' | 'tiny' | 'small' | 'medium' | 'large' | 'huge';
     onLoaded: () => void;
 }
 
+/**
+ * React functional component that renders an image with optional loading state and size classes.
+ *
+ * @component
+ * @param {Object} userDetails - Object containing user details such as avatar and username.
+ * @param {string} size - Optional size of the image. Defaults to "tiny".
+ * @param {function} onLoaded - Optional callback function to be called when the image is loaded.
+ * @returns {ReactElement} The rendered image component.
+ */
 const Img: React.FC<ImgProps> = ({ userDetails, size = "tiny", onLoaded }) => {
     const [isLoading, setIsLoading] = useState(true); // Track image loading state
     const avatarSrc = userDetails?.avatar || getDefaultAvatarImage(userDetails?.username || 'default');

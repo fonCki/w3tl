@@ -1,6 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { routes } from '@constants/routesConfig';
 
+/**
+ * A custom hook for navigation actions.
+ * @returns {object} - An object containing navigation actions.
+ */
 export const useNavigationActions = () => {
     const navigate = useNavigate();
 

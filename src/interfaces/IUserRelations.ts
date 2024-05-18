@@ -3,6 +3,9 @@
 import { UserRelations } from '@models/user/userRelations';
 import { User } from '@models/user/user';
 
+/**
+ * Represents a class that provides methods for managing user relations.
+ */
 export interface IUserRelations {
     getUserRelations(userId: string): Promise<{ relations: UserRelations | null; error?: any }>;
     getFollowers(userId: string): Promise<{ followers: string[]; error?: any }>;

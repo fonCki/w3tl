@@ -25,17 +25,11 @@ export default defineConfig({
             find: '@store',
             replacement: resolve(__dirname, './src/store'),
         }, {
-            find: '@config',
-            replacement: resolve(__dirname, './src/config'),
-        }, {
             find: '@services',
             replacement: resolve(__dirname, './src/services'),
         }, {
             find: '@types',
             replacement: resolve(__dirname, './src/types'),
-        }, {
-            find: '@data',
-            replacement: resolve(__dirname, './src/mocks'),
         }, {
             find: '@constants',
             replacement: resolve(__dirname, './src/constants'),
@@ -47,8 +41,8 @@ export default defineConfig({
             replacement: resolve(__dirname, './src/hooks'),
         },
         {
-            find: '@actions',
-            replacement: resolve(__dirname, './src/actions'),
+            find: '@features',
+            replacement: resolve(__dirname, './src/features'),
         },
         {
             find: '@interfaces',

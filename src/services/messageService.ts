@@ -1,34 +1,33 @@
-import { Message } from '@models/message'; // Adjust the import path as necessary
+import { Message } from '@models/message';
+import { IMessageService } from '@interfaces/IMessageService'; // Adjust the import path as necessary
 
-const messagesMock: Message[] = [
-    // Add mock data according to your needs. Example:
-    {
-        id: '1',
-        sender: 'user1',
-        receiver: 'user2',
-        content: 'Hello from user1 to user2',
-        read: false,
-        date: '2024-03-15T09:00:00Z',
-    },
-    {
-        id: '2',
-        sender: 'user2',
-        receiver: 'user1',
-        content: 'Hello from user2 to user1',
-        read: false,
-        date: '2024-03-15T10:00:00Z',
-    },
-    // Add more as needed
-];
+/**
+ * Represents a mock implementation of a message service.
+ *
+ * @type {Message[]}
+ */
+const messagesMock: Message[] = [];
 
-export const messageService = {
-    getMessagesByUserId(userId: string) { // Assuming userId should be a string to match Message model
-        return messagesMock.filter(message =>
-            message.sender === userId || message.receiver === userId
-        );
-    },
-
-    getMessageById(messageId: string) { // messageId should be a string to match Message model
-        return messagesMock.find(message => message.id === messageId);
+/**
+ * Represents a service for managing messages.
+ * @implements {IMessageService}
+ */
+export class MessageService implements IMessageService {
+    getMessageById(messageId: string): Promise<Message | undefined> {
+        const message = messagesMock.find((msg) => msg.id === messageId);
+        return Promise.resolve(message);
     }
-};
+
+    getMessages(limit: number): Promise<Message[]> {
+        return Promise.resolve(messagesMock.slice(0, limit));
+    }
+
+    getMessagesByUserId(userId: string): Promise<Message[]> {
+        return Promise.resolve([]);
+    }
+
+    getMessagesByusername(username: string): Promise<Message[]> {
+        return Promise.resolve([]);
+    }
+
+}

@@ -1,16 +1,19 @@
 // AppRoutes.tsx
 import React, { useEffect } from 'react';
-import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { routes } from '@constants/routesConfig';
 import { setSearchQuery } from '@store/slices/searchSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import ProtectedRoute from './ProtectedRoute';
 import { RootState } from '@store/store';
-import Login from '@components/pages/Login';
-import NotFound from '@components/404';
-import Layout from '../Layout';
-import WelcomePage from '@components/pages/WelcomePage'; // Assuming you have this file in the same directory
+import WelcomePage from '@features/auth/components/WelcomePage';
+import Layout from '@components/layout/Layout';
+import NotFound from '@pages/404';
 
+/**
+ * Class representing the application routes.
+ * @constructor
+ */
 const AppRoutes = () => {
     const location = useLocation();
     const dispatch = useDispatch();

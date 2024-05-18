@@ -34,6 +34,36 @@
       "@interfaces/*": ["src/interfaces/*"],
       "@context/*": ["src/context/*"],
       "@assets/*": ["src/assets/*"],
+      "@styles/*": [
+        "src/styles/*"
+      ],
+      "@pages/*": [
+        "src/pages/*"
+      ],
+      "@routes/*": [
+        "src/routes/*"
+      ],
+      "@layouts/*": [
+        "src/layouts/*"
+      ],
+      "@containers/*": [
+        "src/containers/*"
+      ],
+      "@hoc/*": [
+        "src/hoc/*"
+      ],
+      "@config/*": [
+        "src/config/*"
+      ],
+      "@types/*": [
+        "src/types/*"
+      ],
+      "@test/*": [
+        "src/test/*"
+      ],
+      "@features/*": [
+        "src/features/*"
+      ]
     }
   },
   "include": [

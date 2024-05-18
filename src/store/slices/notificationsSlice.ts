@@ -1,6 +1,10 @@
 // notificationsSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+/**
+ * Represents the state of notifications for a user.
+ * @interface
+ */
 interface NotificationsState {
     hasNewFollower: boolean;
     hasNewFollowing: boolean;
@@ -11,6 +15,18 @@ interface NotificationsState {
     newHighlight: boolean;
 }
 
+/**
+ * The initial state of the notifications module.
+ *
+ * @typedef {Object} NotificationsState
+ * @property {boolean} hasNewFollower - Indicates whether there is a new follower notification.
+ * @property {boolean} hasNewFollowing - Indicates whether there is a new following notification.
+ * @property {boolean} newTweet - Indicates whether there is a new tweet notification.
+ * @property {boolean} newLike - Indicates whether there is a new like notification.
+ * @property {boolean} newRetweet - Indicates whether there is a new retweet notification.
+ * @property {boolean} newComment - Indicates whether there is a new comment notification.
+ * @property {boolean} newHighlight - Indicates whether there is a new highlight notification.
+ */
 const initialState: NotificationsState = {
     hasNewFollower: false,
     hasNewFollowing: false,
@@ -21,6 +37,26 @@ const initialState: NotificationsState = {
     newHighlight: false,
 };
 
+/**
+ * Redux slice for managing notification state.
+ * @typedef {Object} NotificationsSlice
+ * @property {string} name - The name of the slice.
+ * @property {Object} initialState - The initial state of the slice.
+ * @property {Function} reducers.setHasNewFollower - A reducer that sets whether there is a new follower.
+ * @property {Function} reducers.setHasNewFollowing - A reducer that sets whether there is a new following.
+ * @property {Function} reducers.setNewTweet - A reducer that sets whether there is a new tweet.
+ * @property {Function} reducers.setNewLike - A reducer that sets whether there is a new like.
+ * @property {Function} reducers.setNewRetweet - A reducer that sets whether there is a new retweet.
+ * @property {Function} reducers.setNewComment - A reducer that sets whether there is a new comment.
+ * @property {Function} reducers.setNewHighlight - A reducer that sets whether there is a new highlight.
+ * @property {Function} reducers.resetHasNewFollower - A reducer that resets the new follower state.
+ * @property {Function} reducers.resetHasNewFollowing - A reducer that resets the new following state.
+ * @property {Function} reducers.resetNewTweet - A reducer that resets the new tweet state.
+ * @property {Function} reducers.resetNewLike - A reducer that resets the new like state.
+ * @property {Function} reducers.resetNewRetweet - A reducer that resets the new retweet state.
+ * @property {Function} reducers.resetNewComment - A reducer that resets the new comment state.
+ * @property {Function} reducers.resetNewHighlight - A reducer that resets the new highlight state.
+ */
 const notificationsSlice = createSlice({
     name: 'notifications',
     initialState,
@@ -67,17 +103,6 @@ const notificationsSlice = createSlice({
         resetNewHighlight(state) {
             state.newHighlight = false;
         },
-
-        // General reset remains useful for clearing all notifications at once
-        // resetNotifications(state) {
-        //     state.hasNewFollower = false;
-        //     state.hasNewFollowing = false;
-        //     state.newTweet = false;
-        //     state.newLike = false;
-        //     state.newRetweet = false;
-        //     state.newComment = false;
-        //     state.newHighlight = false;
-        // }
     },
 });
 

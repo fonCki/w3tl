@@ -1,8 +1,28 @@
 import { User } from '@models/user/user';
 import { LOCAL_DEFAULT_AVATAR_IMAGE } from '@constants/constants';
-import { Tweet } from '@models/tweet';
+import { Tweet } from '@models/post/tweet';
 
 
+/**
+ * Represents the default user object.
+ *
+ * @typedef {Object} User
+ * @property {string} userId - The unique identifier for the user.
+ * @property {string} username - The username of the user.
+ * @property {string} name - The name of the user.
+ * @property {string} lastname - The last name of the user.
+ * @property {string} email - The email of the user.
+ * @property {string} avatar - The URL or path to the user's avatar image.
+ * @property {string} bio - The bio or description of the user.
+ * @property {string} location - The location of the user.
+ * @property {string} website - The website of the user.
+ * @property {boolean} verified - Whether the user is verified or not.
+ * @property {string} createdAt - The date and time when the user was created in ISO 8601 format.
+ * @property {number} followersCount - The number of followers the user has.
+ * @property {number} followingCount - The number of users the user is following.
+ * @property {string} background - The URL or path to the user's background image.
+ * @property {string} pub - The public information about the user.
+ */
 export const defaultUser: User = {
     userId: "0",
     username: 'default',
@@ -21,48 +41,24 @@ export const defaultUser: User = {
     pub: '',
 };
 
-
-
-// export const defaultComment: Comment = {
-//     id: "0",
-//     user: defaultUser,
-//     parentTweetId: 0,
-//     content: '',
-//     createdAt: new Date(),
-// };
-//
-// export const defaultDataItem: DataItem = {
-//     id: "0",
-//     category: '',
-//     title: '',
-// };
-//
-// export const defaultMessage: Message = {
-//     id: "0",
-//     sender: defaultUser,
-//     receiver: defaultUser,
-//     content: '',
-//     read: false,
-//     date: new Date(),
-// };
-//
-// export const defaultNotification: Notification = {
-//     id: "0",
-//     user: 0,
-//     title: '',
-//     description: '',
-//     read: false,
-//     avatar: 'default-avatar.png',
-//     date: new Date(),
-// };
-//
-// export const defaultTrend: Trend = {
-//     id:"0",
-//     hashtag: '',
-//     category: '',
-//     tweetsCount: 0,
-// };
-//
+/**
+ * Represents the default tweet object.
+ *
+ * @typedef {object} Tweet
+ * @property {string} postId - The unique identifier of the post.
+ * @property {string} userId - The user ID of the tweet author.
+ * @property {string} content - The content of the tweet.
+ * @property {number} likes - The number of likes the tweet has.
+ * @property {string} mediaUrl - The URL of the media attached to the tweet.
+ * @property {string} mediaType - The type of media attached to the tweet.
+ * @property {number} retweets - The number of retweets the tweet has.
+ * @property {number} comments - The number of comments the tweet has.
+ * @property {string} createdAt - The timestamp of when the tweet was created.
+ * @property {string} signature - The signature of the tweet.
+ *
+ * @constant {Tweet}
+ * @default
+ */
 export const defaultTweet: Tweet = {
     postId: "0",
     userId: defaultUser.userId,
@@ -75,20 +71,3 @@ export const defaultTweet: Tweet = {
     createdAt: new Date().toISOString(),
     signature: '',
 };
-//
-// export const defaultUserProfile: UserProfile = {
-//     id: "0",
-//     bio: '',
-//     location: '',
-//     website: '',
-//     background: '',
-// };
-//
-// export const defaultUserRelations: UserRelations = {
-//     id: "0",
-//     followers: [],
-//     following: [],
-//     likedTweetIds: [],
-//     retweetedTweetIds: [],
-//     highlightedTweetIds: [],
-// };

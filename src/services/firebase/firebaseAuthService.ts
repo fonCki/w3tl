@@ -11,15 +11,25 @@ import {
     signOut,
     User as FirebaseUser,
 } from 'firebase/auth';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, limit, query, runTransaction, setDoc } from 'firebase/firestore';
 import { IAuthService } from '@interfaces/IAuthService';
 import { User } from '@models/user/user';
 import { ResponseType } from '@models/responseType';
 import nacl from 'tweetnacl';
 import naclUtil from 'tweetnacl-util';
+import { starterNotification } from '@constants/notificationsStarters';
 
+/**
+ * enumProvider is a type that represents different providers for enums.
+ * Currently, the supported providers are 'google' and 'github'.
+ */
 type enumProvider = 'google' | 'github';
 
+/**
+ * @class firebaseAuthService
+ * @implements {IAuthService}
+ * @description A class that provides authentication services using Firebase.
+ */
 export class firebaseAuthService implements IAuthService {
 
     async createUser(username: string, name: string, lastname: string, email: string, password: string): Promise<ResponseType> {
@@ -76,7 +86,7 @@ export class firebaseAuthService implements IAuthService {
 
             return { success: true, user: userDetails, token, privateKey: privateKey! };
         } catch (error: any) {
-            console.error('Error during sign-in with provider:', error);
+            alert('Please check your browser\'s popup settings and try again.');
             return { success: false, error: error.message };
         }
     }
@@ -176,6 +186,7 @@ export class firebaseAuthService implements IAuthService {
                 await this.generateAndStoreKeys(firebaseUser);
             }
         }
+        // await this.checkAndCreateNotifications(firebaseUser);
         return user;
     }
 
@@ -186,4 +197,30 @@ export class firebaseAuthService implements IAuthService {
             console.error('Error logging out:', error);
         });
     }
+
+    private async checkAndCreateNotifications(firebaseUser: FirebaseUser): Promise<void> {
+        const notificationsRef = collection(db, 'users', firebaseUser.uid, 'notifications');
+
+        // Run the transaction
+        await runTransaction(db, async (transaction) => {
+            // Create a query for the notifications collection
+            const notificationsQuery = query(notificationsRef, limit(1)); // Limit to 1 to check for existence
+            const querySnapshot = await getDocs(notificationsQuery);
+
+            // Check if the notifications collection is empty
+            if (querySnapshot.empty) {
+                // Notifications do not exist, prepare and set new notifications
+                starterNotification.forEach(notification => {
+                    const newNotificationRef = doc(notificationsRef); // Create a new document reference
+                    transaction.set(newNotificationRef, {
+                        ...notification,
+                        user: firebaseUser.uid,
+                        date: notification.date.toISOString(), // Ensure date is formatted correctly
+                    });
+                });
+            }
+        });
+    }
+
+
 }

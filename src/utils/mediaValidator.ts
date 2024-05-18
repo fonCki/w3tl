@@ -1,6 +1,8 @@
-// utils/mediaValidator.ts
-
-// Validates image URLs
+/**
+ * Validates if the given image URL is valid by checking if the image can be loaded successfully.
+ * @param {string} url - The URL of the image to be validated.
+ * @returns {Promise<boolean>} - A Promise that resolves to true if the image can be loaded successfully, or false otherwise.
+ */
 export const validateImageUrl = async (url: string): Promise<boolean> => {
     return new Promise((resolve) => {
         const img = new Image();
@@ -11,6 +13,12 @@ export const validateImageUrl = async (url: string): Promise<boolean> => {
 };
 
 // Validates video URLs
+/**
+ * Validates a video URL by sending a HEAD request to check if the URL is valid.
+ *
+ * @param {string} url - The video URL to validate.
+ * @returns {Promise<boolean>} - A Promise that resolves to true if the URL is valid, and false otherwise.
+ */
 export const validateVideoUrl = async (url: string): Promise<boolean> => {
     try {
         const response = await fetch(url, {

@@ -1,10 +1,14 @@
 import 'isomorphic-fetch';
 import { IMLService } from '@interfaces/IMLService';
 
+/**
+ * PurgoMalumService is a class that provides methods to check for profanity in text using the PurgoMalum API.
+ * It also provides a method to fetch hashtags from text.
+ */
 export class PurgoMalumService implements IMLService {
-    private readonly API_URL = 'https://community-purgomalum.p.rapidapi.com/containsprofanity';
+    private readonly API_URL = import.meta.env.VITE_PURGO_MALUM_API_URL;
     private readonly API_KEY = import.meta.env.VITE_RAPIDAPI_KEY; // Use environment variable
-    private readonly API_HOST = 'community-purgomalum.p.rapidapi.com';
+    private readonly API_HOST = import.meta.env.VITE_PURGO_MALUM_API_HOST;
 
     async checkProfanity(text: string): Promise<{ result: boolean; error?: string }> {
         const params = new URLSearchParams({ text });

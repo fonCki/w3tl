@@ -3,46 +3,48 @@ import { User } from '@models/user/user'; // Adjust the import path as necessary
 
 /**
  * Represents the authentication state of the application.
+ * @interface
  */
 interface AuthState {
     currentUser: User | null;
     isAuthenticated: boolean;
     isLoading: boolean;
     privateKey: string | null; // Add privateKey field
+    token: string | null;
 }
 
 /**
- * Holds the initial state for the Auth module.
+ * Initial state for AuthState.
  *
  * @typedef {Object} AuthState
- * @property {Object|null} currentUser - The currently logged in user. Default: null.
- * @property {boolean} isAuthenticated - Flag indicating if the user is authenticated. Default: false.
- * @property {boolean} isLoading - Flag indicating if the authentication process is loading. Default: true.
- * @property {Object|null} privateKey - The private key used for encryption. Default: null.
+ * @property {string|null} currentUser - The current user. Null if no user is logged in.
+ * @property {boolean} isAuthenticated - Indicates whether the user is authenticated or not.
+ * @property {boolean} isLoading - Indicates whether the authentication process is in progress or not.
+ * @property {string|null} privateKey - The private key of the user. Null if no user is logged in.
+ * @property {string|null} token - The authentication token. Null if no user is logged in.
  */
 const initialState: AuthState = {
     currentUser: null,
     isAuthenticated: false,
     isLoading: true,
     privateKey: null,
+    token: null,
 };
 
 /**
- * Represents the auth slice of the Redux store.
+ * Slice for handling authentication related actions and state
  *
- * @typedef {Object} AuthSlice
- * @property {string} name - The name of the slice ('auth').
- * @property {Object} initialState - The initial state of the slice.
- * @property {User|null} initialState.currentUser - The currently logged in user or null if no user is logged in.
- * @property {boolean} initialState.isAuthenticated - Indicates whether a user is authenticated.
- * @property {boolean} initialState.isLoading - Indicates whether data is being loaded.
- * @property {string|null} initialState.privateKey - The private key associated with the user or null if no key is set.
- * @property {Object} reducers - The reducers of the slice.
- * @property {function} reducers.setCurrentUser - Sets the current user and updates the authentication status.
- * @property {function} reducers.setAuthentication - Sets the authentication status.
- * @property {function} reducers.setLoading - Sets the loading status.
- * @property {function} reducers.setPrivateKey - Sets the private key.
- * @property {function} reducers.clearState - Clears the state when the user logs out.
+ * @typedef {import('@reduxjs/toolkit').EntityState} EntityState - The state object for this slice
+ * @typedef {import('@reduxjs/toolkit').PayloadAction} PayloadAction - The action object for this slice
+ * @typedef {import('./User')} User - The user object for this slice
+ *
+ * @property {EntityState} initialState - The initial state for this slice
+ * @property {function(Object, EntityState): void} setCurrentUser - Redux reducer to set the current user and authentication status
+ * @property {function(Object, PayloadAction<boolean>): void} setAuthentication - Redux reducer to set the authentication status
+ * @property {function(Object, PayloadAction<boolean>): void} setLoading - Redux reducer to set the loading status
+ * @property {function(Object, PayloadAction<string | null>): void} setPrivateKey - Redux reducer to set the private key
+ * @property {function(Object, PayloadAction<string | null>): void} setUserToken - Redux reducer to set the user token
+ * @property {function(Object): void} clearState - Redux reducer to clear the state on logout
  */
 export const authSlice = createSlice({
     name: 'auth',
@@ -61,6 +63,9 @@ export const authSlice = createSlice({
         setPrivateKey: (state, action: PayloadAction<string | null>) => {
             state.privateKey = action.payload; // Add setPrivateKey action
         },
+        setUserToken: (state, action: PayloadAction<string | null>) => {
+            state.token = action.payload;
+        },
         clearState: (state) => {
             state.currentUser = null;
             state.isAuthenticated = false;
@@ -70,5 +75,12 @@ export const authSlice = createSlice({
     },
 });
 
-export const { setCurrentUser, setAuthentication, setLoading, setPrivateKey, clearState } = authSlice.actions;
+export const {
+    setCurrentUser,
+    setAuthentication,
+    setLoading,
+    setPrivateKey,
+    clearState,
+    setUserToken,
+} = authSlice.actions;
 export default authSlice.reducer;

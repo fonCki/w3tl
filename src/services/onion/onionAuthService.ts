@@ -20,7 +20,7 @@ import { doc, getDoc } from 'firebase/firestore';
 
 type enumProvider = 'google' | 'github';
 
-export class onionAuthService implements IAuthService {
+export class OnionAuthService implements IAuthService {
     private randomBoolean: boolean = random(0, 1) === 1;
     private userProfileService = ServiceFactory.getUserProfileService();
     private userService = ServiceFactory.getUserService();

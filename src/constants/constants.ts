@@ -59,7 +59,7 @@ export const TOGGLE_DELAY_SECONDS = 5;  // Amount of seconds for the delay
  * @type {string}
  * @default import.meta.env.VITE_ONION_ARCHITECTURE_BACKEND_API_URL
  */
-export const BACKEND_URL = import.meta.env.VITE_ONION_ARCHITECTURE_BACKEND_API_URL;
+export const BACKEND_URL = import.meta.env.VITE_ONION_ARCHITECTURE_BACKEND_API_URL + '/api';
 
 
 

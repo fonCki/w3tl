@@ -9,13 +9,13 @@ import { IMLService } from '@interfaces/IMLService';
 
 import { IMessageService } from '@interfaces/IMessageService';
 import { MessageService } from '@services/messageService';
-import { onionAuthService } from '@services/onion/onionAuthService';
-import { OnionTweetActionService } from '@services/onion/onionTweetActionService';
-import { MachineLearningService } from '@services/ML/machineLearningService';
-import { OnionTweetService } from '@services/onion/onionTweetService';
-import { OnionUserService } from '@services/onion/onionUserService';
-import { OnionUserProfileService } from '@services/onion/onionUserProfileService';
-import { OnionUserRelationsService } from '@services/onion/onionUserRelationsService';
+import { OnionAuthService } from '@services/onion/onionAuthService';
+import { firebaseUserRelationsService } from '@services/firebase/firebaseUserRelationsService';
+import { firebaseUserProfileService } from '@services/firebase/firebaseUserProfileService';
+import { firebaseTweetService } from '@services/firebase/firebaseTweetService';
+import { firebaseUserService } from '@services/firebase/firebaseUserService';
+import firebaseTweetActionService from '@services/firebase/firebaseTweetActionService';
+import { PurgoMalumService } from '@services/ML/purgoMalumService';
 
 /**
  * The ServiceFactory class is responsible for creating instances of various services used in the application.
@@ -32,49 +32,49 @@ class ServiceFactory {
 
     static getAuthService(): IAuthService {
         if (!this.authServiceInstance) {
-            this.authServiceInstance = new onionAuthService();
+            this.authServiceInstance = new OnionAuthService();
         }
         return this.authServiceInstance;
     }
 
     static getTweetActionService(): ITweetActionService {
         if (!this.tweetActionServiceInstance) {
-            this.tweetActionServiceInstance = new OnionTweetActionService();
+            this.tweetActionServiceInstance = new firebaseTweetActionService();
         }
         return this.tweetActionServiceInstance;
     }
 
     static getUserService(): IUserService {
         if (!this.userServiceInstance) {
-            this.userServiceInstance = new OnionUserService();
+            this.userServiceInstance = new firebaseUserService();
         }
         return this.userServiceInstance;
     }
 
     static getTweetService(): ITweetService {
         if (!this.tweetServiceInstance) {
-            this.tweetServiceInstance = new OnionTweetService();
+            this.tweetServiceInstance = new firebaseTweetService();
         }
         return this.tweetServiceInstance;
     }
 
     static getUserProfileService(): IUserProfileService {
         if (!this.userProfileServiceInstance) {
-            this.userProfileServiceInstance = new OnionUserProfileService();
+            this.userProfileServiceInstance = new firebaseUserProfileService();
         }
         return this.userProfileServiceInstance;
     }
 
     static getUserRelationsService(): IUserRelations {
         if (!this.userRelationsServiceInstance) {
-            this.userRelationsServiceInstance = new OnionUserRelationsService();
+            this.userRelationsServiceInstance = new firebaseUserRelationsService();
         }
         return this.userRelationsServiceInstance;
     }
 
     static getMLService(): IMLService {
         if (!this.machineLearningServiceInstance) {
-            this.machineLearningServiceInstance = new MachineLearningService();
+            this.machineLearningServiceInstance = new PurgoMalumService();
         }
         return this.machineLearningServiceInstance;
     }

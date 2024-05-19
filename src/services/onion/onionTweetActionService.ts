@@ -48,8 +48,8 @@ export class OnionTweetActionService implements ITweetActionService {
             const body = JSON.stringify({
                 'userId': tweet.userId,
                 'content': tweet.content,
-                'signature': '3fa7b8c16da242dfb517c7da264349feda291112baba6dcb12fd234567890abc3fa7b8c16da242dfb517c7da264349feda291112baba6dcb12fd234567890abc', //TODO: Change this
-                'type': 'Original', //TODO: Change this
+                'signature': tweet.signature,
+                'type': 'Original',
                 'mediaUrl': tweet.mediaUrl,
                 'mediaType': tweet.mediaType,
             });

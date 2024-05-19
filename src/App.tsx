@@ -9,7 +9,6 @@ import 'primereact/resources/primereact.min.css';
 import ScrollToTop from '@components/tools/ScrollTop';
 import { AuthProvider } from '@context/AuthContext';
 import { LoadingProvider } from '@context/LoadingProvider';
-import { ReduxStateDisplay } from '@components/tools/ReduxStateDisplay';
 
 
 /**
@@ -21,7 +20,7 @@ function App() {
 
     return (
         <Provider store={store}>
-            <ReduxStateDisplay />
+            {/*<ReduxStateDisplay />*/}
             <LoadingProvider>
             {/* Wrap your application layout with AuthProvider */}
             <AuthProvider>

@@ -1,7 +1,14 @@
 // context/AuthContext.tsx
 import React, { createContext, useContext, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { clearState, setAuthentication, setCurrentUser, setLoading, setPrivateKey } from '@store/slices/authSlice';
+import {
+    clearState,
+    setAuthentication,
+    setCurrentUser,
+    setLoading,
+    setPrivateKey,
+    setUserToken,
+} from '@store/slices/authSlice';
 import { ServiceFactory } from '@services/serviceFactory';
 
 /**
@@ -46,8 +53,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             dispatch(setLoading(true));
             const result = await authService.getCurrentUser();
             if (result.success && result.user) {
+                const token = await authService.getToken();
                 dispatch(setCurrentUser(result.user));
                 dispatch(setAuthentication(true));
+                dispatch(setUserToken(token));
                 dispatch(setPrivateKey(result.privateKey || null));
             }
             dispatch(setLoading(false));
@@ -62,13 +71,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             const result = await authService.authenticate(email, password);
             if (result.success) {
                 dispatch(setCurrentUser(result.user!));
+                dispatch(setUserToken(result.token!));
                 dispatch(setAuthentication(true));
                 dispatch(setPrivateKey(result.privateKey || null));
             } else {
                 throw new Error(result.error || 'Authentication failed');
             }
-        } catch (error) {
-            throw error; // Re-throw the error to be handled in the component
         } finally {
             dispatch(setLoading(false));
         }
@@ -81,6 +89,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             // Update user state and authentication status as necessary
             if (result.success) {
                 dispatch(setCurrentUser(result.user!));
+                dispatch(setUserToken(result.token!));
                 dispatch(setAuthentication(true));
                 dispatch(setPrivateKey(result.privateKey || null));
             } else {
@@ -98,6 +107,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const logout = () => {
         dispatch(setLoading(true)); // Start global loading
         authService.logout();
+        dispatch(setUserToken(null));
         dispatch(clearState());
         dispatch(setLoading(false));
     };

@@ -4,7 +4,6 @@ import Img from '@components/tools/image/Img';
 import { MAX_TWEET_LENGTH } from '@constants/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
-import FirebaseTweetActionService from '@services/firebase/firebaseTweetActionService';
 import { setNewTweet } from '@store/slices/notificationsSlice';
 import naclUtil from 'tweetnacl-util';
 import nacl from 'tweetnacl';
@@ -54,14 +53,15 @@ const TweetInput: React.FC<TweetInputProps> = ({ onTweetPost }) => {
     const [mediaType, setMediaType] = useState<string | null>(null); // 'image' or 'video'
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
     const privateKey = useSelector((state: RootState) => state.auth.privateKey); // Get private key from state
-    const tweetActionService = new FirebaseTweetActionService();
     const mlService = ServiceFactory.getMLService(); // Get the ML service instance
+    const tweetActionService = ServiceFactory.getTweetActionService();
     const [isLoading, setIsLoading] = useState(false);
     const [isProfanityModalOpen, setIsProfanityModalOpen] = useState(false); // State for modal
     const [profanityMessage, setProfanityMessage] = useState(''); // State for modal message
     const [isHashtagModalOpen, setIsHashtagModalOpen] = useState(false); // State for hashtag modal
     const [suggestedHashtag, setSuggestedHashtag] = useState(''); // State for suggested hashtag
     const [resolveHashtagPromise, setResolveHashtagPromise] = useState<(() => void) | null>(null); // State for hashtag promise resolver
+    const token = useSelector((state: RootState) => state.auth.token);
     const dispatch = useDispatch();
 
     const handlePostChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -77,7 +77,7 @@ const TweetInput: React.FC<TweetInputProps> = ({ onTweetPost }) => {
             setIsLoading(true);
 
             try {
-                const uploadResult = await tweetActionService.uploadMedia(file);
+                const uploadResult = await tweetActionService.uploadMedia(file, token!);
                 if (uploadResult.success) {
                     setMediaUrl(uploadResult.downloadURL!);
                     setMediaType(fileType);
@@ -151,7 +151,7 @@ const TweetInput: React.FC<TweetInputProps> = ({ onTweetPost }) => {
                 ...(mediaUrl && { mediaUrl, mediaType }), // This adds mediaUrl and mediaType only if mediaUrl is truthy
             };
 
-            const result = await tweetActionService.postTweet(newTweet);
+            const result = await tweetActionService.postTweet(newTweet, token!);
 
             if (result.success) {
                 dispatch(setNewTweet(true));

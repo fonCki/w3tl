@@ -69,5 +69,6 @@ export const defaultTweet: Tweet = {
     retweets: 0,
     comments: 0,
     createdAt: new Date().toISOString(),
-    signature: '',
+    signature: '3fa7b8c16da242dfb517c7da264349feda291112baba6dcb12fd234567890abc3fa7b8c16da242dfb517c7da264349feda291112baba6dcb12fd234567890abc',
+
 };

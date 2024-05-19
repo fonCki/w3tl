@@ -12,8 +12,9 @@ import {
 } from '@utils/validationUtils'; // Adjust this import path
 import { ServiceFactory } from '@services/serviceFactory';
 import { setCurrentUser } from '@store/slices/authSlice';
-import { useDispatch } from 'react-redux'; // Adjust this import path
+import { useDispatch, useSelector } from 'react-redux'; // Adjust this import path
 import { useNavigate } from 'react-router-dom';
+import { RootState } from '@store/store';
 
 /**
  * Represents the props for the UpdateUserModal component.
@@ -64,6 +65,7 @@ const UpdateUserModal: React.FC<UpdateUserModalProps> = ({ isOpen, onClose, user
     const [loading, setLoading] = useState(false); // New state for loading indicator
     const { setUsernameAndCheck, isUsernameValid, isCheckingUsername } = useUsernameCheck();
     const [isOriginalUsername, setIsOriginalUsername] = useState(true);
+    const token = useSelector((state: RootState) => state.auth.token);
     const userProfileService = ServiceFactory.getUserProfileService();
     const userServices = ServiceFactory.getUserService();
     const dispatch = useDispatch();
@@ -97,7 +99,7 @@ const UpdateUserModal: React.FC<UpdateUserModalProps> = ({ isOpen, onClose, user
             }
             const updatedUser = { ...userUpdate, username, name, lastname, bio, location, website };
             console.log('Updating user:', updatedUser);
-            const result = await userProfileService.updateProfile(updatedUser);
+            const result = await userProfileService.updateProfile(updatedUser, token!);
             if (result.success) {
                 dispatch(setCurrentUser(updatedUser!)); // Update the user in the global state
                 navigate(`/user/${updatedUser.username}`);

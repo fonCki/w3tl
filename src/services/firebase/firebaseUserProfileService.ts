@@ -4,8 +4,6 @@ import { deleteUser } from 'firebase/auth';
 import { IUserProfileService } from '@interfaces/IUserProfileService';
 import { getDownloadURL, getStorage, ref as storageRef, uploadBytesResumable } from 'firebase/storage';
 import { User } from '@models/user/user';
-import * as console from 'node:console';
-
 
 /**
  * A service class for handling user profile operations in Firebase Firestore.
@@ -15,9 +13,9 @@ export class firebaseUserProfileService implements IUserProfileService {
     async updateProfile(user: User, token: string): Promise<{ success: boolean; user?: User; error?: any }> {
         try {
             const userDocRef = doc(db, 'users', user.userId);
-            console.log("userRef",userDocRef);
-            console.log("user",user);
-            await updateDoc(userDocRef, {...user});
+            console.log('userRef', userDocRef);
+            console.log('user', user);
+            await updateDoc(userDocRef, { ...user });
             return { success: true, user };
         } catch (error: any) {
             return { success: false, error: error.message };
@@ -90,5 +88,21 @@ export class firebaseUserProfileService implements IUserProfileService {
 
     createProfile(user: User, token: string): Promise<{ success: boolean; user?: User; error?: any }> {
         return Promise.resolve({ success: true, user });
+    }
+
+    updateProfileBannerFromPath(userId: string, path: string, token: string): Promise<{
+        success: boolean;
+        downloadURL?: string;
+        error?: any
+    }> {
+        return Promise.resolve({ success: true, downloadURL: path });
+    }
+
+    updateProfilePictureFromPath(userId: string, path: string, token: string): Promise<{
+        success: boolean;
+        downloadURL?: string;
+        error?: any
+    }> {
+        return Promise.resolve({ success: true, downloadURL: path });
     }
 }

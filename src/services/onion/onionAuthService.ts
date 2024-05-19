@@ -1,7 +1,7 @@
 import { IAuthService } from '@interfaces/IAuthService';
 import { random } from 'lodash';
 import { ServiceFactory } from '@services/serviceFactory';
-import { auth } from '@services/firebase/config/firebaseConfig';
+import { auth, db } from '@services/firebase/config/firebaseConfig';
 import {
     AuthProvider,
     createUserWithEmailAndPassword,
@@ -15,6 +15,8 @@ import {
     User as FirebaseUser,
 } from 'firebase/auth';
 import { User } from '@models/user/user';
+import { ResponseType } from '@models/responseType';
+import { doc, getDoc } from 'firebase/firestore';
 
 type enumProvider = 'google' | 'github';
 
@@ -54,16 +56,15 @@ export class onionAuthService implements IAuthService {
         }
     }
 
-    async getCurrentUser(): Promise<User | undefined> {
-        console.log('getCurrentUser: Start');
-        return new Promise((resolve, reject) => {
+    async getCurrentUser(): Promise<ResponseType> {
+        return new Promise((resolve) => {
             onAuthStateChanged(auth, async (user) => {
-                console.log('onAuthStateChanged: User changed', user);
                 if (user) {
                     const userDetails = await this.createUserWithFirebaseData(user);
-                    resolve(await this.updateUser(userDetails));
+                    const privateKey = await this.getPrivateKey(user.uid);
+                    resolve({ success: true, user: userDetails, privateKey: privateKey! });
                 } else {
-                    resolve(undefined);
+                    resolve({ success: false });
                 }
             });
         });
@@ -134,6 +135,12 @@ export class onionAuthService implements IAuthService {
         }
     }
 
+    private async getPrivateKey(userId: string): Promise<string | null> {
+        const privateDataRef = doc(db, `users/${userId}/privateData/privateKey`);
+        const privateDataSnap = await getDoc(privateDataRef);
+        return privateDataSnap.exists() ? privateDataSnap.data()?.priv : null;
+    }
+
     private async createUserWithFirebaseData(firebaseUser: FirebaseUser, additionalData: Partial<User> = {}): Promise<User> {
         return {
             userId: firebaseUser.uid,
@@ -156,7 +163,7 @@ export class onionAuthService implements IAuthService {
 
     private async updateUser(userDetails: User) {
         const token = await this.getToken();
-        const user = await this.userService.getUserById(userDetails.userId, token);
+        const user = await this.userService.getUserById(userDetails.userId);
         if ((!user?.avatar) && (userDetails.avatar != null || userDetails.avatar != ''))
             await this.userProfileService.updateProfilePictureFromPath(userDetails.userId, userDetails.avatar!, token);
         if ((user?.background) && (userDetails.background != null || userDetails.background != ''))

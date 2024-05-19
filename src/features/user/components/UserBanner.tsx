@@ -6,6 +6,7 @@ import { ServiceFactory } from '@services/serviceFactory';
 import { setLoading as setBannerLoading } from '@store/slices/loadingSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentUser } from '@store/slices/authSlice';
+import { RootState } from '@store/store';
 
 /**
  * A component that represents a user banner.
@@ -25,6 +26,7 @@ const UserBanner: React.FC<{ user: User; isEditable: boolean }> = ({ user, isEdi
     const userProfileService = ServiceFactory.getUserProfileService();
     const userService = ServiceFactory.getUserService();
     const dispatch = useDispatch();
+    const token = useSelector((state: RootState) => state.auth.token);
 
 
     const handleEditClick = () => {
@@ -35,7 +37,7 @@ const UserBanner: React.FC<{ user: User; isEditable: boolean }> = ({ user, isEdi
         const file = event.target.files?.[0];
         if (file) {
             dispatch(setBannerLoading(true));
-            const result = await userProfileService.updateProfileBanner(user.userId, file);
+            const result = await userProfileService.updateProfileBanner(user.userId, file, token!);
             if (result.success && result.downloadURL) {
                 setBannerUrl(result.downloadURL); // Update state with the new URL
                 //fetch the last version of the user from the DB

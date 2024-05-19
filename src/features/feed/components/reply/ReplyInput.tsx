@@ -24,6 +24,7 @@ interface ReplyInputProps {
 const ReplyInput: React.FC<ReplyInputProps> = ({ tweetId }) => {
     const [postContent, setPostContent] = useState('');
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
+    const token = useSelector((state: RootState) => state.auth.token);
     // Assuming TweetActionService.commentOnTweet is correctly implemented elsewhere
     const TweetActionService = ServiceFactory.getTweetActionService();
     const dispatch = useDispatch();
@@ -47,7 +48,7 @@ const ReplyInput: React.FC<ReplyInputProps> = ({ tweetId }) => {
 
         // Assuming TweetActionService.commentOnTweet method exists and returns a promise
         try {
-            const result = await TweetActionService.commentOnTweet(replyData);
+            const result = await TweetActionService.commentOnTweet(replyData, token!);
             if (result.success) {
                 console.log('Comment posted successfully:', result);
                 setPostContent(''); // Clear the input after submit

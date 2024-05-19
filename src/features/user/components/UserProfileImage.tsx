@@ -6,6 +6,7 @@ import { ServiceFactory } from '@services/serviceFactory';
 import { setLoading as setUserLoading } from '@store/slices/loadingSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentUser } from '@store/slices/authSlice';
+import { RootState } from '@store/store';
 
 
 /**
@@ -22,6 +23,7 @@ const UserProfileImage: React.FC<{ user: User; isEditable: boolean }> = ({ user,
     const userProfileService = ServiceFactory.getUserProfileService();
     const userService = ServiceFactory.getUserService();
     const dispatch = useDispatch();
+    const token = useSelector((state: RootState) => state.auth.token);
     const handleEditClick = () => {
         fileInputRef.current?.click();
     };
@@ -30,7 +32,7 @@ const UserProfileImage: React.FC<{ user: User; isEditable: boolean }> = ({ user,
         const file = event.target.files?.[0];
         if (file) {
             dispatch(setUserLoading(true));
-            const result = await userProfileService.updateProfilePicture(user.userId, file);
+            const result = await userProfileService.updateProfilePicture(user.userId, file, token!);
             if (result.success && result.downloadURL) {
                 const fetchedUser = await userService.getUserById(user.userId);
                 dispatch(setCurrentUser({ ...fetchedUser!, avatar: result.downloadURL })); // Update the avatar URL in the Redux store

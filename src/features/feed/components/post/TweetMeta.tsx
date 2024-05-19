@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tweet } from '@models/post/tweet';
 import { ServiceFactory } from '@services/serviceFactory';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
 import {
-    resetNewLike,
+    resetNewComment,
     resetNewHighlight,
+    resetNewLike,
     setNewHighlight,
     setNewLike,
-    resetNewComment,
 } from '@store/slices/notificationsSlice';
 import ShareModal from '../../../modals/ShareModal';
 
@@ -39,6 +39,7 @@ const TweetMeta: React.FC<TweetMetaProps> = ({ tweet }) => {
     const tweetService = ServiceFactory.getTweetService();
     const tweetActionService = ServiceFactory.getTweetActionService();
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
+    const token = useSelector((state: RootState) => state.auth.token);
     const dispatch = useDispatch();
     const {newLike, newRetweet, newComment, newHighlight} = useSelector((state: RootState) => state.notifications);
     const [likes, setLikes] = useState(tweet.likes); // Manage likes with state
@@ -97,7 +98,7 @@ const TweetMeta: React.FC<TweetMetaProps> = ({ tweet }) => {
 
         try {
             // Attempt to perform the like/unlike action
-            const result = await tweetActionService.likeTweet(currentUser!.userId!, tweet.postId);
+            const result = await tweetActionService.likeTweet(currentUser!.userId!, tweet.postId, token!);
             // If the action fails or doesn't match the optimistic update, correct the UI
             if (!result.success) {
                 setIsLiked(!optimisticIsLiked); // Revert isLiked state
@@ -128,7 +129,7 @@ const TweetMeta: React.FC<TweetMetaProps> = ({ tweet }) => {
         setIsHighlighted(optimisticIsHighlighted);
 
         try {
-            const result = await tweetActionService.highlightTweet(currentUser!.userId!, tweet.postId);
+            const result = await tweetActionService.highlightTweet(currentUser!.userId!, tweet.postId, token!);
             // Check the result; if there's an error, revert the change
             if (!result.success) {
                 setIsHighlighted(!optimisticIsHighlighted); // Revert highlight state on failure

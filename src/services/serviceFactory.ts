@@ -9,13 +9,17 @@ import { IMLService } from '@interfaces/IMLService';
 
 import { IMessageService } from '@interfaces/IMessageService';
 import { MessageService } from '@services/messageService';
-import { OnionAuthService } from '@services/onion/onionAuthService';
+
+import { firebaseAuthService } from '@services/firebase/firebaseAuthService';
 import { firebaseUserRelationsService } from '@services/firebase/firebaseUserRelationsService';
 import { firebaseUserProfileService } from '@services/firebase/firebaseUserProfileService';
 import { firebaseTweetService } from '@services/firebase/firebaseTweetService';
 import { firebaseUserService } from '@services/firebase/firebaseUserService';
 import firebaseTweetActionService from '@services/firebase/firebaseTweetActionService';
 import { PurgoMalumService } from '@services/ML/purgoMalumService';
+
+//onion services
+
 
 /**
  * The ServiceFactory class is responsible for creating instances of various services used in the application.
@@ -32,7 +36,7 @@ class ServiceFactory {
 
     static getAuthService(): IAuthService {
         if (!this.authServiceInstance) {
-            this.authServiceInstance = new OnionAuthService();
+            this.authServiceInstance = new firebaseAuthService();
         }
         return this.authServiceInstance;
     }

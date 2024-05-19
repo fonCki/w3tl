@@ -13,7 +13,7 @@ export class OnionUserRelationsService implements IUserRelations {
             }
 
             // Check if the followingId is included in the array of objects under the 'value' key
-            const response = following.following.some(f => f.value === followingId);
+            const response = following.following.some(f => f === followingId);
             return { following: response };
         } catch (error) {
             return { following: false, error: error };
@@ -44,7 +44,14 @@ export class OnionUserRelationsService implements IUserRelations {
         if (!response.followers) {
             throw new Error('Failed to get followers');
         }
-        return { followers: response.followers };
+        const cleanResponse: string[] = [];
+        response.followers.forEach((followObject: any) => {
+            if (!followObject.value) {
+                throw new Error('Invalid followers data structure');
+            }
+            cleanResponse.push(followObject.value);
+        });
+        return { followers: cleanResponse, error: response.error };
     }
 
     async getFollowersAsUser(userId: string): Promise<User[]> {
@@ -52,12 +59,20 @@ export class OnionUserRelationsService implements IUserRelations {
         if (!followers || !followers.followers || !Array.isArray(followers.followers)) {
             throw new Error('Invalid followers data structure');
         }
+        const cleanResponse: string[] = [];
+        followers.followers.forEach((followObject: any) => {
+            if (!followObject.value) {
+                throw new Error('Invalid followers data structure');
+            }
+            cleanResponse.push(followObject.value);
+        });
 
         // Map over the followers array and retrieve each user asynchronously
-        const usersPromises = followers.followers.map(async (followObject) => {
-            const user = await this.sendGetRequest(`${BACKEND_URL}/user/uid/${followObject.value}`);
-            return user;
-        });
+        const usersPromises = cleanResponse.map(async (followObject) => {
+                // Ensure that the URL and endpoint correctly target the user ID stored in followObject.value
+                return this.sendGetRequest(`${BACKEND_URL}/user/uid/${followObject}`);
+            },
+        );
 
         // Wait for all promises to resolve and return the array of users
         const users = await Promise.all(usersPromises);
@@ -71,7 +86,15 @@ export class OnionUserRelationsService implements IUserRelations {
         if (!response.following) {
             throw new Error('Failed to get following');
         }
-        return { following: response.following };
+        const cleanResponse: string[] = [];
+        response.following.forEach((followObject: any) => {
+                if (!followObject.value) {
+                    throw new Error('Invalid following data structure');
+                }
+                cleanResponse.push(followObject.value);
+            },
+        );
+        return { following: cleanResponse, error: response.error };
     }
 
     async getFollowingAsUser(userId: string): Promise<User[]> {
@@ -80,14 +103,23 @@ export class OnionUserRelationsService implements IUserRelations {
             throw new Error('Invalid following data structure');
         }
 
-        // Ensure that each map iteration returns a promise of a user object
-        const userPromises = following.following.map(async (followObject) => {
-            // Ensure that the URL and endpoint correctly target the user ID stored in followObject.value
-            return this.sendGetRequest(`${BACKEND_URL}/user/uid/${followObject.value}`);
+        const cleanResponse: string[] = [];
+        following.following.forEach((followObject: any) => {
+            if (!followObject.value) {
+                throw new Error('Invalid following data structure');
+            }
+            cleanResponse.push(followObject.value);
         });
 
-        // Wait for all user promises to resolve before returning
-        const users = await Promise.all(userPromises);
+        // Map over the following array and retrieve each user asynchronously
+        const usersPromises = cleanResponse.map(async (followObject) => {
+                // Ensure that the URL and endpoint correctly target the user ID stored in followObject.value
+                return this.sendGetRequest(`${BACKEND_URL}/user/uid/${followObject}`);
+            },
+        );
+
+        // Wait for all promises to resolve and return the array of users
+        const users = await Promise.all(usersPromises);
         return users.map((user) => {
             return user.user as User;
         });

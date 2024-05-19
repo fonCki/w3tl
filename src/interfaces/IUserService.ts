@@ -10,6 +10,5 @@ export interface IUserService {
     userExists(username: string): Promise<boolean>;
     getAllUsers(): Promise<User[]>;
     searchUsers(query: string, limit?: number): Promise<User[]>;
-
     getTrendingUsers(top: number): Promise<User[]>;
 }

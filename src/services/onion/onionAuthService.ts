@@ -14,6 +14,7 @@ import {
     signOut,
     User as FirebaseUser,
 } from 'firebase/auth';
+import { User } from '@models/user/user';
 
 type enumProvider = 'google' | 'github';
 
@@ -107,7 +108,7 @@ export class onionAuthService implements IAuthService {
     }
 
 
-    isAuthenticated(): Promise<boolean> {
+    async isAuthenticated(): Promise<boolean> {
         return new Promise((resolve) => {
             onAuthStateChanged(auth, (user) => {
                 resolve(!!user);
@@ -124,7 +125,7 @@ export class onionAuthService implements IAuthService {
         });
     }
 
-    getToken(): Promise<string> {
+    async getToken(): Promise<string> {
         const user = auth.currentUser;
         if (user) {
             return user.getIdToken();

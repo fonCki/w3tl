@@ -4,6 +4,7 @@ import { deleteUser } from 'firebase/auth';
 import { IUserProfileService } from '@interfaces/IUserProfileService';
 import { getDownloadURL, getStorage, ref as storageRef, uploadBytesResumable } from 'firebase/storage';
 import { User } from '@models/user/user';
+import * as console from 'node:console';
 
 
 /**
@@ -11,7 +12,7 @@ import { User } from '@models/user/user';
  */
 export class firebaseUserProfileService implements IUserProfileService {
 
-    async updateProfile(user: User): Promise<{ success: boolean; user?: User; error?: any }> {
+    async updateProfile(user: User, token: string): Promise<{ success: boolean; user?: User; error?: any }> {
         try {
             const userDocRef = doc(db, 'users', user.userId);
             console.log("userRef",userDocRef);
@@ -23,7 +24,11 @@ export class firebaseUserProfileService implements IUserProfileService {
         }
     }
 
-    async updateProfilePicture(userId: string, file: File): Promise<{ success: boolean; downloadURL?: string; error?: any; }> {
+    async updateProfilePicture(userId: string, file: File, token: string): Promise<{
+        success: boolean;
+        downloadURL?: string;
+        error?: any;
+    }> {
         const storage = getStorage();
         const storagePath = `profilePictures/${userId}/${file.name}`;
         const imageRef = storageRef(storage, storagePath);
@@ -42,7 +47,11 @@ export class firebaseUserProfileService implements IUserProfileService {
         }
     }
 
-    async updateProfileBanner(userId: string, file: File): Promise<{ success: boolean; downloadURL?: string; error?: any; }> {
+    async updateProfileBanner(userId: string, file: File, token: string): Promise<{
+        success: boolean;
+        downloadURL?: string;
+        error?: any;
+    }> {
         const storage = getStorage();
         const storagePath = `profileBanners/${userId}/${file.name}`;
         const imageRef = storageRef(storage, storagePath);
@@ -61,7 +70,7 @@ export class firebaseUserProfileService implements IUserProfileService {
         }
     }
 
-    async deleteProfile(userId: string): Promise<{ success: boolean; error?: any }> {
+    async deleteProfile(userId: string, token: string): Promise<{ success: boolean; error?: any }> {
         try {
             // Delete from Firestore
             const userDocRef = doc(db, 'users', userId);
@@ -77,5 +86,9 @@ export class firebaseUserProfileService implements IUserProfileService {
         } catch (error: any) {
             return { success: false, error: error.message };
         }
+    }
+
+    createProfile(user: User, token: string): Promise<{ success: boolean; user?: User; error?: any }> {
+        return Promise.resolve({ success: true, user });
     }
 }

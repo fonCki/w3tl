@@ -198,6 +198,15 @@ export class firebaseAuthService implements IAuthService {
         });
     }
 
+    async getToken(): Promise<string> {
+        const user = auth.currentUser;
+        if (user) {
+            return user.getIdToken();
+        } else {
+            return Promise.reject('No user logged in');
+        }
+    }
+
     private async checkAndCreateNotifications(firebaseUser: FirebaseUser): Promise<void> {
         const notificationsRef = collection(db, 'users', firebaseUser.uid, 'notifications');
 

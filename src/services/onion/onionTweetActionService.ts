@@ -1,6 +1,6 @@
 import { ITweetActionService } from '@interfaces/ITweetsActionService';
 import { BACKEND_URL } from '@constants/constants';
-import { Tweet } from '@models/tweet';
+import { Tweet } from '@models/post/tweet';
 
 export class OnionTweetActionService implements ITweetActionService {
 

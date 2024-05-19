@@ -37,6 +37,7 @@ const FollowButton: React.FC<FollowButtonProps> = ({ user, blackAndWhite = false
     const [isFollowing, setIsFollowing] = useState(false);
     const userRelationService = ServiceFactory.getUserRelationsService();
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
+    const token = useSelector((state: RootState) => state.auth.token);
     const dispatch = useDispatch();
 
 
@@ -58,13 +59,13 @@ const FollowButton: React.FC<FollowButtonProps> = ({ user, blackAndWhite = false
 
     const handleFollow = async () => {
         setIsFollowing(true);
-        await userRelationService.followUser(currentUser!.userId, user.userId);
+        await userRelationService.followUser(currentUser!.userId, user.userId, token!);
         dispatch(setHasNewFollowing(true)); // Update the Redux state
     };
 
     const handleUnfollow = async () => {
         setIsFollowing(false);
-        await userRelationService.unfollowUser(currentUser!.userId, user.userId);
+        await userRelationService.unfollowUser(currentUser!.userId, user.userId, token!);
         dispatch(setHasNewFollowing(true)); // Update the Redux state
     };
 

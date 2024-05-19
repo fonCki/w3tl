@@ -1,8 +1,8 @@
 import { ITweetService } from '@interfaces/ITweetService';
 
 import { BACKEND_URL } from '@constants/constants';
-import { Tweet } from '@models/tweet';
-import { Comment } from '@models/comment';
+import { Tweet } from '@models/post/tweet';
+import { Comment } from '@models/post/comment';
 
 export class OnionTweetService implements ITweetService {
 

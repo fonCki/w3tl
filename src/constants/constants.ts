@@ -53,5 +53,13 @@ export const LOCAL_DEFAULT_AVATAR_IMAGE: string = "../../src/assets/images/defau
  */
 export const TOGGLE_DELAY_SECONDS = 5;  // Amount of seconds for the delay
 
+/**
+ * The URL of the backend API for the Onion Architecture.
+ *
+ * @type {string}
+ * @default import.meta.env.VITE_ONION_ARCHITECTURE_BACKEND_API_URL
+ */
+export const BACKEND_URL = import.meta.env.VITE_ONION_ARCHITECTURE_BACKEND_API_URL;
+
 
 

@@ -6,8 +6,21 @@ import { User } from '@models/user/user';
  * @interface
  */
 export interface IUserProfileService {
-    updateProfile(user:User): Promise<{ success: boolean; user?: User; error?: any }>;
-    updateProfilePicture(userId: string, file: File): Promise<{ success: boolean; downloadURL?: string; error?: any; }>
-    updateProfileBanner(userId: string, file: File): Promise<{ success: boolean; downloadURL?: string; error?: any; }>;
-    deleteProfile(username: string): Promise<{ success: boolean; error?: any }>;
+    createProfile(user: User, token: string): Promise<{ success: boolean; user?: User; error?: any }>;
+
+    updateProfile(user: User, token: string): Promise<{ success: boolean; user?: User; error?: any }>;
+
+    updateProfilePicture(userId: string, file: File, token: string): Promise<{
+        success: boolean;
+        downloadURL?: string;
+        error?: any;
+    }>;
+
+    updateProfileBanner(userId: string, file: File, token: string): Promise<{
+        success: boolean;
+        downloadURL?: string;
+        error?: any;
+    }>;
+
+    deleteProfile(username: string, token: string): Promise<{ success: boolean; error?: any }>;
 }

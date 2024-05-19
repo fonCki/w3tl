@@ -14,4 +14,6 @@ export interface IAuthService {
     authenticateWithProvider(provider: string): Promise<ResponseType>;
     sendPasswordResetEmail(email: string): Promise<void>;
     logout(): void;
+
+    getToken(): Promise<string>;
 }

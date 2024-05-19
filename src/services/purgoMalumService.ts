@@ -13,8 +13,6 @@ export class PurgoMalumService implements IMLService {
     async checkProfanity(text: string): Promise<{ result: boolean; error?: string }> {
         const params = new URLSearchParams({ text });
         const url = `${this.API_URL}?${params.toString()}`;
-        console.log('API_KEY: ', this.API_KEY);
-
         try {
             const response = await fetch(url, {
                 method: 'GET',

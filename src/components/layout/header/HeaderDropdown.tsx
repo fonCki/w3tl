@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Dropdown } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import Img from '@components/tools/image/Img';
@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '@store/store';
 import { useAuth } from '@context/AuthContext';
+import ConfirmationModal from '@components/ui/modals/ConfirmationModal';
+import { setLoading } from '@store/slices/authSlice';
 
 /**
  * HeaderDropdown component is a dropdown menu for user profile options in the header.
@@ -16,7 +18,26 @@ import { useAuth } from '@context/AuthContext';
 const HeaderDropdown = () => {
     const navigate = useNavigate();
     const { logout } = useAuth();
+    const [modalOpen, setModalOpen] = useState(false);
+
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
+
+    const handleDeleteAccount = () => {
+        setModalOpen(true);
+    };
+
+    const confirmDeleteAccount = () => {
+        setLoading(true);
+        setModalOpen(false); // Close modal after logout
+        setTimeout(() => {
+            setLoading(true);
+            logout();
+            alert('Your request to delete the account has been received. ' +
+                'Your information may remain in the system for up to 30 days while we process your deletion request.');
+        }, 100); // Set timeout for 3 seconds
+        setLoading(false); // Deactivate loader after 3 seconds
+    };
+
 
     return (
         <Dropdown
@@ -68,12 +89,29 @@ const HeaderDropdown = () => {
                 <div className="border-t border-gray-200"></div>
                 <div className="py-1">
                     <Dropdown.Item
+                        text="Delete Account"
+                        icon="trash"
+                        className="text-sm text-gray-700 hover:bg-gray-100 px-4 py-2 cursor-pointer"
+                        onClick={handleDeleteAccount}
+                    />
+                </div>
+                <div className="py-1">
+                    <Dropdown.Item
                         text="Sign Out"
                         icon="sign out"
                         className="text-sm text-gray-700 hover:bg-gray-100 px-4 py-2 cursor-pointer"
                         onClick={logout}
                     />
                 </div>
+                <ConfirmationModal
+                    isOpen={modalOpen}
+                    onClose={() => setModalOpen(false)}
+                    onConfirm={confirmDeleteAccount}
+                    message="Are you sure you want to delete your account? This cannot be undone."
+                    headerText="Confirm Account Deletion"
+                    closeButtonText="Cancel"
+                    confirmButtonText="Delete"
+                />
             </Dropdown.Menu>
         </Dropdown>
     );

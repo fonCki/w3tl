@@ -1,52 +1,81 @@
-# coducks
+# W3TL React Frontend
 
-Demo app for "Codux Live: Building an eComm product page ft. RadixUI &amp; TailwindCSS"
+## Introduction
 
-In this project we build the UI for an ecommerce product page, using TailwindCSS
-for styling and RadixUI for building the more complex UI elements. Throughout,
-we'll be using Codux as a platform for visually iterating on the implementation.
+W3TL is a fully functional React/Redux application designed as part of a bachelor's thesis project at Via University College, Horsens, Denmark. This platform aims to enhance user connectivity through a modern, interactive, and decentralized social media experience. You can access the live application at [w37l.ridao.ar](http://w37l.ridao.ar).
 
-## Outline
+## Features
 
-The branches & commits in this repository correspond to "checkpoints" throughout the webinar. As you
-follow along, if you ever get stuck or out of sync with the tutorial you can check out the
-corresponding branch or commit to "catch up".
+- **User Authentication**: Secure login and sign-up functionalities.
+- **Real-time Post Interaction**: Users can post text, images, and videos, interact with them through likes, comments, and shares.
+- **Search and Discovery**: Explore trending topics, search for posts, and discover new users based on interests.
+- **Profile Customization**: Users can customize their profiles, manage their posts, and view their activity.
+- **Responsive Design**: The application is fully responsive, providing a seamless experience on both desktop and mobile devices.
 
-- Intro: project scope & design brief
+## Screenshots
 
-[checkpoint: branch `0-start`]
+Screenshots of the application can be viewed below:
 
-- 1: TailwindCSS atomic styling
-  - 1.1 Footer styles
-  - 1.2 Header styles
-  - 1.3 Layout
-  - 1.4 Product info
+- ![Home Page](https://github.com/W37L/W37L-React-Client/blob/main/images/img_1.png)
+- ![Profile Page](https://github.com/W37L/W37L-React-Client/blob/main/images/img_3.png)
+- ### Mobile Views
+<p float="left">
+  <img src="https://github.com/W37L/W37L-React-Client/blob/main/images/img_8.png" width="45%" />
+  <img src="https://github.com/W37L/W37L-React-Client/blob/main/images/img_7.png" width="45%" />
+</p>
 
-[checkpoint: branch `1-tailwind`]
 
-- 2: RadixUI component primitives
-  - 2.1 Product info accordion
-  - 2.2 Product size toggle
-  - 2.3 Image gallery
-  - 2.4 Navigation menu
 
-[checkpoint: branch `2-radix`]
+## Technology Stack
 
-- 3: (optional) Responsive design
-  - 3.1 Mobile layout
-
-[checkpoint: branch `3-bonus`]
+- React.js
+- Redux for state management
+- React Router for navigation
+- Vite for building
+- Firebase for backend services
+- Tailwind CSS for styling
 
 ## Installation
 
-Prerequisites:
+To get this project running locally, follow these steps:
 
-- Install Node & npm
-- Sign up for a free Codux account
+```bash
+# Clone the repository
+git clone https://github.com/W37L/W37L-React-Client.git
+# Navigate to the project directory
+cd W37L-React-Client
 
-Project set up:
+# Install dependencies
+npm install
 
-- Clone the project repo, and checkout the `0-start` branch.
-- In Codux, open the repository as a Codux project
-- Run the "Install" script in Codux (or `npm i` on the command line) to install the project dependencies
-- Follow along with the webinar! Use the branches if needed to catch up or "reset" to a checkpoint.
+# Create a .env file in the root directory and add the following configurations:
+NODE_ENV=development
+
+# Firebase
+VITE_APP_API_KEY=your_firebase_api_key
+VITE_APP_AUTH_DOMAIN=your_firebase_auth_domain
+VITE_APP_PROJECT_ID=your_firebase_project_id
+VITE_APP_STORAGE_BUCKET=your_firebase_storage_bucket
+VITE_APP_MESSAGING_SENDER_ID=your_firebase_messaging_sender_id
+VITE_APP_APP_ID=your_firebase_app_id
+VITE_APP_MEASUREMENT_ID=your_firebase_measurement_id
+
+
+# Run the application
+npm run dev
+```
+
+## Usage
+After installation, you can start using the application by navigating to localhost:3000 in your web browser. Ensure your backend services are configured correctly.
+
+## Contributing
+Contributions are welcome! If you have a feature request or bug report, please open an issue on GitHub. If you wish to contribute to the codebase, please follow these steps:
+
+1. Fork the repository
+2. Create a new branch (`git checkout -b feature/your-feature`)
+3. Make your changes
+4. Push your changes to the branch (`git push origin feature/your-feature`)
+5. Create a pull request
+
+## Authors
+- [Alfonso Pedro Ridao](https://github.com/fonCki)
